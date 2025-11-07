@@ -33,8 +33,8 @@ class AngleTests(unittest.TestCase):
 
     def test_closest_distances(self):
         """Tests closest distances between two angles."""
-        self.assertEqual(angle.closestdistance(0, 0), 0)
-        self.assertEqual(angle.closestdistance(0, 90), 90)
-        self.assertEqual(angle.closestdistance(0, 180), 180)
-        self.assertEqual(angle.closestdistance(0, 270), -90)
-        self.assertEqual(angle.closestdistance(0, 359), -1)
+        self.assertEqual(angle.closest_distance(0, 0), 0)
+        self.assertEqual(angle.closest_distance(0, 90), 90)
+        self.assertEqual(angle.closest_distance(0, 180), 180)
+        self.assertEqual(angle.closest_distance(0, 270), -90)
+        self.assertEqual(angle.closest_distance(0, 359), -1)

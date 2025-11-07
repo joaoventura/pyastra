@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for computing 
-    the temperament protocol.
+Author: João Ventura <joaojonesventura@gmail.com>
+This recipe shows sample code for computing the temperament protocol.
 
 """
 

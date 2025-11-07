@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for computing 
-    arabic parts.
+Author: João Ventura <joaojonesventura@gmail.com>
+This recipe shows sample code for computing arabic parts.
 
 """
 
@@ -20,5 +17,5 @@ pos = GeoPos('38n32', '8w54')
 chart = Chart(date, pos)
 
 # Retrieve the Pars Spirit
-parsSpirit = arabicparts.getPart(arabicparts.PARS_SPIRIT, chart)
+parsSpirit = arabicparts.get_part(arabicparts.PARS_SPIRIT, chart)
 print(parsSpirit)    # <Pars Spirit Sagittarius +03:52:01>

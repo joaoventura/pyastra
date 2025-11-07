@@ -1,13 +1,6 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
-
-    This module provides classes for handling lists of 
-    Astrology Objects, Houses and Fixed Stars.
-    
-    It is basically a wrapper around a native dict with 
-    useful augmentations.
+This module provides classes for handling lists of Astrology Objects, Houses and Fixed Stars.
+It is basically a wrapper around a native dict with useful augmentations.
 
 """
 
@@ -19,12 +12,11 @@ from . import aspects
 # ---------------- #
 
 class GenericList:
-    """ This class represents a Generic List of Objects,
-    Houses or Fixed Stars.
+    """
+    This class represents a Generic List of Objects,Houses or Fixed Stars.
     
-    Although this class internally implements a dict object
-    internally, so that retrievals are faster, its public 
-    interfaces are more like a list.
+    Although this class internally implements a dict object internally, so that retrievals are
+    faster, its public interfaces are more like a list.
     
     """
 
@@ -38,9 +30,9 @@ class GenericList:
         """ Adds an object to this list. """
         self.content[obj.id] = obj
 
-    def get(self, ID):
+    def get(self, obj_id):
         """ Retrieves an object from this list. """
-        return self.content[ID]
+        return self.content[obj_id]
 
     def copy(self):
         """ Returns a deep copy of this list. """
@@ -59,19 +51,16 @@ class GenericList:
 class ObjectList(GenericList):
     """ Implements a list of astrology objects. """
 
-    def getObjectsInHouse(self, house):
+    def get_objects_in_house(self, house):
         """ Returns a list with all objects in a house. """
-        res = [obj for obj in self if house.hasObject(obj)]
+        res = [obj for obj in self if house.has_object(obj)]
         return ObjectList(res)
 
-    def getObjectsAspecting(self, point, aspList):
-        """ Returns a list of objects aspecting a point 
-        considering a list of possible aspects.
-        
-        """
+    def get_objects_aspecting(self, point, asp_list):
+        """ Returns a list of objects aspecting a point considering a list of possible aspects. """
         res = []
         for obj in self:
-            if obj.isPlanet() and aspects.isAspecting(obj, point, aspList):
+            if obj.is_planet() and aspects.is_aspecting(obj, point, asp_list):
                 res.append(obj)
         return ObjectList(res)
 
@@ -83,16 +72,16 @@ class ObjectList(GenericList):
 class HouseList(GenericList):
     """ Implements a list of houses. """
 
-    def getHouseByLon(self, lon):
+    def get_house_by_lon(self, lon):
         """ Returns a house given a longitude. """
         for house in self:
-            if house.inHouse(lon):
+            if house.in_house(lon):
                 return house
         return None
 
-    def getObjectHouse(self, obj):
+    def get_object_house(self, obj):
         """ Returns the house where an object is located. """
-        return self.getHouseByLon(obj.lon)
+        return self.get_house_by_lon(obj.lon)
 
 
 # ----------------- #

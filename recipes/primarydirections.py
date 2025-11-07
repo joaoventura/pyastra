@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for handling the 
-    primary directions.
+Author: João Ventura <joaojonesventura@gmail.com>
+This recipe shows sample code for handling the primary directions.
 
 """
 
@@ -27,11 +24,11 @@ prom = chart.get(const.MARS)
 sig = chart.get(const.MERCURY)
 
 # Compute arc in zodiaco (zerolat = True)
-arc = primarydirections.getArc(prom, sig, mc, pos, zerolat=True)
+arc = primarydirections.get_arc(prom, sig, mc, pos, zerolat=True)
 print(arc)  # 56.17347
 
 # Compute arc in mundo
-arc = primarydirections.getArc(prom, sig, mc, pos, zerolat=False)
+arc = primarydirections.get_arc(prom, sig, mc, pos, zerolat=False)
 print(arc)  # 56.74266
 
 # Create Primary Directions class
@@ -39,13 +36,13 @@ from pyastra.predictives.primarydirections import PrimaryDirections
 pd = PrimaryDirections(chart)
 
 # Get arcs
-arc = pd.getArc(pd.N(const.MARS), pd.N(const.MERCURY))
+arc = pd.get_arc(pd.N(const.MARS), pd.N(const.MERCURY))
 print(arc['arcm'])  # 56.74266 (arc in-mundo)
 print(arc['arcz'])  # 56.17347 (arc in-zodiaco)
 
 # Create Primary Directions table class
 from pyastra.predictives.primarydirections import PDTable
 pd = PDTable(chart, const.MAJOR_ASPECTS)
-pd.byPromissor(const.MARS)  # List all directions by promissor
-pd.bySignificator(const.MERCURY)  # List all directions by significator
+pd.by_promissor(const.MARS)  # List all directions by promissor
+pd.by_significator(const.MERCURY)  # List all directions by significator
 pd.view(20, 30)  # List all directions between 20 and 30 of arc

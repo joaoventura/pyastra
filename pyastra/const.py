@@ -1,10 +1,5 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
-
-    This module defines the names of signs, objects, angles, 
-    houses and fixed-stars used in the library.
+Definitions of names of signs, objects, angles, houses and fixed-stars used in the library.
 
 """
 

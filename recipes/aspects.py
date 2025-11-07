@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for handling 
-    aspects.
+Author: João Ventura <joaojonesventura@gmail.com>
+This recipe shows sample code for handling aspects.
 
 """
 
@@ -24,5 +21,5 @@ sun = chart.get(const.SUN)
 moon = chart.get(const.MOON)
 
 # Get the aspect
-aspect = aspects.getAspect(sun, moon, const.MAJOR_ASPECTS)
+aspect = aspects.get_aspect(sun, moon, const.MAJOR_ASPECTS)
 print(aspect)     # <Moon Sun 90 Applicative +00:24:30>

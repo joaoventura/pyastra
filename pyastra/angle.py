@@ -1,26 +1,19 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
+This module provides useful functions for handling angles.
+An angle is represented in this library as a <float> value.
 
-    This module provides useful functions for handling angles.
-    An angle is represented in this library as a <float> value.
-  
-    It also provides useful functions for handling the conversion 
-    of angles between strings, signed lists and float values.
-  
-    The conversion functions assume that:
-    
-    1. Angle strings are like "-12:30:00".
-    2. Signed lists are like ['-',12,30,00].
-    3. Regular lists are like [+12,30,30] or [-0.0,30,30]
-    4. Float value are fractions of an angle with base 60.
-       Eg. "-12:30:00" is converted to -12.5.
-  
-    Regular lists are discouraged because it is hard to represent
-    negative angles such as ['-',00,30,00]. In this case a -0.0
-    should be used, as [-0.0,30,00], and converted to a signed 
-    list for further use.
+It also provides useful functions for handling the conversion of angles between strings,
+signed lists and float values.
+
+The conversion functions assume that:
+1. Angle strings are like "-12:30:00".
+2. Signed lists are like ['-',12,30,00].
+3. Regular lists are like [+12,30,30] or [-0.0,30,30]
+4. Float value are fractions of an angle with base 60.
+   Eg. "-12:30:00" is converted to -12.5.
+
+Regular lists are discouraged because it's hard to represent negative angles such as ['-',00,30,00].
+In this case a -0.0 should be used, as [-0.0,30,00], and converted to a signed list for further use.
     
 """
 
@@ -45,20 +38,20 @@ def distance(angle1, angle2):
     return norm(angle2 - angle1)
 
 
-def closestdistance(angle1, angle2):
+def closest_distance(angle1, angle2):
     """ Closest distance from angle1 to angle2 (ccw is positive). """
     return znorm(angle2 - angle1)
 
 
 # === Signed Lists utilities === #
 
-def _fixSlist(slist):
+def _fix_slist(slist):
     """ Guarantees that a signed list has exactly four elements. """
     slist.extend([0] * (4 - len(slist)))
     return slist[:4]
 
 
-def _roundSlist(slist):
+def _round_slist(slist):
     """ Rounds a signed list over the last element and removes it. """
     slist[-1] = 60 if slist[-1] >= 30 else 0
     for i in range(len(slist) - 1, 1, -1):
@@ -70,28 +63,28 @@ def _roundSlist(slist):
 
 # === Base conversions === #
 
-def strSlist(string):
+def str_slist(string):
     """ Converts angle string to signed list. """
     sign = '-' if string[0] == '-' else '+'
     values = [abs(int(x)) for x in string.split(':')]
-    return _fixSlist(list(sign) + values)
+    return _fix_slist(list(sign) + values)
 
 
-def slistStr(slist):
+def slist_str(slist):
     """ Converts signed list to angle string. """
-    slist = _fixSlist(slist)
+    slist = _fix_slist(slist)
     string = ':'.join(['%02d' % x for x in slist[1:]])
     return slist[0] + string
 
 
-def slistFloat(slist):
+def slist_float(slist):
     """ Converts signed list to float. """
     values = [v / 60 ** (i) for (i, v) in enumerate(slist[1:])]
     value = sum(values)
     return -value if slist[0] == '-' else value
 
 
-def floatSlist(value):
+def float_slist(value):
     """ Converts float to signed list. """
     slist = ['+', 0, 0, 0, 0]
     if value < 0:
@@ -100,38 +93,38 @@ def floatSlist(value):
     for i in range(1, 5):
         slist[i] = math.floor(value)
         value = (value - slist[i]) * 60
-    return _roundSlist(slist)
+    return _round_slist(slist)
 
 
-def strFloat(string):
+def str_float(string):
     """ Converts angle string to float. """
-    slist = strSlist(string)
-    return slistFloat(slist)
+    slist = str_slist(string)
+    return slist_float(slist)
 
 
-def floatStr(value):
+def float_str(value):
     """ Converts angle float to string. """
-    slist = floatSlist(value)
-    return slistStr(slist)
+    slist = float_slist(value)
+    return slist_str(slist)
 
 
 # === Direct conversions === #
 
-def toFloat(value):
+def to_float(value):
     """ Converts string or signed list to float. """
     if isinstance(value, str):
-        return strFloat(value)
+        return str_float(value)
     elif isinstance(value, list):
-        return slistFloat(value)
+        return slist_float(value)
     else:
         return value
 
 
-def toList(value):
+def to_list(value):
     """ Converts angle float to signed list. """
-    return floatSlist(value)
+    return float_slist(value)
 
 
-def toString(value):
+def to_string(value):
     """ Converts angle float to string. """
-    return floatStr(value)
+    return float_str(value)

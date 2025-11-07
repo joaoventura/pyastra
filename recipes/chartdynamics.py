@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for handling some 
-    of the chart dynamics.
+Author: João Ventura <flatangleweb@gmail.com>
+This recipe shows sample code for handling some of the chart dynamics.
 
 """
 
@@ -23,7 +20,7 @@ chart = Chart(date, pos)
 dyn = ChartDynamics(chart)
 
 # Which dignities of Jupiter belong to Sun
-dign = dyn.inDignities(const.JUPITER, const.SUN)
+dign = dyn.in_dignities(const.JUPITER, const.SUN)
 print(dign)   # ['dayTrip', 'ruler']
 
 # In which dignities Jupiter receives Mars
@@ -33,13 +30,13 @@ print(dign)   # ['nightTrip']
 # Mutual receptions between Sun and Moon
 #  - Sun receives the Moon in diurnal triplicity
 #  - Moon receives the Sun in the participant triplicity
-dign = dyn.mutualReceptions(const.SUN, const.MOON)
+dign = dyn.mutual_receptions(const.SUN, const.MOON)
 print(dign)   # [('dayTrip', 'partTrip')]
 
-# Last separation and next application of 
-asps = dyn.immediateAspects(const.SUN, const.MAJOR_ASPECTS)
+# Last separation and next application of
+asps = dyn.immediate_aspects(const.SUN, const.MAJOR_ASPECTS)
 print(asps)   # (None, {'id': 'Saturn', 'orb': 12.1391, 'asp': 120})
 
 # Void of course
-voc = dyn.isVOC(const.MERCURY)
+voc = dyn.is_voc(const.MERCURY)
 print(voc)    # False

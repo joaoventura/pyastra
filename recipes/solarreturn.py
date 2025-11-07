@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for handling 
-    solar returns.
+Author: João Ventura <joaojonesventura@gmail.com>
+This recipe shows sample code for handling solar returns.
 
 """
 
@@ -21,7 +18,7 @@ chart = Chart(date, pos)
 
 # Get the next solar return Chart given a date
 today = Datetime('2015/04/06', '10:40', '+01:00')
-srChart = returns.nextSolarReturn(chart, today)
+srChart = returns.next_solar_return(chart, today)
 
 # Print the date and Asc
 asc = srChart.get(const.ASC)
@@ -29,6 +26,6 @@ print(asc)           # <Asc Taurus +26:25:47>
 print(srChart.date)  # <2015/06/14 04:38:37 01:00:00>
 
 # Solar return of the year
-srChart = chart.solarReturn(2015)
+srChart = chart.solar_return(2015)
 print(asc)           # <Asc Taurus +26:25:47>
 print(srChart.date)  # <2015/06/14 04:38:37 01:00:00>
