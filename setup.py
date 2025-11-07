@@ -1,5 +1,5 @@
 """
-    This file is part of flatlib - (C) FlatAngle
+    This file is part of pyastra - (C) FlatAngle
     Author: João Ventura (flatangleweb@gmail.com)
 
 """
@@ -9,13 +9,13 @@ from setuptools import find_packages
 
 setup(
     # Project
-    name='flatlib',
+    name='pyastra',
     version='0.2.3',
 
     # Sources
     packages=find_packages(),
     package_data={
-        'flatlib': [
+        'pyastra': [
             'resources/README.md',
             'resources/swefiles/*'
         ],

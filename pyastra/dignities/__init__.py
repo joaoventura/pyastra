@@ -1,0 +1,9 @@
+"""
+    This file is part of pyastra - (C) FlatAngle
+    Author: João Ventura (flatangleweb@gmail.com)
+    
+    
+    This subpackage implements the Essential and
+    Accidental dignities.
+  
+"""

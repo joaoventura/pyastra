@@ -7,11 +7,11 @@
 
 """
 
-from flatlib import const
-from flatlib.chart import Chart
-from flatlib.datetime import Datetime
-from flatlib.geopos import GeoPos
-from flatlib.predictives import returns
+from pyastra import const
+from pyastra.chart import Chart
+from pyastra.datetime import Datetime
+from pyastra.geopos import GeoPos
+from pyastra.predictives import returns
 
 
 # Build a chart for a date and location

@@ -7,9 +7,9 @@
 
 """
 
-from flatlib.datetime import Datetime
-from flatlib.geopos import GeoPos
-from flatlib.tools import planetarytime
+from pyastra.datetime import Datetime
+from pyastra.geopos import GeoPos
+from pyastra.tools import planetarytime
 
 
 # Build a date and location
