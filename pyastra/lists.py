@@ -71,7 +71,7 @@ class ObjectList(GenericList):
         """
         res = []
         for obj in self:
-            if obj.isPlanet() and aspects.isAspecting(obj, point, aspList):
+            if obj.isPlanet() and aspects.is_aspecting(obj, point, aspList):
                 res.append(obj)
         return ObjectList(res)
 

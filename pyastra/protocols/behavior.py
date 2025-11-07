@@ -55,7 +55,7 @@ def compute(chart):
     disposer = chart.get_object(disposerID)
 
     _set = []
-    if aspects.isAspecting(disposer, ascRuler, const.MAJOR_ASPECTS):
+    if aspects.is_aspecting(disposer, ascRuler, const.MAJOR_ASPECTS):
         _set = [ascRuler.id]
     factors.append(['Asc Ruler if aspected by its disposer', _set]);
 

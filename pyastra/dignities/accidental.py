@@ -271,7 +271,7 @@ class AccidentalDignity:
 
             # Get aspects to the other object
             otherObj = self.chart.get_object(otherID)
-            asp = aspects.getAspect(self.obj, otherObj, aspList)
+            asp = aspects.get_aspect(self.obj, otherObj, aspList)
 
             if asp.type == const.NO_ASPECT:
                 continue
@@ -342,12 +342,12 @@ class AccidentalDignity:
     def isConjNorthNode(self):
         """ Returns if object is conjunct north node. """
         node = self.chart.get_object(const.NORTH_NODE)
-        return aspects.hasAspect(self.obj, node, aspList=[0])
+        return aspects.has_aspect(self.obj, node, asp_list=[0])
 
     def isConjSouthNode(self):
         """ Returns if object is conjunct south node. """
         node = self.chart.get_object(const.SOUTH_NODE)
-        return aspects.hasAspect(self.obj, node, aspList=[0])
+        return aspects.has_aspect(self.obj, node, asp_list=[0])
 
     # === Void of Course, Feral and Haiz === #
 
@@ -364,7 +364,7 @@ class AccidentalDignity:
         planets.remove(self.obj.id)
         for otherID in planets:
             otherObj = self.chart.get_object(otherID)
-            if aspects.hasAspect(self.obj, otherObj, const.MAJOR_ASPECTS):
+            if aspects.has_aspect(self.obj, otherObj, const.MAJOR_ASPECTS):
                 return False
         return True
 

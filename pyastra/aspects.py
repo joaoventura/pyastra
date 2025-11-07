@@ -1,31 +1,20 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
+Provide useful for handling aspects between objects in pyastra. An aspect is an angular relation
+between a planet and another object.
 
-    This module provides useful for handling aspects between 
-    objects in pyastra. An aspect is an angular relation
-    between a planet and another object.
-  
-    This module has the following base terminology:
-    - Active/Passive object: The active object is the planet 
-      responsible for the aspect.
-    - Separation: the angular distance between the active and 
-      passive object.
-    - Orb: the orb distance (>0) between active and passive 
-      objects.
-    - Obj.orb: is the orb allowed by the aspect.
-    - Type: the type of the aspect.
-    - Direction/Condition/Movement/etc. are properties of an 
-      aspect.
-    - Movement: The objects have their movements, but the 
-      aspect movement can be also exact.
-  
-    Major aspects must be within orb of one of the planets.
-    Minor aspects only when within a max allowed orb.
-  
-    In parameters, objA is the active object and objP is the 
-    passive object.
+This module has the following base terminology:
+- Active/Passive object: The active object is the planet responsible for the aspect.
+- Separation: the angular distance between the active and passive object.
+- Orb: the orb distance (>0) between active and passive objects.
+- Obj.orb: is the orb allowed by the aspect.
+- Type: the type of the aspect.
+- Direction/Condition/Movement/etc. are properties of an aspect.
+- Movement: The objects have their movements, but the aspect movement can be also exact.
+
+Major aspects must be within orb of one of the planets.
+Minor aspects only when within a max allowed orb.
+
+In parameters, objA is the active object and objP is the passive object.
 
 """
 
@@ -39,49 +28,44 @@ MAX_EXACT_ORB = 0.3
 
 # === Private functions === #
 
-def _orbList(obj1, obj2, aspList):
-    """ Returns a list with the orb and angular
-    distances from obj1 to obj2, considering a
+def _orb_list(obj1, obj2, asp_list):
+    """
+    Returns a list with the orb and angular distances from obj1 to obj2, considering a
     list of possible aspects. 
     
     """
     sep = angle.closest_distance(obj1.lon, obj2.lon)
-    absSep = abs(sep)
+    abs_sep = abs(sep)
     return [
         {
             'type': asp,
-            'orb': abs(absSep - asp),
+            'orb': abs(abs_sep - asp),
             'separation': sep,
-        } for asp in aspList
+        } for asp in asp_list
     ]
 
 
-def _aspectDict(obj1, obj2, aspList):
-    """ Returns the properties of the aspect of 
-    obj1 to obj2, considering a list of possible
-    aspects.
+def _aspect_dict(obj1, obj2, asp_list):
+    """
+    Returns the properties of the aspect of obj1 to obj2, considering a list of possible aspects.
     
     This function makes the following assumptions:
-    - Syzygy does not start aspects but receives 
-      any aspect.
-    - Pars Fortuna and Moon Nodes only starts 
-      conjunctions but receive any aspect.
-    - All other objects can start and receive
-      any aspect.
+    - Syzygy does not start aspects but receives any aspect.
+    - Pars Fortuna and Moon Nodes only starts conjunctions but receive any aspect.
+    - All other objects can start and receive any aspect.
       
-    Note: this function returns the aspect
-    even if it is not within the orb of obj1
+    Note: this function returns the aspect even if it is not within the orb of obj1
     (but is within the orb of obj2).
     
     """
-    # Ignore aspects from same and Syzygy
+    # Ignore aspects from same object and Syzygy
     if obj1 == obj2 or obj1.id == const.SYZYGY:
         return None
 
-    orbs = _orbList(obj1, obj2, aspList)
-    for aspDict in orbs:
-        asp = aspDict['type']
-        orb = aspDict['orb']
+    orbs = _orb_list(obj1, obj2, asp_list)
+    for asp_dict in orbs:
+        asp = asp_dict['type']
+        orb = asp_dict['orb']
 
         # Check if aspect is within orb
         if asp in const.MAJOR_ASPECTS:
@@ -101,22 +85,21 @@ def _aspectDict(obj1, obj2, aspList):
             continue
 
         # We have a valid aspect within orb
-        return aspDict
+        return asp_dict
 
     return None
 
 
-def _aspectProperties(obj1, obj2, aspDict):
-    """ Returns the properties of an aspect between
-    obj1 and obj2, given by 'aspDict'. 
-    
-    This function assumes obj1 to be the active object, 
-    i.e., the one responsible for starting the aspect.
+def _aspect_properties(obj1, obj2, asp_dict):
+    """
+    Returns the properties of an aspect between obj1 and obj2, given by 'asp_dict'.
+    This function assumes obj1 to be the active object, i.e., the one responsible for starting the
+    aspect.
     
     """
-    orb = aspDict['orb']
-    asp = aspDict['type']
-    sep = aspDict['separation']
+    orb = asp_dict['orb']
+    asp = asp_dict['type']
+    sep = asp_dict['separation']
 
     # Properties
     prop1 = {
@@ -149,23 +132,23 @@ def _aspectProperties(obj1, obj2, aspDict):
     prop['direction'] = const.DEXTER if sep <= 0 else const.SINISTER
 
     # Sign conditions
-    # Note: if obj1 is before obj2, orbDir will be less than zero
-    orbDir = sep - asp if sep >= 0 else sep + asp
-    offset = obj1.signlon + orbDir
+    # Note: if obj1 is before obj2, orb_dir will be less than zero
+    orb_dir = sep - asp if sep >= 0 else sep + asp
+    offset = obj1.signlon + orb_dir
     if 0 <= offset < 30:
         prop['condition'] = const.ASSOCIATE
     else:
         prop['condition'] = const.DISSOCIATE
 
         # Movement of the individual objects
-    if abs(orbDir) < MAX_EXACT_ORB:
+    if abs(orb_dir) < MAX_EXACT_ORB:
         prop1['movement'] = prop2['movement'] = const.EXACT
     else:
         # Active object applies to Passive if it is before 
-        # and direct, or after the Passive and Rx..
+        # and direct, or after the Passive and Rx.
         prop1['movement'] = const.SEPARATIVE
-        if (orbDir > 0 and obj1.isDirect()) or \
-                (orbDir < 0 and obj1.isRetrograde()):
+        if (orb_dir > 0 and obj1.isDirect()) or \
+                (orb_dir < 0 and obj1.isRetrograde()):
             prop1['movement'] = const.APPLICATIVE
         elif obj1.isStationary():
             prop1['movement'] = const.STATIONARY
@@ -182,7 +165,7 @@ def _aspectProperties(obj1, obj2, aspDict):
     return prop
 
 
-def _getActivePassive(obj1, obj2):
+def _get_active_passive(obj1, obj2):
     """ Returns which is the active and the passive objects. """
     speed1 = abs(obj1.lonspeed) if obj1.isPlanet() else -1.0
     speed2 = abs(obj2.lonspeed) if obj2.isPlanet() else -1.0
@@ -200,51 +183,46 @@ def _getActivePassive(obj1, obj2):
 
 # === Public functions === #
 
-def aspectType(obj1, obj2, aspList):
-    """ Returns the aspect type between objects considering
-    a list of possible aspect types.
-    
+def aspect_type(obj1, obj2, asp_list):
+    """ Returns the aspect type between objects consideringa list of possible aspect types. """
+    ap = _get_active_passive(obj1, obj2)
+    asp_dict = _aspect_dict(ap['active'], ap['passive'], asp_list)
+    return asp_dict['type'] if asp_dict else const.NO_ASPECT
+
+
+def has_aspect(obj1, obj2, asp_list):
     """
-    ap = _getActivePassive(obj1, obj2)
-    aspDict = _aspectDict(ap['active'], ap['passive'], aspList)
-    return aspDict['type'] if aspDict else const.NO_ASPECT
+    Returns if there is an aspect between objects considering a list of possible aspect types.
 
-
-def hasAspect(obj1, obj2, aspList):
-    """ Returns if there is an aspect between objects 
-    considering a list of possible aspect types.
-    
     """
-    aspType = aspectType(obj1, obj2, aspList)
-    return aspType != const.NO_ASPECT
+    asp_type = aspect_type(obj1, obj2, asp_list)
+    return asp_type != const.NO_ASPECT
 
 
-def isAspecting(obj1, obj2, aspList):
-    """ Returns if obj1 aspects obj2 within its orb,
-    considering a list of possible aspect types. 
-    
-    """
-    aspDict = _aspectDict(obj1, obj2, aspList)
-    if aspDict:
-        return aspDict['orb'] < obj1.orb()
+def is_aspecting(obj1, obj2, asp_list):
+    """ Returns if obj1 aspects obj2 within its orb, considering a list of possible aspect types. """
+    asp_dict = _aspect_dict(obj1, obj2, asp_list)
+    if asp_dict:
+        return asp_dict['orb'] < obj1.orb()
     return False
 
 
-def getAspect(obj1, obj2, aspList):
-    """ Returns an Aspect object for the aspect between two
-    objects considering a list of possible aspect types.
+def get_aspect(obj1, obj2, asp_list):
+    """
+    Returns an Aspect object for the aspect between two objects considering a list of possible
+    aspect types.
     
     """
-    ap = _getActivePassive(obj1, obj2)
-    aspDict = _aspectDict(ap['active'], ap['passive'], aspList)
-    if not aspDict:
-        aspDict = {
+    ap = _get_active_passive(obj1, obj2)
+    asp_dict = _aspect_dict(ap['active'], ap['passive'], asp_list)
+    if not asp_dict:
+        asp_dict = {
             'type': const.NO_ASPECT,
             'orb': 0,
             'separation': 0,
         }
-    aspProp = _aspectProperties(ap['active'], ap['passive'], aspDict)
-    return Aspect(aspProp)
+    asp_prop = _aspect_properties(ap['active'], ap['passive'], asp_dict)
+    return Aspect(asp_prop)
 
 
 # ---------------- #
@@ -252,8 +230,8 @@ def getAspect(obj1, obj2, aspList):
 # ---------------- #
 
 class AspectObject:
-    """ Dummy class to represent the Active and
-    Passive objects and to allow access to their
+    """
+    Dummy class to represent the Active and Passive objects and to allow access to their
     properties using the dot notation.
     
     """
@@ -263,10 +241,7 @@ class AspectObject:
 
 
 class Aspect:
-    """ This class represents an aspect with all
-    its properties.
-    
-    """
+    """ This class represents an aspect with all its properties. """
 
     def __init__(self, properties):
         self.__dict__.update(properties)
@@ -278,10 +253,10 @@ class Aspect:
         return self.type != const.NO_ASPECT
 
     def movement(self):
-        """ Returns the movement of this aspect. 
-        The movement is the one of the active object, except
-        if the active is separating but within less than 1 
-        degree.
+        """
+        Returns the movement of this aspect.
+        The movement is the one of the active object, except if the active is separating but within
+        less than 1 degree.
         
         """
         mov = self.active.movement
@@ -289,18 +264,18 @@ class Aspect:
             mov = const.EXACT
         return mov
 
-    def mutualAspect(self):
+    def mutual_aspect(self):
         """ Returns if both object are within aspect orb. """
         return self.active.inOrb == self.passive.inOrb == True
 
-    def mutualMovement(self):
+    def mutual_movement(self):
         """ Returns if both objects are mutually applying or
         separating.
         
         """
         return self.active.movement == self.passive.movement
 
-    def getRole(self, ID):
+    def get_role(self, ID):
         """ Returns the role (active or passive) of an object
         in this aspect.
         
@@ -319,12 +294,12 @@ class Aspect:
             }
         return None
 
-    def inOrb(self, ID):
+    def in_orb(self, ID):
         """ Returns if the object (given by ID) is within orb
         in the Aspect.
         
         """
-        role = self.getRole(ID)
+        role = self.get_role(ID)
         return role['inOrb'] if role else None
 
     def __str__(self):

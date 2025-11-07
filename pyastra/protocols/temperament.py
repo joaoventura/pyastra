@@ -89,7 +89,7 @@ def singleFactor(factors, chart, factor, obj, aspect=None):
 def modifierFactor(chart, factor, factorObj, otherObj, aspList):
     """ Computes a factor for a modifier. """
 
-    asp = aspects.aspectType(factorObj, otherObj, aspList)
+    asp = aspects.aspect_type(factorObj, otherObj, aspList)
     if asp != const.NO_ASPECT:
         return {
             'factor': factor,
@@ -134,7 +134,7 @@ def getFactors(chart):
     aspList = [60, 90, 120, 180]
     planetsAspAsc = chart.objects.getObjectsAspecting(asc, aspList)
     for obj in planetsAspAsc:
-        aspect = aspects.aspectType(obj, asc, aspList)
+        aspect = aspects.aspect_type(obj, asc, aspList)
         singleFactor(factors, chart, ASC_PLANETS_ASP, obj, aspect)
 
     # Moon sign and phase
@@ -157,7 +157,7 @@ def getFactors(chart):
     aspList = [60, 90, 120, 180]
     planetsAspMoon = chart.objects.getObjectsAspecting(moon, aspList)
     for obj in planetsAspMoon:
-        aspect = aspects.aspectType(obj, moon, aspList)
+        aspect = aspects.aspect_type(obj, moon, aspList)
         singleFactor(factors, chart, MOON_PLANETS_ASP, obj, aspect)
 
     # Sun season

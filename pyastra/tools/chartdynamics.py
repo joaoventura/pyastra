@@ -39,7 +39,7 @@ class ChartDynamics:
         """
         objA = self.chart.get(idA)
         objB = self.chart.get(idB)
-        asp = aspects.isAspecting(objB, objA, const.MAJOR_ASPECTS)
+        asp = aspects.is_aspecting(objB, objA, const.MAJOR_ASPECTS)
         return self.inDignities(idB, idA) if asp else []
 
     def disposits(self, idA, idB):
@@ -76,7 +76,7 @@ class ChartDynamics:
                 continue
 
             otherObj = self.chart.get_object(otherID)
-            aspType = aspects.aspectType(obj, otherObj, aspList)
+            aspType = aspects.aspect_type(obj, otherObj, aspList)
             if aspType != const.NO_ASPECT:
                 res.append({
                     'id': otherID,
@@ -102,8 +102,8 @@ class ChartDynamics:
         valid = self.validAspects(ID, aspList)
         for elem in valid:
             objB = self.chart.get_object(elem['id'])
-            asp = aspects.getAspect(objA, objB, aspList)
-            role = asp.getRole(objA.id)
+            asp = aspects.get_aspect(objA, objB, aspList)
+            role = asp.get_role(objA.id)
             if role['inOrb']:
                 movement = role['movement']
                 res[movement].append({
