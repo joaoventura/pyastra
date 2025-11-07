@@ -132,7 +132,7 @@ def prevSolarEclipse(date):
 
     """
 
-    eclipse = swe.solarEclipseGlobal(date.jd, backward=True)
+    eclipse = swe.solarEclipseGlobal(date.jd, backwards=True)
     return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
 
 
@@ -142,7 +142,7 @@ def nextSolarEclipse(date):
 
     """
 
-    eclipse = swe.solarEclipseGlobal(date.jd, backward=False)
+    eclipse = swe.solarEclipseGlobal(date.jd, backwards=False)
     return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
 
 
@@ -152,7 +152,7 @@ def prevLunarEclipse(date):
 
     """
 
-    eclipse = swe.lunarEclipseGlobal(date.jd, backward=True)
+    eclipse = swe.lunarEclipseGlobal(date.jd, backwards=True)
     return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
 
 
@@ -162,5 +162,5 @@ def nextLunarEclipse(date):
 
     """
 
-    eclipse = swe.lunarEclipseGlobal(date.jd, backward=False)
+    eclipse = swe.lunarEclipseGlobal(date.jd, backwards=False)
     return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
