@@ -99,8 +99,9 @@ def computeTA(chart, TA):
              chart.getObject(essential.ruler(arabicparts.getPart(arabicparts.PARS_FATHER, chart).sign)),
             ])
         if chart.isDiurnal(): 
-            TA_LIST.extend([chart.getObject(essential.dayTrip(chart.getHouse(const.HOUSE4).sign])))
-        else: TA_LIST.extend([chart.getObject(essential.nightTrip(chart.getHouse(const.HOUSE4).sign])))
+            TA_LIST.extend([chart.getObject(essential.dayTrip(chart.getHouse(const.HOUSE4).sign))])
+        else:
+            TA_LIST.extend([chart.getObject(essential.nightTrip(chart.getHouse(const.HOUSE4).sign))])
     
     
     
