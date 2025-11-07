@@ -114,7 +114,7 @@ def haiz(obj, chart):
             nocturnalFaction = props.house.aboveHorizon
 
         # Get the object's house and match factions
-        objHouse = chart.houses.getObjectHouse(obj)
+        objHouse = chart.houses.get_object_house(obj)
         if (objFaction == const.DIURNAL and objHouse.id in diurnalFaction or
                 objFaction == const.NOCTURNAL and objHouse.id in nocturnalFaction):
             factionConformity = True
@@ -165,7 +165,7 @@ class AccidentalDignity:
 
     def house(self):
         """ Returns the object's house. """
-        house = self.chart.houses.getObjectHouse(self.obj)
+        house = self.chart.houses.get_object_house(self.obj)
         return house
 
     def houseScore(self):

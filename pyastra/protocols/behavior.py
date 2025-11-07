@@ -32,9 +32,9 @@ def compute(chart):
 
     # Planets in House1 or Conjunct Asc
     house1 = chart.get_house(const.HOUSE1)
-    planetsHouse1 = chart.objects.getObjectsInHouse(house1)
+    planetsHouse1 = chart.objects.get_objects_in_house(house1)
     asc = chart.get_angle(const.ASC)
-    planetsConjAsc = chart.objects.getObjectsAspecting(asc, [0])
+    planetsConjAsc = chart.objects.get_objects_aspecting(asc, [0])
 
     _set = _merge(planetsHouse1, planetsConjAsc)
     factors.append(['Planets in House1 or Conj Asc', _set])
@@ -42,8 +42,8 @@ def compute(chart):
     # Planets conjunct Moon or Mercury
     moon = chart.get(const.MOON)
     mercury = chart.get(const.MERCURY)
-    planetsConjMoon = chart.objects.getObjectsAspecting(moon, [0])
-    planetsConjMercury = chart.objects.getObjectsAspecting(mercury, [0])
+    planetsConjMoon = chart.objects.get_objects_aspecting(moon, [0])
+    planetsConjMercury = chart.objects.get_objects_aspecting(mercury, [0])
 
     _set = _merge(planetsConjMoon, planetsConjMercury)
     factors.append(['Planets Conj Moon or Mercury', _set])
@@ -60,8 +60,8 @@ def compute(chart):
     factors.append(['Asc Ruler if aspected by its disposer', _set]);
 
     # Planets aspecting Moon or Mercury
-    aspMoon = chart.objects.getObjectsAspecting(moon, [60, 90, 120, 180])
-    aspMercury = chart.objects.getObjectsAspecting(mercury, [60, 90, 120, 180])
+    aspMoon = chart.objects.get_objects_aspecting(moon, [60, 90, 120, 180])
+    aspMercury = chart.objects.get_objects_aspecting(mercury, [60, 90, 120, 180])
 
     _set = _merge(aspMoon, aspMercury)
     factors.append(['Planets Asp Moon or Mercury', _set])

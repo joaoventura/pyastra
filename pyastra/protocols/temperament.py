@@ -119,12 +119,12 @@ def getFactors(chart):
 
     # Planets in House 1
     house1 = chart.get_house(const.HOUSE1)
-    planetsHouse1 = chart.objects.getObjectsInHouse(house1)
+    planetsHouse1 = chart.objects.get_objects_in_house(house1)
     for obj in planetsHouse1:
         singleFactor(factors, chart, HOUSE1_PLANETS_IN, obj)
 
     # Planets conjunct Asc
-    planetsConjAsc = chart.objects.getObjectsAspecting(asc, [0])
+    planetsConjAsc = chart.objects.get_objects_aspecting(asc, [0])
     for obj in planetsConjAsc:
         # Ignore planets already in house 1
         if obj not in planetsHouse1:
@@ -132,7 +132,7 @@ def getFactors(chart):
 
     # Planets aspecting Asc cusp
     aspList = [60, 90, 120, 180]
-    planetsAspAsc = chart.objects.getObjectsAspecting(asc, aspList)
+    planetsAspAsc = chart.objects.get_objects_aspecting(asc, aspList)
     for obj in planetsAspAsc:
         aspect = aspects.aspect_type(obj, asc, aspList)
         singleFactor(factors, chart, ASC_PLANETS_ASP, obj, aspect)
@@ -149,13 +149,13 @@ def getFactors(chart):
     moonFactor['planetID'] = moonRulerID  # Append moon dispositor ID
 
     # Planets conjunct Moon
-    planetsConjMoon = chart.objects.getObjectsAspecting(moon, [0])
+    planetsConjMoon = chart.objects.get_objects_aspecting(moon, [0])
     for obj in planetsConjMoon:
         singleFactor(factors, chart, MOON_PLANETS_CONJ, obj)
 
     # Planets aspecting Moon
     aspList = [60, 90, 120, 180]
-    planetsAspMoon = chart.objects.getObjectsAspecting(moon, aspList)
+    planetsAspMoon = chart.objects.get_objects_aspecting(moon, aspList)
     for obj in planetsAspMoon:
         aspect = aspects.aspect_type(obj, moon, aspList)
         singleFactor(factors, chart, MOON_PLANETS_ASP, obj, aspect)

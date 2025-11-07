@@ -1,11 +1,6 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
-
-    This module provides functions and a class for handling 
-    geographic positions. Each latitude/longitude is an angle 
-    represented by a <float> value.
+Provides functions and a class for handling geographic positions.
+Each latitude/longitude is an angle represented by a <float> value.
 
 """
 

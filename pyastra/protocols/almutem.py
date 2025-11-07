@@ -85,7 +85,7 @@ def compute(chart):
     row = newRow()
     for objID in OBJECT_LIST:
         obj = chart.get_object(objID)
-        house = chart.houses.getObjectHouse(obj)
+        house = chart.houses.get_object_house(obj)
         score = HOUSE_SCORES[house.id]
         row[objID]['string'] = '+%s' % score
         row[objID]['score'] = score
