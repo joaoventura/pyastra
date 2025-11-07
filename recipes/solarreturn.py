@@ -21,7 +21,7 @@ chart = Chart(date, pos)
 
 # Get the next solar return Chart given a date
 today = Datetime('2015/04/06', '10:40', '+01:00')
-srChart = returns.nextSolarReturn(chart, today)
+srChart = returns.next_solar_return(chart, today)
 
 # Print the date and Asc
 asc = srChart.get(const.ASC)
