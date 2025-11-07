@@ -74,13 +74,13 @@ def get_fixed_star_list(ids, date):
 def next_solar_return(date, lon):
     """ Returns the next date when sun is at longitude 'lon'. """
     jd = eph.next_solar_return(date.jd, lon)
-    return Datetime.fromJD(jd, date.utcoffset)
+    return Datetime.from_jd(jd, date.utcoffset)
 
 
 def prev_solar_return(date, lon):
     """ Returns the previous date when sun is at longitude 'lon'. """
     jd = eph.prev_solar_return(date.jd, lon)
-    return Datetime.fromJD(jd, date.utcoffset)
+    return Datetime.from_jd(jd, date.utcoffset)
 
 
 # === Sunrise and sunsets === #
@@ -88,25 +88,25 @@ def prev_solar_return(date, lon):
 def next_sunrise(date, pos):
     """ Returns the date of the next sunrise. """
     jd = eph.next_sunrise(date.jd, pos.lat, pos.lon)
-    return Datetime.fromJD(jd, date.utcoffset)
+    return Datetime.from_jd(jd, date.utcoffset)
 
 
 def next_sunset(date, pos):
     """ Returns the date of the next sunset. """
     jd = eph.next_sunset(date.jd, pos.lat, pos.lon)
-    return Datetime.fromJD(jd, date.utcoffset)
+    return Datetime.from_jd(jd, date.utcoffset)
 
 
 def last_sunrise(date, pos):
     """ Returns the date of the last sunrise. """
     jd = eph.last_sunrise(date.jd, pos.lat, pos.lon)
-    return Datetime.fromJD(jd, date.utcoffset)
+    return Datetime.from_jd(jd, date.utcoffset)
 
 
 def last_sunset(date, pos):
     """ Returns the date of the last sunset. """
     jd = eph.last_sunset(date.jd, pos.lat, pos.lon)
-    return Datetime.fromJD(jd, date.utcoffset)
+    return Datetime.from_jd(jd, date.utcoffset)
 
 
 # === Station === #
@@ -114,7 +114,7 @@ def last_sunset(date, pos):
 def next_station(obj_id, date):
     """ Returns the approximate date of the next station. """
     jd = eph.next_station(obj_id, date.jd)
-    return Datetime.fromJD(jd, date.utcoffset)
+    return Datetime.from_jd(jd, date.utcoffset)
 
 
 # === Eclipses === #
@@ -122,22 +122,22 @@ def next_station(obj_id, date):
 def prev_solar_eclipse(date):
     """ Returns the Datetime of the maximum phase of the previous global solar eclipse. """
     eclipse = swe.solar_eclipse_global(date.jd, backwards=True)
-    return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
+    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)
 
 
 def next_solar_eclipse(date):
     """ Returns the Datetime of the maximum phase of the next global solar eclipse. """
     eclipse = swe.solar_eclipse_global(date.jd, backwards=False)
-    return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
+    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)
 
 
 def prev_lunar_eclipse(date):
     """ Returns the Datetime of the maximum phase of the previous global lunar eclipse. """
     eclipse = swe.lunar_eclipse_global(date.jd, backwards=True)
-    return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
+    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)
 
 
 def next_lunar_eclipse(date):
     """ Returns the Datetime of the maximum phase of the next global lunar eclipse. """
     eclipse = swe.lunar_eclipse_global(date.jd, backwards=False)
-    return Datetime.fromJD(eclipse['maximum'], date.utcoffset)
+    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)

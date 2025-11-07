@@ -170,8 +170,8 @@ class HourTable:
             'hourRuler': entry[2],
             'hourNumber': index + 1,
             'tableIndex': index,
-            'start': Datetime.fromJD(entry[0], self.date.utcoffset),
-            'end': Datetime.fromJD(entry[1], self.date.utcoffset)
+            'start': Datetime.from_jd(entry[0], self.date.utcoffset),
+            'end': Datetime.from_jd(entry[1], self.date.utcoffset)
         }
         if index >= 12:
             # Set information as nocturnal
