@@ -219,7 +219,7 @@ class AccidentalDignity:
         planets.remove(self.obj.id)
         mrs = {}
         for obj_id in planets:
-            mr = self.dyn.reMutualReceptions(self.obj.id, obj_id)
+            mr = self.dyn.re_mutual_receptions(self.obj.id, obj_id)
             if mr:
                 mrs[obj_id] = mr
         return mrs
@@ -292,7 +292,7 @@ class AccidentalDignity:
         perfected. It considers only a snapshot of the chart and not its astronomical movement.
         
         """
-        sep, app = self.dyn.immediateAspects(self.obj.id, asp_list)
+        sep, app = self.dyn.immediate_aspects(self.obj.id, asp_list)
         if sep is None or app is None:
             return False
         sep_condition = sep['id'] in ids
@@ -328,7 +328,7 @@ class AccidentalDignity:
 
     def is_voc(self):
         """ Return if the object is Void of Course. """
-        return self.dyn.isVOC(self.obj.id)
+        return self.dyn.is_voc(self.obj.id)
 
     def is_feral(self):
         """ Returns true if the object does not have any aspects. """

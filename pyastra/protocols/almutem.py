@@ -88,9 +88,9 @@ def compute(chart):
 
     # Planetary time
     row = new_row()
-    table = planetarytime.getHourTable(chart.date, chart.pos)
-    ruler = table.currRuler()
-    hour_ruler = table.hourRuler()
+    table = planetarytime.get_hour_table(chart.date, chart.pos)
+    ruler = table.curr_ruler()
+    hour_ruler = table.hour_ruler()
     row[ruler] = {
         'string': '+7',
         'score': 7
