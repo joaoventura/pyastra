@@ -20,7 +20,7 @@ from . import swe
 def get_object(obj_id, date, pos):
     """ Returns an ephemeris object. """
     obj = eph.get_object(obj_id, date.jd, pos.lat, pos.lon)
-    return Object.fromDict(obj)
+    return Object.from_dict(obj)
 
 
 def get_object_list(ids, date, pos):
@@ -38,8 +38,8 @@ def get_houses(date, pos, hsys):
     
     """
     houses, angles = eph.get_houses(date.jd, pos.lat, pos.lon, hsys)
-    house_list = [House.fromDict(house) for house in houses]
-    angle_list = [GenericObject.fromDict(angle) for angle in angles]
+    house_list = [House.from_dict(house) for house in houses]
+    angle_list = [GenericObject.from_dict(angle) for angle in angles]
     return HouseList(house_list), GenericList(angle_list)
 
 
@@ -60,7 +60,7 @@ def get_angle_list(date, pos, hsys):
 def get_fixed_star(obj_id, date):
     """ Returns a fixed star from the ephemeris. """
     star = eph.get_fixed_star(obj_id, date.jd)
-    return FixedStar.fromDict(star)
+    return FixedStar.from_dict(star)
 
 
 def get_fixed_star_list(ids, date):

@@ -53,14 +53,14 @@ class ObjectList(GenericList):
 
     def get_objects_in_house(self, house):
         """ Returns a list with all objects in a house. """
-        res = [obj for obj in self if house.hasObject(obj)]
+        res = [obj for obj in self if house.has_object(obj)]
         return ObjectList(res)
 
     def get_objects_aspecting(self, point, asp_list):
         """ Returns a list of objects aspecting a point considering a list of possible aspects. """
         res = []
         for obj in self:
-            if obj.isPlanet() and aspects.is_aspecting(obj, point, asp_list):
+            if obj.is_planet() and aspects.is_aspecting(obj, point, asp_list):
                 res.append(obj)
         return ObjectList(res)
 
@@ -75,7 +75,7 @@ class HouseList(GenericList):
     def get_house_by_lon(self, lon):
         """ Returns a house given a longitude. """
         for house in self:
-            if house.inHouse(lon):
+            if house.in_house(lon):
                 return house
         return None
 

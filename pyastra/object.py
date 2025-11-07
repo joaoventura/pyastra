@@ -1,11 +1,6 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
-
-    This module implements classes to represent 
-    Astrology objects, such as planets, Houses 
-    and Fixed-Stars.
+This module implements classes to represent Astrology objects, such as planets, Houses
+and Fixed-Stars.
 
 """
 
@@ -20,8 +15,8 @@ from . import props
 # ------------------ #
 
 class GenericObject:
-    """ This class represents a generic object and
-    includes properties which are common to all 
+    """
+    This class represents a generic object and includes properties which are common to all
     objects on a chart.
     
     """
@@ -35,7 +30,7 @@ class GenericObject:
         self.signlon = 0.0
 
     @classmethod
-    def fromDict(cls, _dict):
+    def from_dict(cls, _dict):
         """ Builds instance from dictionary of properties. """
         obj = cls()
         obj.__dict__.update(_dict)
@@ -43,14 +38,11 @@ class GenericObject:
 
     def copy(self):
         """ Returns a deep copy of this object. """
-        return self.fromDict(self.__dict__)
+        return self.from_dict(self.__dict__)
 
     def __str__(self):
-        return '<%s %s %s>' % (
-            self.id,
-            self.sign,
-            angle.to_string(self.signlon)
-        )
+        lon = angle.to_string(self.signlon)
+        return f'<{self.id} {self.sign} {lon}>'
 
     # === Properties === #
 
@@ -58,12 +50,13 @@ class GenericObject:
         """ Returns the orb of this object. """
         return -1.0
 
-    def isPlanet(self):
+    def is_planet(self):
         """ Returns if this object is a planet. """
         return self.type == const.OBJ_PLANET
 
-    def eqCoords(self, zerolat=False):
-        """ Returns the Equatorial Coordinates of this object. 
+    def eq_coords(self, zerolat=False):
+        """
+        Returns the Equatorial Coordinates of this object.
         Receives a boolean parameter to consider a zero latitude. 
         
         """
@@ -98,9 +91,9 @@ class GenericObject:
 # -------------------- #
 
 class Object(GenericObject):
-    """ This class represents an Astrology object, such
-    as the sun or the moon, and includes properties and
-    functions which are common for all objects.
+    """
+    This class represents an Astrology object, such as the sun or the moon, and includes properties
+    and functions which are common for all objects.
     
     """
 
@@ -112,10 +105,8 @@ class Object(GenericObject):
 
     def __str__(self):
         string = super().__str__()[:-1]
-        return '%s %s>' % (
-            string,
-            angle.to_string(self.lonspeed)
-        )
+        lonspeed = angle.to_string(self.lonspeed)
+        return f'<{string} {lonspeed}>'
 
     # === Properties === #
 
@@ -123,7 +114,7 @@ class Object(GenericObject):
         """ Returns the orb of this object. """
         return props.object.orb[self.id]
 
-    def meanMotion(self):
+    def mean_motion(self):
         """ Returns the mean daily motion of this object. """
         return props.object.meanMotion[self.id]
 
@@ -134,10 +125,9 @@ class Object(GenericObject):
         """
         if abs(self.lonspeed) < 0.0003:
             return const.STATIONARY
-        elif self.lonspeed > 0:
+        if self.lonspeed > 0:
             return const.DIRECT
-        else:
-            return const.RETROGRADE
+        return const.RETROGRADE
 
     def gender(self):
         """ Returns the gender of this object. """
@@ -153,21 +143,21 @@ class Object(GenericObject):
 
     # === Functions === #
 
-    def isDirect(self):
+    def is_direct(self):
         """ Returns if this object is in direct motion. """
         return self.movement() == const.DIRECT
 
-    def isRetrograde(self):
+    def is_retrograde(self):
         """ Returns if this object is in retrograde motion. """
         return self.movement() == const.RETROGRADE
 
-    def isStationary(self):
+    def is_stationary(self):
         """ Returns if this object is stationary. """
         return self.movement() == const.STATIONARY
 
-    def isFast(self):
+    def is_fast(self):
         """ Returns if this object is in fast motion. """
-        return abs(self.lonspeed) >= self.meanMotion()
+        return abs(self.lonspeed) >= self.mean_motion()
 
 
 # ------------------ #
@@ -187,10 +177,7 @@ class House(GenericObject):
 
     def __str__(self):
         string = super().__str__()[:-1]
-        return '%s %s>' % (
-            string,
-            self.size
-        )
+        return f'<{string} {self.size}>'
 
     # === Properties === #
 
@@ -211,18 +198,18 @@ class House(GenericObject):
 
     # === Functions === #
 
-    def isAboveHorizon(self):
+    def is_above_horizon(self):
         """ Returns true if this house is above horizon. """
         return self.id in props.house.aboveHorizon
 
-    def inHouse(self, lon):
+    def in_house(self, lon):
         """ Returns if a longitude belongs to this house. """
         dist = angle.distance(self.lon + House._OFFSET, lon)
         return dist < self.size
 
-    def hasObject(self, obj):
+    def has_object(self, obj):
         """ Returns true if an object is in this house. """
-        return self.inHouse(obj.lon)
+        return self.in_house(obj.lon)
 
 
 # ------------------ #
@@ -239,10 +226,7 @@ class FixedStar(GenericObject):
 
     def __str__(self):
         string = super().__str__()[:-1]
-        return '%s %s>' % (
-            string,
-            self.mag
-        )
+        return f'<{string} {self.mag}>'
 
     # === Properties === #
 

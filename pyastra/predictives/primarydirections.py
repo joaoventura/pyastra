@@ -68,9 +68,9 @@ def getArc(prom, sig, mc, pos, zerolat):
     ZeroLat true => inZodiaco, false => inMundo
     
     """
-    pRA, pDecl = prom.eqCoords(zerolat)
-    sRa, sDecl = sig.eqCoords(zerolat)
-    mcRa, mcDecl = mc.eqCoords()
+    pRA, pDecl = prom.eq_coords(zerolat)
+    sRa, sDecl = sig.eq_coords(zerolat)
+    mcRa, mcDecl = mc.eq_coords()
     return arc(pRA, pDecl, sRa, sDecl, mcRa, pos.lat)
 
 
@@ -112,7 +112,7 @@ class PrimaryDirections:
         self.chart = chart
         self.lat = chart.pos.lat
         mc = self.chart.get_angle(const.MC)
-        self.mcRA = mc.eqCoords()[0]
+        self.mcRA = mc.eq_coords()[0]
         self.terms = self._buildTerms()
 
     def _buildTerms(self):

@@ -425,8 +425,8 @@ class AccidentalDignity:
         # Direction and speed
         score['direction'] = 0
         if obj.id not in [const.SUN, const.MOON]:
-            score['direction'] = +4 if obj.isDirect() else -5
-        score['speed'] = +2 if obj.isFast() else -2
+            score['direction'] = +4 if obj.is_direct() else -5
+        score['speed'] = +2 if obj.is_fast() else -2
 
         # Aspects to benefics
         aspBen = self.aspectBenefics()
