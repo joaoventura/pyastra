@@ -86,7 +86,7 @@ def sweNextTransit(obj, jd, lat, lon, flag):
     """
     sweObj = SWE_OBJECTS[obj]
     flag = swisseph.CALC_RISE if flag == 'RISE' else swisseph.CALC_SET
-    trans = swisseph.rise_trans(jd, sweObj, lon, lat, 0, 0, 0, flag)
+    trans = swisseph.rise_trans(jd, sweObj, flag, (lon, lat, 0))
     return trans[1][0]
 
 
