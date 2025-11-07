@@ -63,7 +63,7 @@ def singleFactor(factors, chart, factor, obj, aspect=None):
 
     # For Moon return phase and phase element
     elif objID == const.MOON:
-        phase = chart.getMoonPhase()
+        phase = chart.get_moon_phase()
         res['phase'] = phase
         res['element'] = props.base.moonphaseElement[phase]
 
@@ -108,7 +108,7 @@ def getFactors(chart):
     factors = []
 
     # Asc sign
-    asc = chart.getAngle(const.ASC)
+    asc = chart.get_angle(const.ASC)
     singleFactor(factors, chart, ASC_SIGN, asc.sign)
 
     # Asc ruler
@@ -118,7 +118,7 @@ def getFactors(chart):
     singleFactor(factors, chart, ASC_RULER_SIGN, ascRuler.sign)
 
     # Planets in House 1
-    house1 = chart.getHouse(const.HOUSE1)
+    house1 = chart.get_house(const.HOUSE1)
     planetsHouse1 = chart.objects.getObjectsInHouse(house1)
     for obj in planetsHouse1:
         singleFactor(factors, chart, HOUSE1_PLANETS_IN, obj)
@@ -173,7 +173,7 @@ def getModifiers(chart):
     modifiers = []
 
     # Factors which can be affected
-    asc = chart.getAngle(const.ASC)
+    asc = chart.get_angle(const.ASC)
     ascRulerID = essential.ruler(asc.sign)
     ascRuler = chart.get_object(ascRulerID)
     moon = chart.get_object(const.MOON)

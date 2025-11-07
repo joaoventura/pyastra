@@ -111,7 +111,7 @@ class PrimaryDirections:
     def __init__(self, chart):
         self.chart = chart
         self.lat = chart.pos.lat
-        mc = self.chart.getAngle(const.MC)
+        mc = self.chart.get_angle(const.MC)
         self.mcRA = mc.eqCoords()[0]
         self.terms = self._buildTerms()
 

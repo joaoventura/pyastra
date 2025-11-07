@@ -1,22 +1,14 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
+This module implements a class to represent an astrology Chart. It provides methods to handle
+the chart, as well as three relevant properties:
+- objects: a list with the chart's objects
+- houses: a list with the chart's houses
+- angles: a list with the chart's angles
 
-    This module implements a class to represent an 
-    astrology Chart. It provides methods to handle
-    the chart, as well as three relevant properties:
-    
-    - objects: a list with the chart's objects
-    - houses: a list with the chart's houses
-    - angles: a list with the chart's angles
+Since houses 1 and 10 may not match the Asc and MC in some house systems, the Chart class includes
+the list of angles. The angles should be used when you want to deal with angle's longitudes.
 
-    Since houses 1 and 10 may not match the Asc and
-    MC in some house systems, the Chart class 
-    includes the list of angles. The angles should be
-    used when you want to deal with angle's longitudes.
-    
-    There are also methods to access fixed stars.
+There are also methods to access fixed stars.
     
 """
 
@@ -35,8 +27,7 @@ class Chart:
     """ This class represents an astrology chart. """
 
     def __init__(self, date, pos, **kwargs):
-        """ Creates an astrology chart for a given
-        date and location. 
+        """ Creates an astrology chart for a given date and location.
         
         Optional arguments are:
         - hsys: house system
@@ -45,12 +36,12 @@ class Chart:
         """
         # Handle optional arguments
         hsys = kwargs.get('hsys', const.HOUSES_DEFAULT)
-        IDs = kwargs.get('IDs', const.LIST_OBJECTS_TRADITIONAL)
+        ids = kwargs.get('IDs', const.LIST_OBJECTS_TRADITIONAL)
 
         self.date = date
         self.pos = pos
         self.hsys = hsys
-        self.objects = ephem.get_object_list(IDs, date, pos)
+        self.objects = ephem.get_object_list(ids, date, pos)
         self.houses, self.angles = ephem.get_houses(date, pos, hsys)
 
     def copy(self):
@@ -66,99 +57,87 @@ class Chart:
 
     # === Properties === #
 
-    def getObject(self, ID):
+    def get_object(self, obj_id):
         """ Returns an object from the chart. """
-        return self.objects.get(ID)
+        return self.objects.get(obj_id)
 
-    def getHouse(self, ID):
+    def get_house(self, obj_id):
         """ Returns an house from the chart. """
-        return self.houses.get(ID)
+        return self.houses.get(obj_id)
 
-    def getAngle(self, ID):
+    def get_angle(self, obj_id):
         """ Returns an angle from the chart. """
-        return self.angles.get(ID)
+        return self.angles.get(obj_id)
 
-    def get(self, ID):
-        """ Returns an object, house or angle 
-        from the chart.
-        
-        """
-        if ID.startswith('House'):
-            return self.getHouse(ID)
-        elif ID in const.LIST_ANGLES:
-            return self.getAngle(ID)
-        else:
-            return self.getObject(ID)
+    def get(self, obj_id):
+        """ Returns an object, house or angle from the chart. """
+        if obj_id.startswith('House'):
+            return self.get_house(obj_id)
+        if obj_id in const.LIST_ANGLES:
+            return self.get_angle(obj_id)
+        return self.get_object(obj_id)
 
     # === Fixed stars === #
 
-    # The computation of fixed stars is inefficient,
-    # so the access must be made directly to the
+    # The computation of fixed stars is inefficient, so the access must be made directly to the
     # ephemeris only when needed.
 
-    def getFixedStar(self, ID):
+    def get_fixed_star(self, obj_id):
         """ Returns a fixed star from the ephemeris. """
-        return ephem.get_fixed_star(ID, self.date)
+        return ephem.get_fixed_star(obj_id, self.date)
 
-    def getFixedStars(self):
+    def get_fixed_stars(self):
         """ Returns a list with all fixed stars. """
-        IDs = const.LIST_FIXED_STARS
-        return ephem.get_fixed_star_list(IDs, self.date)
+        ids = const.LIST_FIXED_STARS
+        return ephem.get_fixed_star_list(ids, self.date)
 
     # === Houses and angles === #
 
-    def isHouse1Asc(self):
+    def is_house1_asc(self):
         """ Returns true if House1 is the same as the Asc. """
-        house1 = self.getHouse(const.HOUSE1)
-        asc = self.getAngle(const.ASC)
+        house1 = self.get_house(const.HOUSE1)
+        asc = self.get_angle(const.ASC)
         dist = angle.closest_distance(house1.lon, asc.lon)
         return abs(dist) < 0.0003  # 1 arc-second
 
-    def isHouse10MC(self):
+    def is_house10_mc(self):
         """ Returns true if House10 is the same as the MC. """
-        house10 = self.getHouse(const.HOUSE10)
-        mc = self.getAngle(const.MC)
+        house10 = self.get_house(const.HOUSE10)
+        mc = self.get_angle(const.MC)
         dist = angle.closest_distance(house10.lon, mc.lon)
         return abs(dist) < 0.0003  # 1 arc-second
 
     # === Other properties === #
 
-    def isDiurnal(self):
+    def is_diurnal(self):
         """ Returns true if this chart is diurnal. """
-        sun = self.getObject(const.SUN)
-        mc = self.getAngle(const.MC)
+        sun = self.get_object(const.SUN)
+        mc = self.get_angle(const.MC)
 
-        # Get ecliptical positions and check if the
-        # sun is above the horizon.
+        # Get ecliptical positions and check if the sun is above the horizon.
         lat = self.pos.lat
-        sunRA, sunDecl = utils.eqCoords(sun.lon, sun.lat)
-        mcRA, mcDecl = utils.eqCoords(mc.lon, 0)
-        return utils.isAboveHorizon(sunRA, sunDecl, mcRA, lat)
+        sun_ra, sun_decl = utils.eqCoords(sun.lon, sun.lat)
+        mc_ra, _ = utils.eqCoords(mc.lon, 0)
+        return utils.isAboveHorizon(sun_ra, sun_decl, mc_ra, lat)
 
-    def getMoonPhase(self):
+    def get_moon_phase(self):
         """ Returns the phase of the moon. """
-        sun = self.getObject(const.SUN)
-        moon = self.getObject(const.MOON)
+        sun = self.get_object(const.SUN)
+        moon = self.get_object(const.MOON)
         dist = angle.distance(sun.lon, moon.lon)
         if dist < 90:
             return const.MOON_FIRST_QUARTER
-        elif dist < 180:
+        if dist < 180:
             return const.MOON_SECOND_QUARTER
-        elif dist < 270:
+        if dist < 270:
             return const.MOON_THIRD_QUARTER
-        else:
-            return const.MOON_LAST_QUARTER
+        return const.MOON_LAST_QUARTER
 
     # === Solar returns === #
 
-    def solarReturn(self, year):
-        """ Returns this chart's solar return for a 
-        given year. 
-        
-        """
-        sun = self.getObject(const.SUN)
-        date = Datetime('{0}/01/01'.format(year),
-                        '00:00',
-                        self.date.utcoffset)
-        srDate = ephem.next_solar_return(date, sun.lon)
-        return Chart(srDate, self.pos, hsys=self.hsys)
+    def solar_return(self, year):
+        """ Returns this chart's solar return for a given year. """
+        sun = self.get_object(const.SUN)
+        date = Datetime(f'{year}/01/01', '00:00', self.date.utcoffset)
+        sr_date = ephem.next_solar_return(date, sun.lon)
+        return Chart(sr_date, self.pos, hsys=self.hsys)

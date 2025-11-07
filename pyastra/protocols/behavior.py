@@ -31,9 +31,9 @@ def compute(chart):
     factors = []
 
     # Planets in House1 or Conjunct Asc
-    house1 = chart.getHouse(const.HOUSE1)
+    house1 = chart.get_house(const.HOUSE1)
     planetsHouse1 = chart.objects.getObjectsInHouse(house1)
-    asc = chart.getAngle(const.ASC)
+    asc = chart.get_angle(const.ASC)
     planetsConjAsc = chart.objects.getObjectsAspecting(asc, [0])
 
     _set = _merge(planetsHouse1, planetsConjAsc)

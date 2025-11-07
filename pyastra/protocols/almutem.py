@@ -63,7 +63,7 @@ def compute(chart):
     hylegic = [
         chart.get_object(const.SUN),
         chart.get_object(const.MOON),
-        chart.getAngle(const.ASC),
+        chart.get_angle(const.ASC),
         chart.get_object(const.PARS_FORTUNA),
         chart.get_object(const.SYZYGY)
     ]

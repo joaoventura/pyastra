@@ -29,6 +29,6 @@ print(asc)           # <Asc Taurus +26:25:47>
 print(srChart.date)  # <2015/06/14 04:38:37 01:00:00>
 
 # Solar return of the year
-srChart = chart.solarReturn(2015)
+srChart = chart.solar_return(2015)
 print(asc)           # <Asc Taurus +26:25:47>
 print(srChart.date)  # <2015/06/14 04:38:37 01:00:00>
