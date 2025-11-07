@@ -1,19 +1,12 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
+This module implements the Temperament Traditional Protocol.
 
-    This module implements the Temperament Traditional 
-    Protocol.
-
-    The Temperament protocol returns the temperament 
-    scores given the characteristics of the objects 
-    and other things which affects the Asc, the Moon 
-    and the Sun Season.
+The Temperament protocol returns the temperament scores given the characteristics of the objects
+and other things which affects the Asc, the Moon and the Sun Season.
     
 """
 
-from pyastra import const, dignities
+from pyastra import const
 from pyastra import aspects
 from pyastra import props
 from pyastra.dignities import essential
@@ -40,36 +33,35 @@ MOD_MOON = 'Moon'
 
 # === Computation of factors === #
 
-def singleFactor(factors, chart, factor, obj, aspect=None):
+def single_factor(factors, chart, factor, obj, aspect=None):
     """" Single factor for the table. """
 
-    objID = obj if type(obj) == str else obj.id
+    obj_id = obj if isinstance(obj, str) else obj.id
     res = {
         'factor': factor,
-        'objID': objID,
+        'objID': obj_id,
         'aspect': aspect
     }
 
     # For signs (obj as string) return sign element
-    if type(obj) == str:
+    if isinstance(obj, str):
         res['element'] = props.sign.element[obj]
 
     # For Sun return sign and sunseason element
-    elif objID == const.SUN:
+    elif obj_id == const.SUN:
         sunseason = props.sign.sunseason[obj.sign]
         res['sign'] = obj.sign
         res['sunseason'] = sunseason
         res['element'] = props.base.sunseasonElement[sunseason]
 
     # For Moon return phase and phase element
-    elif objID == const.MOON:
+    elif obj_id == const.MOON:
         phase = chart.get_moon_phase()
         res['phase'] = phase
         res['element'] = props.base.moonphaseElement[phase]
 
-    # For regular planets return element or sign/sign element
-    # if there's an aspect involved
-    elif objID in const.LIST_SEVEN_PLANETS:
+    # For regular planets return element or sign/sign element if there's an aspect involved
+    elif obj_id in const.LIST_SEVEN_PLANETS:
         if aspect:
             res['sign'] = obj.sign
             res['element'] = props.sign.element[obj.sign]
@@ -86,100 +78,100 @@ def singleFactor(factors, chart, factor, obj, aspect=None):
     return res
 
 
-def modifierFactor(chart, factor, factorObj, otherObj, aspList):
+def modifier_factor(chart, factor, factor_obj, other_obj, asp_list):
     """ Computes a factor for a modifier. """
 
-    asp = aspects.aspect_type(factorObj, otherObj, aspList)
+    asp = aspects.aspect_type(factor_obj, other_obj, asp_list)
     if asp != const.NO_ASPECT:
         return {
             'factor': factor,
             'aspect': asp,
-            'objID': otherObj.id,
-            'element': otherObj.element()
+            'objID': other_obj.id,
+            'element': other_obj.element()
         }
     return None
 
 
 # === Temperament factors and modifiers === #
 
-def getFactors(chart):
+def get_factors(chart):
     """ Returns the factors for the temperament. """
 
     factors = []
 
     # Asc sign
     asc = chart.get_angle(const.ASC)
-    singleFactor(factors, chart, ASC_SIGN, asc.sign)
+    single_factor(factors, chart, ASC_SIGN, asc.sign)
 
     # Asc ruler
-    ascRulerID = essential.ruler(asc.sign)
-    ascRuler = chart.get_object(ascRulerID)
-    singleFactor(factors, chart, ASC_RULER, ascRuler)
-    singleFactor(factors, chart, ASC_RULER_SIGN, ascRuler.sign)
+    asc_ruler_id = essential.ruler(asc.sign)
+    asc_ruler = chart.get_object(asc_ruler_id)
+    single_factor(factors, chart, ASC_RULER, asc_ruler)
+    single_factor(factors, chart, ASC_RULER_SIGN, asc_ruler.sign)
 
     # Planets in House 1
     house1 = chart.get_house(const.HOUSE1)
-    planetsHouse1 = chart.objects.get_objects_in_house(house1)
-    for obj in planetsHouse1:
-        singleFactor(factors, chart, HOUSE1_PLANETS_IN, obj)
+    planets_house1 = chart.objects.get_objects_in_house(house1)
+    for obj in planets_house1:
+        single_factor(factors, chart, HOUSE1_PLANETS_IN, obj)
 
     # Planets conjunct Asc
-    planetsConjAsc = chart.objects.get_objects_aspecting(asc, [0])
-    for obj in planetsConjAsc:
+    planets_conj_asc = chart.objects.get_objects_aspecting(asc, [0])
+    for obj in planets_conj_asc:
         # Ignore planets already in house 1
-        if obj not in planetsHouse1:
-            singleFactor(factors, chart, ASC_PLANETS_CONJ, obj)
+        if obj not in planets_house1:
+            single_factor(factors, chart, ASC_PLANETS_CONJ, obj)
 
     # Planets aspecting Asc cusp
-    aspList = [60, 90, 120, 180]
-    planetsAspAsc = chart.objects.get_objects_aspecting(asc, aspList)
-    for obj in planetsAspAsc:
-        aspect = aspects.aspect_type(obj, asc, aspList)
-        singleFactor(factors, chart, ASC_PLANETS_ASP, obj, aspect)
+    asp_list = [60, 90, 120, 180]
+    planets_asp_asc = chart.objects.get_objects_aspecting(asc, asp_list)
+    for obj in planets_asp_asc:
+        aspect = aspects.aspect_type(obj, asc, asp_list)
+        single_factor(factors, chart, ASC_PLANETS_ASP, obj, aspect)
 
     # Moon sign and phase
     moon = chart.get_object(const.MOON)
-    singleFactor(factors, chart, MOON_SIGN, moon.sign)
-    singleFactor(factors, chart, MOON_PHASE, moon)
+    single_factor(factors, chart, MOON_SIGN, moon.sign)
+    single_factor(factors, chart, MOON_PHASE, moon)
 
     # Moon dispositor
-    moonRulerID = essential.ruler(moon.sign)
-    moonRuler = chart.get_object(moonRulerID)
-    moonFactor = singleFactor(factors, chart, MOON_DISPOSITOR_SIGN, moonRuler.sign)
-    moonFactor['planetID'] = moonRulerID  # Append moon dispositor ID
+    moon_ruler_id = essential.ruler(moon.sign)
+    moon_ruler = chart.get_object(moon_ruler_id)
+    moon_factor = single_factor(factors, chart, MOON_DISPOSITOR_SIGN, moon_ruler.sign)
+    moon_factor['planetID'] = moon_ruler_id  # Append moon dispositor ID
 
     # Planets conjunct Moon
-    planetsConjMoon = chart.objects.get_objects_aspecting(moon, [0])
-    for obj in planetsConjMoon:
-        singleFactor(factors, chart, MOON_PLANETS_CONJ, obj)
+    planets_conj_moon = chart.objects.get_objects_aspecting(moon, [0])
+    for obj in planets_conj_moon:
+        single_factor(factors, chart, MOON_PLANETS_CONJ, obj)
 
     # Planets aspecting Moon
-    aspList = [60, 90, 120, 180]
-    planetsAspMoon = chart.objects.get_objects_aspecting(moon, aspList)
-    for obj in planetsAspMoon:
-        aspect = aspects.aspect_type(obj, moon, aspList)
-        singleFactor(factors, chart, MOON_PLANETS_ASP, obj, aspect)
+    asp_list = [60, 90, 120, 180]
+    planets_asp_moon = chart.objects.get_objects_aspecting(moon, asp_list)
+    for obj in planets_asp_moon:
+        aspect = aspects.aspect_type(obj, moon, asp_list)
+        single_factor(factors, chart, MOON_PLANETS_ASP, obj, aspect)
 
     # Sun season
     sun = chart.get_object(const.SUN)
-    singleFactor(factors, chart, SUN_SEASON, sun)
+    single_factor(factors, chart, SUN_SEASON, sun)
 
     return factors
 
 
-def getModifiers(chart):
+def get_modifiers(chart):
     """ Returns the factors of the temperament modifiers. """
 
     modifiers = []
 
     # Factors which can be affected
     asc = chart.get_angle(const.ASC)
-    ascRulerID = essential.ruler(asc.sign)
-    ascRuler = chart.get_object(ascRulerID)
+    asc_ruler_id = essential.ruler(asc.sign)
+    asc_ruler = chart.get_object(asc_ruler_id)
     moon = chart.get_object(const.MOON)
     factors = [
         [MOD_ASC, asc],
-        [MOD_ASC_RULER, ascRuler],
+        [MOD_ASC_RULER, asc_ruler],
         [MOD_MOON, moon]
     ]
 
@@ -194,13 +186,9 @@ def getModifiers(chart):
     ]
 
     # Do calculations of afflictions
-    for affectingObj, affectingAsps in affect:
-        for factor, affectedObj in factors:
-            modf = modifierFactor(chart,
-                                  factor,
-                                  affectedObj,
-                                  affectingObj,
-                                  affectingAsps)
+    for affecting_obj, affecting_asps in affect:
+        for factor, affected_obj in factors:
+            modf = modifier_factor(chart, factor, affected_obj, affecting_obj, affecting_asps)
             if modf:
                 modifiers.append(modf)
 
@@ -208,10 +196,7 @@ def getModifiers(chart):
 
 
 def scores(factors):
-    """ Computes the score of temperaments
-    and elements.
-    
-    """
+    """ Computes the score of temperaments and elements. """
     temperaments = {
         const.CHOLERIC: 0,
         const.MELANCHOLIC: 0,
@@ -249,22 +234,19 @@ def scores(factors):
 # --------------------- #
 
 class Temperament:
-    """ This class represents the calculation
-    of the temperament of a chart.
-    
-    """
+    """ This class represents the calculation of the temperament of a chart. """
 
     def __init__(self, chart):
         self.chart = chart
 
-    def getFactors(self):
+    def get_factors(self):
         """ Returns the list of temperament factors. """
-        return getFactors(self.chart)
+        return get_factors(self.chart)
 
-    def getModifiers(self):
+    def get_modifiers(self):
         """ Returns the list of temperament modifiers. """
-        return getModifiers(self.chart)
+        return get_modifiers(self.chart)
 
-    def getScore(self):
+    def get_score(self):
         """ Returns the temperament and qualitiy scores. """
-        return scores(self.getFactors())
+        return scores(self.get_factors())

@@ -1,11 +1,6 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
-
-    This module implements the Almutem Traditional 
-    Protocol. The Almutem protocol returns the Planet 
-    which scores higher in some hylegic points.
+This module implements the Almutem Traditional Protocol.
+The Almutem protocol returns the Planet which scores higher in some hylegic points.
     
 """
 
@@ -44,7 +39,7 @@ DIGNITY_LIST = [
 OBJECT_LIST = const.LIST_SEVEN_PLANETS
 
 
-def newRow():
+def new_row():
     """ Returns a new Almutem table row. """
     row = {}
     for obj in OBJECT_LIST:
@@ -68,50 +63,50 @@ def compute(chart):
         chart.get_object(const.SYZYGY)
     ]
     for hyleg in hylegic:
-        row = newRow()
-        digInfo = essential.get_info(hyleg.sign, hyleg.signlon)
+        row = new_row()
+        dig_info = essential.get_info(hyleg.sign, hyleg.signlon)
 
         # Add the scores of each planet where hyleg has dignities
         for dignity in DIGNITY_LIST:
-            objID = digInfo[dignity]
-            if objID:
+            obj_id = dig_info[dignity]
+            if obj_id:
                 score = essential.SCORES[dignity]
-                row[objID]['string'] += '+%s' % score
-                row[objID]['score'] += score
+                row[obj_id]['string'] += f'+{score}'
+                row[obj_id]['score'] += score
 
         almutems[hyleg.id] = row
 
     # House positions
-    row = newRow()
-    for objID in OBJECT_LIST:
-        obj = chart.get_object(objID)
+    row = new_row()
+    for obj_id in OBJECT_LIST:
+        obj = chart.get_object(obj_id)
         house = chart.houses.get_object_house(obj)
         score = HOUSE_SCORES[house.id]
-        row[objID]['string'] = '+%s' % score
-        row[objID]['score'] = score
+        row[obj_id]['string'] = f'+{score}'
+        row[obj_id]['score'] = score
     almutems['Houses'] = row
 
     # Planetary time
-    row = newRow()
+    row = new_row()
     table = planetarytime.getHourTable(chart.date, chart.pos)
     ruler = table.currRuler()
-    hourRuler = table.hourRuler()
+    hour_ruler = table.hourRuler()
     row[ruler] = {
         'string': '+7',
         'score': 7
     }
-    row[hourRuler] = {
+    row[hour_ruler] = {
         'string': '+6',
         'score': 6
     }
-    almutems['Rulers'] = row;
+    almutems['Rulers'] = row
 
     # Compute scores
-    scores = newRow()
+    scores = new_row()
     for _property, _list in almutems.items():
-        for objID, values in _list.items():
-            scores[objID]['string'] += values['string']
-            scores[objID]['score'] += values['score']
+        for obj_id, values in _list.items():
+            scores[obj_id]['string'] += values['string']
+            scores[obj_id]['score'] += values['score']
     almutems['Score'] = scores
 
     return almutems
