@@ -144,7 +144,7 @@ def _aspect_properties(obj1, obj2, asp_dict):
     if abs(orb_dir) < MAX_EXACT_ORB:
         prop1['movement'] = prop2['movement'] = const.EXACT
     else:
-        # Active object applies to Passive if it is before 
+        # Active object applies to Passive if it is before
         # and direct, or after the Passive and Rx.
         prop1['movement'] = const.SEPARATIVE
         if (orb_dir > 0 and obj1.isDirect()) or \
@@ -153,13 +153,13 @@ def _aspect_properties(obj1, obj2, asp_dict):
         elif obj1.isStationary():
             prop1['movement'] = const.STATIONARY
 
-        # The Passive applies or separates from the Active 
+        # The Passive applies or separates from the Active
         # if it has a different direction..
         # Note: Non-planets have zero speed
         prop2['movement'] = const.NO_MOVEMENT
         obj2speed = obj2.lonspeed if obj2.isPlanet() else 0.0
-        sameDir = obj1.lonspeed * obj2speed >= 0
-        if not sameDir:
+        same_dir = obj1.lonspeed * obj2speed >= 0
+        if not same_dir:
             prop2['movement'] = prop1['movement']
 
     return prop
@@ -174,11 +174,11 @@ def _get_active_passive(obj1, obj2):
             'active': obj1,
             'passive': obj2
         }
-    else:
-        return {
-            'active': obj2,
-            'passive': obj1
-        }
+
+    return {
+        'active': obj2,
+        'passive': obj1
+    }
 
 
 # === Public functions === #
@@ -200,7 +200,7 @@ def has_aspect(obj1, obj2, asp_list):
 
 
 def is_aspecting(obj1, obj2, asp_list):
-    """ Returns if obj1 aspects obj2 within its orb, considering a list of possible aspect types. """
+    """ Returns if obj1 aspects obj2 within orb, considering a list of possible aspect types. """
     asp_dict = _aspect_dict(obj1, obj2, asp_list)
     if asp_dict:
         return asp_dict['orb'] < obj1.orb()
@@ -237,6 +237,9 @@ class AspectObject:
     """
 
     def __init__(self, properties):
+        self.id = None
+        self.movement = None
+        self.inOrb = None
         self.__dict__.update(properties)
 
 
@@ -244,6 +247,8 @@ class Aspect:
     """ This class represents an aspect with all its properties. """
 
     def __init__(self, properties):
+        self.type = None
+        self.orb = None
         self.__dict__.update(properties)
         self.active = AspectObject(self.active)
         self.passive = AspectObject(self.passive)
@@ -269,24 +274,18 @@ class Aspect:
         return self.active.inOrb == self.passive.inOrb == True
 
     def mutual_movement(self):
-        """ Returns if both objects are mutually applying or
-        separating.
-        
-        """
+        """ Returns if both objects are mutually applying or separating. """
         return self.active.movement == self.passive.movement
 
-    def get_role(self, ID):
-        """ Returns the role (active or passive) of an object
-        in this aspect.
-        
-        """
-        if self.active.id == ID:
+    def get_role(self, obj_id):
+        """ Returns the role (active or passive) of an object in this aspect. """
+        if self.active.id == obj_id:
             return {
                 'role': 'active',
                 'inOrb': self.active.inOrb,
                 'movement': self.active.movement
             }
-        elif self.passive.id == ID:
+        if self.passive.id == obj_id:
             return {
                 'role': 'passive',
                 'inOrb': self.passive.inOrb,
@@ -294,12 +293,9 @@ class Aspect:
             }
         return None
 
-    def in_orb(self, ID):
-        """ Returns if the object (given by ID) is within orb
-        in the Aspect.
-        
-        """
-        role = self.get_role(ID)
+    def in_orb(self, obj_id):
+        """ Returns if the object (given by ID) is within orb in the Aspect. """
+        role = self.get_role(obj_id)
         return role['inOrb'] if role else None
 
     def __str__(self):
