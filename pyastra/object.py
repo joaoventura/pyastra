@@ -106,7 +106,7 @@ class Object(GenericObject):
     def __str__(self):
         string = super().__str__()[:-1]
         lonspeed = angle.to_string(self.lonspeed)
-        return f'<{string} {lonspeed}>'
+        return f'{string} {lonspeed}>'
 
     # === Properties === #
 
@@ -177,7 +177,7 @@ class House(GenericObject):
 
     def __str__(self):
         string = super().__str__()[:-1]
-        return f'<{string} {self.size}>'
+        return f'{string} {self.size}>'
 
     # === Properties === #
 
@@ -226,7 +226,7 @@ class FixedStar(GenericObject):
 
     def __str__(self):
         string = super().__str__()[:-1]
-        return f'<{string} {self.mag}>'
+        return f'{string} {self.mag}>'
 
     # === Properties === #
 
