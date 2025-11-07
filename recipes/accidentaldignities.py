@@ -26,7 +26,7 @@ obj = chart.get(const.VENUS)
 sun = chart.get(const.SUN)
 
 # Sun relation
-relation = accidental.sunRelation(obj, sun)
+relation = accidental.sun_relation(obj, sun)
 print(relation)
 
 # Augmenting or Diminishing light
@@ -49,11 +49,11 @@ haiz = aDign.haiz()
 print(haiz)
 
 # List good aspects to benefics
-asp = aDign.aspectBenefics()
+asp = aDign.aspect_benefics()
 print(asp)
 
 # Get the accidental dignity score properties and its sum
-scoreP = aDign.getScoreProperties()
+scoreP = aDign.get_score_properties()
 score = aDign.score()
 print(scoreP)
 print(score)

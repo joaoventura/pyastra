@@ -120,7 +120,7 @@ class PrimaryDirections:
         longitude by sign and object.
         
         """
-        termLons = tables.termLons(tables.EGYPTIAN_TERMS)
+        termLons = tables.term_lons(tables.EGYPTIAN_TERMS)
         res = {}
         for (ID, sign, lon) in termLons:
             try:

@@ -1,10 +1,5 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-    
-    
-    This module defines relevant tables, such as
-    the Essential Dignities.
+This module defines relevant tables, such as the Essential Dignities.
   
 """
 
@@ -12,16 +7,12 @@
 #   Essential Dignities   #
 # ----------------------- #
 
-SIGN_LIST = ['Aries', 'Taurus', 'Gemini', 'Cancer',
-             'Leo', 'Virgo', 'Libra', 'Scorpio',
-             'Sagittarius', 'Capricorn', 'Aquarius',
-             'Pisces']
+SIGN_LIST = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio',
+             'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces']
 
 # === Face variants === #
 
-
 CHALDEAN_FACES = {
-
     'Aries': ['Mars', 'Sun', 'Venus'],
     'Taurus': ['Mercury', 'Moon', 'Saturn'],
     'Gemini': ['Jupiter', 'Mars', 'Sun'],
@@ -37,7 +28,6 @@ CHALDEAN_FACES = {
 }
 
 TRIPLICITY_FACES = {
-
     'Aries': ['Mars', 'Sun', 'Jupiter'],
     'Taurus': ['Venus', 'Mercury', 'Saturn'],
     'Gemini': ['Mercury', 'Venus', 'Saturn'],
@@ -56,7 +46,6 @@ TRIPLICITY_FACES = {
 
 # This table represents the Egyptian terms
 EGYPTIAN_TERMS = {
-
     'Aries': [
         ['Jupiter', 0, 6],
         ['Venus', 6, 12],
@@ -154,10 +143,8 @@ EGYPTIAN_TERMS = {
     ]
 }
 
-# This table represents the Ptolemaic terms
-# from Tetrabiblos (F.E. Robbins translation)
+# This table represents the Ptolemaic terms from Tetrabiblos (F.E. Robbins translation)
 TETRABIBLOS_TERMS = {
-
     'Aries': [
         ['Jupiter', 0, 6],
         ['Venus', 6, 14],
@@ -255,10 +242,8 @@ TETRABIBLOS_TERMS = {
     ]
 }
 
-# This table represents the Ptolemaic terms
-# as described in Christian Astrology (W. Lilly)
+# This table represents the Ptolemaic terms as described in Christian Astrology (W. Lilly)
 LILLY_TERMS = {
-
     'Aries': [
         ['Jupiter', 0, 6],
         ['Venus', 6, 14],
@@ -358,10 +343,8 @@ LILLY_TERMS = {
 
 # === Dignity Table === #
 
-# This is the default essential dignities table, 
-# not considering the terms.
+# This is the default essential dignities table, not considering the terms.
 ESSENTIAL_DIGNITIES = {
-
     'Aries': {
         'ruler': 'Mars',
         'exalt': ['Sun', 19],
@@ -474,17 +457,14 @@ ESSENTIAL_DIGNITIES = {
 
 # === Functions === #
 
-def termLons(TERMS):
-    """ Returns a list with the absolute longitude 
-    of all terms.
-    
-    """
+def term_lons(TERMS):
+    """ Returns a list with the absolute longitude of all terms. """
     res = []
     for i, sign in enumerate(SIGN_LIST):
-        termList = TERMS[sign]
+        term_list = TERMS[sign]
         res.extend([
                        ID,
                        sign,
                        start + 30 * i,
-                   ] for (ID, start, end) in termList)
+                   ] for (ID, start, end) in term_list)
     return res

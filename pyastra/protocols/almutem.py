@@ -69,7 +69,7 @@ def compute(chart):
     ]
     for hyleg in hylegic:
         row = newRow()
-        digInfo = essential.getInfo(hyleg.sign, hyleg.signlon)
+        digInfo = essential.get_info(hyleg.sign, hyleg.signlon)
 
         # Add the scores of each planet where hyleg has dignities
         for dignity in DIGNITY_LIST:

@@ -1,18 +1,12 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
-
-
-    This module provides useful functions for handling
-    essential dignities. It provides easy access to an
-    essential dignity table, functions for retrieving
-    information from the table and to compute scores and
-    almutems.
+This module provides useful functions for handling essential dignities. It provides easy access to
+an essential dignity table, functions for retrieving information from the table and to compute
+scores and almutems.
 
 """
 
-from . import tables
 from pyastra import const
+from . import tables
 
 # Face variants
 CHALDEAN_FACES = 'Chaldean Faces'
@@ -29,11 +23,8 @@ TERMS = tables.EGYPTIAN_TERMS
 TABLE = tables.ESSENTIAL_DIGNITIES
 
 
-def setFaces(variant):
-    """
-    Sets the default faces variant
-
-    """
+def set_faces(variant):
+    """ Sets the default faces variant. """
     global FACES
     if variant == CHALDEAN_FACES:
         FACES = tables.CHALDEAN_FACES
@@ -41,12 +32,8 @@ def setFaces(variant):
         FACES = tables.TRIPLICITY_FACES
 
 
-def setTerms(variant):
-    """
-    Sets the default terms of the Dignities
-    table.
-
-    """
+def set_terms(variant):
+    """ Sets the default terms of the Dignities table. """
     global TERMS
     if variant == EGYPTIAN_TERMS:
         TERMS = tables.EGYPTIAN_TERMS
@@ -68,22 +55,22 @@ def exalt(sign):
     return TABLE[sign]['exalt'][0]
 
 
-def exaltDeg(sign):
+def exalt_deg(sign):
     """ Returns the exaltation degree. """
     return TABLE[sign]['exalt'][1]
 
 
-def dayTrip(sign):
+def day_trip(sign):
     """ Returns the diurnal triplicity. """
     return TABLE[sign]['trip'][0]
 
 
-def nightTrip(sign):
+def night_trip(sign):
     """ Returns the nocturnal triplicity. """
     return TABLE[sign]['trip'][1]
 
 
-def partTrip(sign):
+def part_trip(sign):
     """ Returns the participant triplicity. """
     return TABLE[sign]['trip'][2]
 
@@ -98,7 +85,7 @@ def fall(sign):
     return TABLE[sign]['fall'][0]
 
 
-def fallDeg(sign):
+def fall_deg(sign):
     """ Returns the fall degree. """
     return TABLE[sign]['fall'][1]
 
@@ -106,9 +93,9 @@ def fallDeg(sign):
 def term(sign, lon):
     """ Returns the term for a sign and longitude. """
     terms = TERMS[sign]
-    for (ID, a, b) in terms:
-        if (a <= lon < b):
-            return ID
+    for (obj_id, a, b) in terms:
+        if a <= lon < b:
+            return obj_id
     return None
 
 
@@ -117,25 +104,21 @@ def face(sign, lon):
     faces = FACES[sign]
     if lon < 10:
         return faces[0]
-    elif lon < 20:
+    if lon < 20:
         return faces[1]
-    else:
-        return faces[2]
+    return faces[2]
 
 
 # === Complex properties === #
 
-def getInfo(sign, lon):
-    """ Returns the complete essential dignities
-    for a sign and longitude.
-
-    """
+def get_info(sign, lon):
+    """ Returns the complete essential dignities for a sign and longitude. """
     return {
         'ruler': ruler(sign),
         'exalt': exalt(sign),
-        'dayTrip': dayTrip(sign),
-        'nightTrip': nightTrip(sign),
-        'partTrip': partTrip(sign),
+        'dayTrip': day_trip(sign),
+        'nightTrip': night_trip(sign),
+        'partTrip': part_trip(sign),
         'term': term(sign, lon),
         'face': face(sign, lon),
         'exile': exile(sign),
@@ -143,14 +126,11 @@ def getInfo(sign, lon):
     }
 
 
-def isPeregrine(ID, sign, lon):
-    """ Returns if an object is peregrine
-    on a sign and longitude.
-
-    """
-    info = getInfo(sign, lon)
-    for dign, objID in info.items():
-        if dign not in ['exile', 'fall'] and ID == objID:
+def is_peregrine(ID, sign, lon):
+    """ Returns if an object is peregrine on a sign and longitude. """
+    info = get_info(sign, lon)
+    for dign, obj_id in info.items():
+        if dign not in ['exile', 'fall'] and ID == obj_id:
             return False
     return True
 
@@ -170,27 +150,21 @@ SCORES = {
 }
 
 
-def score(ID, sign, lon):
-    """ Returns the score of an object on
-    a sign and longitude.
-
-    """
-    info = getInfo(sign, lon)
-    dignities = [dign for (dign, objID) in info.items() if objID == ID]
+def score(obj_id, sign, lon):
+    """ Returns the score of an object on a sign and longitude. """
+    info = get_info(sign, lon)
+    dignities = [dign for (dign, objID) in info.items() if objID == obj_id]
     return sum([SCORES[dign] for dign in dignities])
 
 
 def almutem(sign, lon):
-    """ Returns the almutem for a given
-    sign and longitude.
-
-    """
+    """ Returns the almutem for a given sign and longitude. """
     planets = const.LIST_SEVEN_PLANETS
     res = [None, 0]
-    for ID in planets:
-        sc = score(ID, sign, lon)
+    for obj_id in planets:
+        sc = score(obj_id, sign, lon)
         if sc > res[1]:
-            res = [ID, sc]
+            res = [obj_id, sc]
     return res[0]
 
 
@@ -199,33 +173,28 @@ def almutem(sign, lon):
 # ----------------------- #
 
 class EssentialInfo:
-    """ This class represents the Essential dignities
-    information for a given object.
-
-    """
+    """ This class represents the Essential dignities information for a given object. """
 
     def __init__(self, obj):
         self.obj = obj
         # Include info in instance properties
-        info = getInfo(obj.sign, obj.signlon)
+        info = get_info(obj.sign, obj.signlon)
         self.__dict__.update(info)
         # Add score and almutem
         self.score = score(obj.id, obj.sign, obj.signlon)
         self.almutem = almutem(obj.sign, obj.signlon)
 
-    def getInfo(self):
+    def get_info(self):
         """ Returns the essential dignities for this object. """
-        return getInfo(self.obj.sign, self.obj.signlon)
+        return get_info(self.obj.sign, self.obj.signlon)
 
-    def getDignities(self):
+    def get_dignities(self):
         """ Returns the dignities belonging to this object. """
-        info = self.getInfo()
+        info = self.get_info()
         dignities = [dign for (dign, objID) in info.items()
                      if objID == self.obj.id]
         return dignities
 
-    def isPeregrine(self):
+    def is_peregrine(self):
         """ Returns if this object is peregrine. """
-        return isPeregrine(self.obj.id,
-                           self.obj.sign,
-                           self.obj.signlon)
+        return is_peregrine(self.obj.id, self.obj.sign, self.obj.signlon)
