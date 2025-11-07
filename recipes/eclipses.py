@@ -1,9 +1,7 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for calculating the dates
-    of the previous and next solar and lunar eclipses.
+Author: João Ventura <joaojonesventura@gmail.com>
+This recipe shows sample code for calculating the dates of the previous and next solar and
+lunar eclipses.
 
 """
 

@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for handling some 
-    of the chart dynamics.
+Author: João Ventura <flatangleweb@gmail.com>
+This recipe shows sample code for handling some of the chart dynamics.
 
 """
 
@@ -36,7 +33,7 @@ print(dign)   # ['nightTrip']
 dign = dyn.mutual_receptions(const.SUN, const.MOON)
 print(dign)   # [('dayTrip', 'partTrip')]
 
-# Last separation and next application of 
+# Last separation and next application of
 asps = dyn.immediate_aspects(const.SUN, const.MAJOR_ASPECTS)
 print(asps)   # (None, {'id': 'Saturn', 'orb': 12.1391, 'asp': 120})
 

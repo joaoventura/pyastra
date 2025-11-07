@@ -1,6 +1,5 @@
 """
-Author: João Ventura <flatangleweb@gmail.com>
-    
+Author: João Ventura <joaojonesventura@gmail.com>
 This recipe shows sample code for computing the temperament protocol.
 
 """
@@ -24,12 +23,12 @@ temperament = Temperament(chart)
 factors = temperament.get_factors()
 for factor in factors:
     print(factor)
-    
+
 # Print temperament modifiers
 modifiers = temperament.get_modifiers()
 for modifier in modifiers:
     print(modifier)
-    
+
 # Print temperament scores
 score = temperament.get_score()
 print(score)

@@ -1,9 +1,6 @@
 """
-    Author: João Ventura <flatangleweb@gmail.com>
-    
-    
-    This recipe shows sample code for handling 
-    planetary times.
+Author: João Ventura <joaojonesventura@gmail.com>
+This recipe shows sample code for handling planetary times.
 
 """
 
