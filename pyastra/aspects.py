@@ -45,7 +45,7 @@ def _orbList(obj1, obj2, aspList):
     list of possible aspects. 
     
     """
-    sep = angle.closestdistance(obj1.lon, obj2.lon)
+    sep = angle.closest_distance(obj1.lon, obj2.lon)
     absSep = abs(sep)
     return [
         {
@@ -332,4 +332,4 @@ class Aspect:
                                      self.passive.id,
                                      self.type,
                                      self.active.movement,
-                                     angle.toString(self.orb))
+                                     angle.to_string(self.orb))

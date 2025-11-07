@@ -54,7 +54,7 @@ def syzygy_jd(jd):
         jd = jd - dist / 13.1833  # Moon mean daily motion
         sun = swe.swe_object_lon(const.SUN, jd)
         moon = swe.swe_object_lon(const.MOON, jd)
-        dist = angle.closestdistance(sun - offset, moon)
+        dist = angle.closest_distance(sun - offset, moon)
     return jd
 
 
@@ -73,7 +73,7 @@ def solar_return_jd(jd, lon, forward=True):
     while abs(dist) > MAX_ERROR:
         jd = jd + dist / 0.9833  # Sun mean motion
         sun = swe.swe_object_lon(const.SUN, jd)
-        dist = angle.closestdistance(sun, lon)
+        dist = angle.closest_distance(sun, lon)
     return jd
 
 

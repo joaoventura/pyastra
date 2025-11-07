@@ -116,7 +116,7 @@ class Time:
     """
 
     def __init__(self, value):
-        self.value = angle.toFloat(value)
+        self.value = angle.to_float(value)
 
     def getUTC(self, utcoffset):
         """ Returns a new Time object set to UTC given 
@@ -139,7 +139,7 @@ class Time:
 
     def toList(self):
         """ Returns time as signed list. """
-        slist = angle.toList(self.value)
+        slist = angle.to_list(self.value)
         # Keep hours in 0..23
         slist[1] = slist[1] % 24
         return slist
@@ -147,7 +147,7 @@ class Time:
     def toString(self):
         """ Returns time as string. """
         slist = self.toList()
-        string = angle.slistStr(slist)
+        string = angle.slist_str(slist)
         return string if slist[0] == '-' else string[1:]
 
     def __str__(self):

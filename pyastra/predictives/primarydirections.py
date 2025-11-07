@@ -43,8 +43,8 @@ def arc(pRA, pDecl, sRA, sDecl, mcRA, lat):
         pArc = pNArc
 
     # Promissor and Significator distance to meridian
-    pDist = angle.closestdistance(mdRA, pRA)
-    sDist = angle.closestdistance(mdRA, sRA)
+    pDist = angle.closest_distance(mdRA, pRA)
+    sDist = angle.closest_distance(mdRA, sRA)
 
     # Promissor should be after significator (in degrees)
     if pDist < sDist:

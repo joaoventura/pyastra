@@ -37,12 +37,12 @@ def toFloat(value):
             if char in value:
                 value = SIGN[char] + value.replace(char, ':')
                 break
-    return angle.toFloat(value)
+    return angle.to_float(value)
 
 
 def toList(value):
     """ Converts angle float to signed list. """
-    return angle.toList(value)
+    return angle.to_list(value)
 
 
 def toString(value, mode):
@@ -50,7 +50,7 @@ def toString(value, mode):
     Mode refers to LAT/LON.
     
     """
-    string = angle.toString(value)
+    string = angle.to_string(value)
     sign = string[0]
     separator = CHAR[mode][sign]
     string = string.replace(':', separator, 1)

@@ -38,7 +38,7 @@ def isAboveHorizon(ra, decl, mcRA, lat):
     # the object to the MC is within its diurnal semi-arc.
 
     dArc, _ = dnarcs(decl, lat)
-    dist = abs(angle.closestdistance(mcRA, ra))
+    dist = abs(angle.closest_distance(mcRA, ra))
     return dist <= dArc / 2.0 + 0.0003  # 1 arc-second
 
 
@@ -66,8 +66,8 @@ def eqCoords(lon, lat):
     ra = ED if lon < 180 else math.radians(360) - ED
 
     # Correctness of RA if longitude is close to 0º or 180º in a radius of 5º
-    if (abs(angle.closestdistance(lon, 0)) < 5 or
-            abs(angle.closestdistance(lon, 180)) < 5):
+    if (abs(angle.closest_distance(lon, 0)) < 5 or
+            abs(angle.closest_distance(lon, 180)) < 5):
         a = math.sin(ra) * math.cos(decl)
         b = math.cos(_epson) * math.sin(_lambda) * math.cos(_beta) - \
             math.sin(_epson) * math.sin(_beta)

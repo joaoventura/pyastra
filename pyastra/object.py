@@ -49,7 +49,7 @@ class GenericObject:
         return '<%s %s %s>' % (
             self.id,
             self.sign,
-            angle.toString(self.signlon)
+            angle.to_string(self.signlon)
         )
 
     # === Properties === #
@@ -114,7 +114,7 @@ class Object(GenericObject):
         string = super().__str__()[:-1]
         return '%s %s>' % (
             string,
-            angle.toString(self.lonspeed)
+            angle.to_string(self.lonspeed)
         )
 
     # === Properties === #
@@ -263,5 +263,5 @@ class FixedStar(GenericObject):
         Fixed stars only aspect by conjunctions. 
         
         """
-        dist = angle.closestdistance(self.lon, obj.lon)
+        dist = angle.closest_distance(self.lon, obj.lon)
         return abs(dist) < self.orb()
