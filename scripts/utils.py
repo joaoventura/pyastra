@@ -1,5 +1,5 @@
 """
- Provides utilities for flatlib package development.
+ Provides utilities for pyastra package development.
 
 """
 
@@ -10,7 +10,7 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJ_DIR = os.path.dirname(BASE_DIR)
-PKG_DIR = os.path.join(PROJ_DIR, 'flatlib')
+PKG_DIR = os.path.join(PROJ_DIR, 'pyastra')
 
 sys.path.append(PROJ_DIR)
 

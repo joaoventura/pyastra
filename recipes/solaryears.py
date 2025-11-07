@@ -15,8 +15,8 @@
 
 """
 
-from flatlib.datetime import Datetime
-from flatlib.ephem import ephem
+from pyastra.datetime import Datetime
+from pyastra.ephem import ephem
 
 
 def plot(hdiff, title):

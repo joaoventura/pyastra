@@ -1,6 +1,6 @@
 import unittest
 
-from flatlib import angle
+from pyastra import angle
 
 
 class AngleTests(unittest.TestCase):

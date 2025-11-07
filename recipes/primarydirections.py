@@ -7,11 +7,11 @@
 
 """
 
-from flatlib import const
-from flatlib.chart import Chart
-from flatlib.datetime import Datetime
-from flatlib.geopos import GeoPos
-from flatlib.predictives import primarydirections
+from pyastra import const
+from pyastra.chart import Chart
+from pyastra.datetime import Datetime
+from pyastra.geopos import GeoPos
+from pyastra.predictives import primarydirections
 
 
 # Build a chart for a date and location
@@ -35,7 +35,7 @@ arc = primarydirections.getArc(prom, sig, mc, pos, zerolat=False)
 print(arc)  # 56.74266
 
 # Create Primary Directions class
-from flatlib.predictives.primarydirections import PrimaryDirections
+from pyastra.predictives.primarydirections import PrimaryDirections
 pd = PrimaryDirections(chart)
 
 # Get arcs
@@ -44,7 +44,7 @@ print(arc['arcm'])  # 56.74266 (arc in-mundo)
 print(arc['arcz'])  # 56.17347 (arc in-zodiaco)
 
 # Create Primary Directions table class
-from flatlib.predictives.primarydirections import PDTable
+from pyastra.predictives.primarydirections import PDTable
 pd = PDTable(chart, const.MAJOR_ASPECTS)
 pd.byPromissor(const.MARS)  # List all directions by promissor
 pd.bySignificator(const.MERCURY)  # List all directions by significator

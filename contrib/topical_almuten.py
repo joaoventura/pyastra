@@ -1,7 +1,7 @@
-from flatlib import const
-from flatlib.tools import planetarytime
-from flatlib.dignities import essential
-from flatlib.tools import arabicparts
+from pyastra import const
+from pyastra.tools import planetarytime
+from pyastra.dignities import essential
+from pyastra.tools import arabicparts
 
 # List of dignities
 DIGNITY_LIST = [

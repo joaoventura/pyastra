@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# flatlib documentation build configuration file, created by
+# pyastra documentation build configuration file, created by
 # sphinx-quickstart on Mon Apr 13 18:08:41 2015.
 #
 # This file is execfile()d with the current directory set to its
@@ -47,7 +47,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'flatlib'
+project = 'pyastra'
 copyright = '2015, João Ventura'
 author = 'João Ventura'
 
@@ -224,7 +224,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'flatlib.tex', 'flatlib Documentation',
+  (master_doc, 'pyastra.tex', 'pyastra Documentation',
    'João Ventura', 'manual'),
 ]
 
@@ -254,7 +254,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'flatlib', 'flatlib Documentation',
+    (master_doc, 'pyastra', 'pyastra Documentation',
      [author], 1)
 ]
 
@@ -268,8 +268,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'flatlib', 'flatlib Documentation',
-   author, 'flatlib', 'One line description of project.',
+  (master_doc, 'pyastra', 'pyastra Documentation',
+   author, 'pyastra', 'One line description of project.',
    'Miscellaneous'),
 ]
 
