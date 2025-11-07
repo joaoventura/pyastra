@@ -1,6 +1,5 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
+Author: João Ventura <joaojonesventura@gmail.com>
 
 """
 
@@ -10,7 +9,7 @@ from setuptools import find_packages
 setup(
     # Project
     name='pyastra',
-    version='0.2.3',
+    version='0.3.0',
 
     # Sources
     packages=find_packages(),
@@ -22,17 +21,17 @@ setup(
     },
 
     # Dependencies
-    install_requires=['pyswisseph==2.08.00-1'],
+    install_requires=['pyswisseph==2.10.3.2'],
 
     # Metadata
     description='Python library for Traditional Astrology',
-    url='https://github.com/flatangle/flatlib',
+    url='https://github.com/joaoventura/pyastra',
     keywords=['Astrology', 'Traditional Astrology'],
     license='MIT',
 
     # Authoring
     author='João Ventura',
-    author_email='flatangleweb@gmail.com',
+    author_email='joaojonesventura@gmail.com',
 
     # Classifiers
     classifiers=[
