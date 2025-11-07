@@ -61,7 +61,7 @@ class GenericObject:
         
         """
         lat = 0.0 if zerolat else self.lat
-        return utils.eqCoords(self.lon, lat)
+        return utils.eq_coords(self.lon, lat)
 
     # === Functions === #
 

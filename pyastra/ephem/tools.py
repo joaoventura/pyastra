@@ -34,9 +34,9 @@ def is_diurnal(jd, lat, lon):
     sun = swe.swe_object(const.SUN, jd)
     mc = swe.swe_houses_lon(jd, lat, lon,
                             const.HOUSES_DEFAULT)[1][1]
-    ra, decl = utils.eqCoords(sun['lon'], sun['lat'])
-    mc_ra, _ = utils.eqCoords(mc, 0.0)
-    return utils.isAboveHorizon(ra, decl, mc_ra, lat)
+    ra, decl = utils.eq_coords(sun['lon'], sun['lat'])
+    mc_ra, _ = utils.eq_coords(mc, 0.0)
+    return utils.is_above_horizon(ra, decl, mc_ra, lat)
 
 
 # === Iterative algorithms === #

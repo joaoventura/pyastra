@@ -116,9 +116,9 @@ class Chart:
 
         # Get ecliptical positions and check if the sun is above the horizon.
         lat = self.pos.lat
-        sun_ra, sun_decl = utils.eqCoords(sun.lon, sun.lat)
-        mc_ra, _ = utils.eqCoords(mc.lon, 0)
-        return utils.isAboveHorizon(sun_ra, sun_decl, mc_ra, lat)
+        sun_ra, sun_decl = utils.eq_coords(sun.lon, sun.lat)
+        mc_ra, _ = utils.eq_coords(mc.lon, 0)
+        return utils.is_above_horizon(sun_ra, sun_decl, mc_ra, lat)
 
     def get_moon_phase(self):
         """ Returns the phase of the moon. """

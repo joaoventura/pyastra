@@ -1,18 +1,12 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
+This module defines some properties of Traditional Astrology core elements.
     
-
-    This module defines some properties of Traditional Astrology core
-    elements.
+It defines qualities of temperaments, orbs and genders of planets, if a house is cardinal,
+angular or succedent, among others.
     
-    It defines qualities of temperaments, orbs and genders of planets,
-    if a house is cardinal, angular or succedent, among others.
-    
-    To keep things simple, properties are divided in types, such as 
-    base properties, planet properties, house properties, etc. Each 
-    property type is defined as a lowercased python class so that we 
-    can mimic different namespaces in a single python module.
+To keep things simple, properties are divided in types, such as base properties, planet properties,
+house properties, etc. Each property type is defined as a lowercased python class so that we can
+mimic different namespaces in a single python module.
     
 """
 

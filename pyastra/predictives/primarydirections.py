@@ -36,7 +36,7 @@ def arc(pRA, pDecl, sRA, sDecl, mcRA, lat):
     mdRA = mcRA
     sArc = sDArc
     pArc = pDArc
-    if not utils.isAboveHorizon(sRA, sDecl, mcRA, lat):
+    if not utils.is_above_horizon(sRA, sDecl, mcRA, lat):
         # Use IC and Nocturnal arcs
         mdRA = angle.norm(mcRA + 180)
         sArc = sNArc
@@ -136,10 +136,10 @@ class PrimaryDirections:
         """ Creates a generic entry for an object. """
 
         # Equatorial coordinates
-        eqM = utils.eqCoords(lon, lat)
+        eqM = utils.eq_coords(lon, lat)
         eqZ = eqM
         if lat != 0:
-            eqZ = utils.eqCoords(lon, 0)
+            eqZ = utils.eq_coords(lon, 0)
 
         return {
             'id': ID,
