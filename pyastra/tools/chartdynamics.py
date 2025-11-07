@@ -68,14 +68,14 @@ class ChartDynamics:
         list of possible aspects. 
         
         """
-        obj = self.chart.getObject(ID)
+        obj = self.chart.get_object(ID)
         res = []
 
         for otherID in const.LIST_SEVEN_PLANETS:
             if ID == otherID:
                 continue
 
-            otherObj = self.chart.getObject(otherID)
+            otherObj = self.chart.get_object(otherID)
             aspType = aspects.aspectType(obj, otherObj, aspList)
             if aspType != const.NO_ASPECT:
                 res.append({
@@ -98,10 +98,10 @@ class ChartDynamics:
             const.NO_MOVEMENT: []
         }
 
-        objA = self.chart.getObject(ID)
+        objA = self.chart.get_object(ID)
         valid = self.validAspects(ID, aspList)
         for elem in valid:
-            objB = self.chart.getObject(elem['id'])
+            objB = self.chart.get_object(elem['id'])
             asp = aspects.getAspect(objA, objB, aspList)
             role = asp.getRole(objA.id)
             if role['inOrb']:

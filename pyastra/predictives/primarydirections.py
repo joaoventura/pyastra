@@ -159,26 +159,26 @@ class PrimaryDirections:
 
     def A(self, ID):
         """ Returns the Antiscia of an object. """
-        obj = self.chart.getObject(ID).antiscia()
+        obj = self.chart.get_object(ID).antiscia()
         ID = 'A_%s' % (ID)
         return self.G(ID, obj.lat, obj.lon)
 
     def C(self, ID):
         """ Returns the CAntiscia of an object. """
-        obj = self.chart.getObject(ID).cantiscia()
+        obj = self.chart.get_object(ID).cantiscia()
         ID = 'C_%s' % (ID)
         return self.G(ID, obj.lat, obj.lon)
 
     def D(self, ID, asp):
         """ Returns the dexter aspect of an object. """
-        obj = self.chart.getObject(ID).copy()
+        obj = self.chart.get_object(ID).copy()
         obj.relocate(obj.lon - asp)
         ID = 'D_%s_%s' % (ID, asp)
         return self.G(ID, obj.lat, obj.lon)
 
     def S(self, ID, asp):
         """ Returns the sinister aspect of an object. """
-        obj = self.chart.getObject(ID).copy()
+        obj = self.chart.get_object(ID).copy()
         obj.relocate(obj.lon + asp)
         ID = 'S_%s_%s' % (ID, asp)
         return self.G(ID, obj.lat, obj.lon)

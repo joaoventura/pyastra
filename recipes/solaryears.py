@@ -45,7 +45,7 @@ for year in range(sYear, sYear + span):
     
     # Get the spring equinox date for the year
     dt = Datetime('%s/01/01' % year, '00:00')
-    sr = ephem.nextSolarReturn(dt, 0.00)
+    sr = ephem.next_solar_return(dt, 0.00)
     equinoxes.append([year, sr.jd])
     
 # Compute successive differences

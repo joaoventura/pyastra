@@ -84,7 +84,7 @@ def haiz(obj, chart):
 
     if obj.id == const.MERCURY:
         # Gender and faction of mercury depends on orientality
-        sun = chart.getObject(const.SUN)
+        sun = chart.get_object(const.SUN)
         orientalityM = orientality(obj, sun)
         if orientalityM == ORIENTAL:
             objGender = const.MASCULINE
@@ -99,7 +99,7 @@ def haiz(obj, chart):
 
     # Match faction
     factionConformity = False
-    diurnalChart = chart.isDiurnal()
+    diurnalChart = chart.is_diurnal()
 
     if obj.id == const.SUN and not diurnalChart:
         # Sun is in conformity only when above horizon
@@ -177,7 +177,7 @@ class AccidentalDignity:
 
     def sunRelation(self):
         """ Returns the relation of the object with the sun. """
-        sun = self.chart.getObject(const.SUN)
+        sun = self.chart.get_object(const.SUN)
         return sunRelation(self.obj, sun)
 
     def isCazimi(self):
@@ -194,7 +194,7 @@ class AccidentalDignity:
         light.
         
         """
-        sun = self.chart.getObject(const.SUN)
+        sun = self.chart.get_object(const.SUN)
         return light(self.obj, sun)
 
     def isAugmentingLight(self):
@@ -202,7 +202,7 @@ class AccidentalDignity:
 
     def orientality(self):
         """ Returns the orientality of the object. """
-        sun = self.chart.getObject(const.SUN)
+        sun = self.chart.get_object(const.SUN)
         return orientality(self.obj, sun)
 
     def isOriental(self):
@@ -270,7 +270,7 @@ class AccidentalDignity:
                 continue
 
             # Get aspects to the other object
-            otherObj = self.chart.getObject(otherID)
+            otherObj = self.chart.get_object(otherID)
             asp = aspects.getAspect(self.obj, otherObj, aspList)
 
             if asp.type == const.NO_ASPECT:
@@ -341,12 +341,12 @@ class AccidentalDignity:
 
     def isConjNorthNode(self):
         """ Returns if object is conjunct north node. """
-        node = self.chart.getObject(const.NORTH_NODE)
+        node = self.chart.get_object(const.NORTH_NODE)
         return aspects.hasAspect(self.obj, node, aspList=[0])
 
     def isConjSouthNode(self):
         """ Returns if object is conjunct south node. """
-        node = self.chart.getObject(const.SOUTH_NODE)
+        node = self.chart.get_object(const.SOUTH_NODE)
         return aspects.hasAspect(self.obj, node, aspList=[0])
 
     # === Void of Course, Feral and Haiz === #
@@ -363,7 +363,7 @@ class AccidentalDignity:
         planets = copy(const.LIST_SEVEN_PLANETS)
         planets.remove(self.obj.id)
         for otherID in planets:
-            otherObj = self.chart.getObject(otherID)
+            otherObj = self.chart.get_object(otherID)
             if aspects.hasAspect(self.obj, otherObj, const.MAJOR_ASPECTS):
                 return False
         return True

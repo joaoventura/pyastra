@@ -30,8 +30,8 @@ def nextSolarReturn(chart, date):
     after a specific date.
     
     """
-    sun = chart.getObject(const.SUN)
-    srDate = ephem.nextSolarReturn(date, sun.lon)
+    sun = chart.get_object(const.SUN)
+    srDate = ephem.next_solar_return(date, sun.lon)
     return _computeChart(chart, srDate)
 
 
@@ -40,6 +40,6 @@ def prevSolarReturn(chart, date):
     before a specific date.
     
     """
-    sun = chart.getObject(const.SUN)
-    srDate = ephem.prevSolarReturn(date, sun.lon)
+    sun = chart.get_object(const.SUN)
+    srDate = ephem.prev_solar_return(date, sun.lon)
     return _computeChart(chart, srDate)

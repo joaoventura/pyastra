@@ -50,9 +50,9 @@ def compute(chart):
 
     # Asc ruler if aspected by disposer
     ascRulerID = essential.ruler(asc.sign)
-    ascRuler = chart.getObject(ascRulerID)
+    ascRuler = chart.get_object(ascRulerID)
     disposerID = essential.ruler(ascRuler.sign)
-    disposer = chart.getObject(disposerID)
+    disposer = chart.get_object(disposerID)
 
     _set = []
     if aspects.isAspecting(disposer, ascRuler, const.MAJOR_ASPECTS):

@@ -15,9 +15,9 @@ import pyastra
 from . import swe
 
 # Set default swefile path
-swe.setPath(pyastra.PATH_RES + 'swefiles')
+swe.set_path(pyastra.PATH_RES + 'swefiles')
 
 
-# Configure swefile path
-def setPath(path):
-    swe.setPath(path)
+def set_path(path):
+    """ Sets the path for the ephemeris files. """
+    swe.set_path(path)

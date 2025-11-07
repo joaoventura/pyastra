@@ -61,11 +61,11 @@ def compute(chart):
 
     # Hylegic points
     hylegic = [
-        chart.getObject(const.SUN),
-        chart.getObject(const.MOON),
+        chart.get_object(const.SUN),
+        chart.get_object(const.MOON),
         chart.getAngle(const.ASC),
-        chart.getObject(const.PARS_FORTUNA),
-        chart.getObject(const.SYZYGY)
+        chart.get_object(const.PARS_FORTUNA),
+        chart.get_object(const.SYZYGY)
     ]
     for hyleg in hylegic:
         row = newRow()
@@ -84,7 +84,7 @@ def compute(chart):
     # House positions
     row = newRow()
     for objID in OBJECT_LIST:
-        obj = chart.getObject(objID)
+        obj = chart.get_object(objID)
         house = chart.houses.getObjectHouse(obj)
         score = HOUSE_SCORES[house.id]
         row[objID]['string'] = '+%s' % score

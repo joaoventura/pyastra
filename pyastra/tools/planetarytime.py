@@ -72,9 +72,9 @@ def hourTable(date, pos):
     
     """
 
-    lastSunrise = ephem.lastSunrise(date, pos)
-    middleSunset = ephem.nextSunset(lastSunrise, pos)
-    nextSunrise = ephem.nextSunrise(date, pos)
+    lastSunrise = ephem.last_sunrise(date, pos)
+    middleSunset = ephem.next_sunset(lastSunrise, pos)
+    nextSunrise = ephem.next_sunrise(date, pos)
     table = []
 
     # Create diurnal hour sequence

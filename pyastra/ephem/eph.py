@@ -1,121 +1,113 @@
 """
-    This file is part of pyastra - (C) FlatAngle
-    Author: João Ventura (flatangleweb@gmail.com)
+Functions for retrieving astronomical and astrological data from an ephemeris.
     
-    
-    This module implements functions for retrieving 
-    astronomical and astrological data from an ephemeris.
-    
-    It is as middle layer between the Swiss Ephemeris 
-    and user software. Objects are treated as python 
-    dicts and jd/lat/lon as float.
-  
+It is as middle layer between the Swiss Ephemeris and user software.
+Objects are treated as python dicts and jd/lat/lon as floats.
+
 """
+
+from pyastra import angle
+from pyastra import const
 
 from . import swe
 from . import tools
-from pyastra import angle
-from pyastra import const
 
 
 # === Objects === #
 
-def getObject(ID, jd, lat, lon):
-    """ Returns an object for a specific date and 
-    location.
-    
-    """
-    if ID == const.SOUTH_NODE:
-        obj = swe.sweObject(const.NORTH_NODE, jd)
+def get_object(obj_id, jd, lat, lon):
+    """ Returns an object for a specific date and location. """
+    if obj_id == const.SOUTH_NODE:
+        obj = swe.swe_object(const.NORTH_NODE, jd)
         obj.update({
             'id': const.SOUTH_NODE,
             'lon': angle.norm(obj['lon'] + 180)
         })
-    elif ID == const.PARS_FORTUNA:
-        pflon = tools.pfLon(jd, lat, lon)
+    elif obj_id == const.PARS_FORTUNA:
+        pflon = tools.pf_lon(jd, lat, lon)
         obj = {
-            'id': ID,
+            'id': obj_id,
             'lon': pflon,
             'lat': 0,
             'lonspeed': 0,
             'latspeed': 0
         }
-    elif ID == const.SYZYGY:
-        szjd = tools.syzygyJD(jd)
-        obj = swe.sweObject(const.MOON, szjd)
+    elif obj_id == const.SYZYGY:
+        szjd = tools.syzygy_jd(jd)
+        obj = swe.swe_object(const.MOON, szjd)
         obj['id'] = const.SYZYGY
     else:
-        obj = swe.sweObject(ID, jd)
+        obj = swe.swe_object(obj_id, jd)
 
-    _signInfo(obj)
+    _sign_info(obj)
     return obj
 
 
 # === Houses === #
 
-def getHouses(jd, lat, lon, hsys):
+def get_houses(jd, lat, lon, hsys):
     """ Returns lists of houses and angles. """
-    houses, angles = swe.sweHouses(jd, lat, lon, hsys)
-    for house in houses:
-        _signInfo(house)
-    for angle in angles:
-        _signInfo(angle)
-    return (houses, angles)
+    houses, angles = swe.swe_houses(jd, lat, lon, hsys)
+    for h in houses:
+        _sign_info(h)
+    for a in angles:
+        _sign_info(a)
+    return houses, angles
 
 
 # === Fixed stars === #
 
-def getFixedStar(ID, jd):
+def get_fixed_star(obj_id, jd):
     """ Returns a fixed star. """
-    star = swe.sweFixedStar(ID, jd)
-    _signInfo(star)
+    star = swe.swe_fixed_star(obj_id, jd)
+    _sign_info(star)
     return star
 
 
 # === Solar returns === #
 
-def nextSolarReturn(jd, lon):
+def next_solar_return(jd, lon):
     """ Return the JD of the next solar return. """
-    return tools.solarReturnJD(jd, lon, True)
+    return tools.solar_return_jd(jd, lon, True)
 
 
-def prevSolarReturn(jd, lon):
+def prev_solar_return(jd, lon):
     """ Returns the JD of the previous solar return. """
-    return tools.solarReturnJD(jd, lon, False)
+    return tools.solar_return_jd(jd, lon, False)
 
 
 # === Sunrise and sunsets === #
 
-def nextSunrise(jd, lat, lon):
+def next_sunrise(jd, lat, lon):
     """ Returns the JD of the next sunrise. """
-    return swe.sweNextTransit(const.SUN, jd, lat, lon, 'RISE')
+    return swe.swe_next_transit(const.SUN, jd, lat, lon, 'RISE')
 
 
-def nextSunset(jd, lat, lon):
+def next_sunset(jd, lat, lon):
     """ Returns the JD of the next sunset. """
-    return swe.sweNextTransit(const.SUN, jd, lat, lon, 'SET')
+    return swe.swe_next_transit(const.SUN, jd, lat, lon, 'SET')
 
 
-def lastSunrise(jd, lat, lon):
+def last_sunrise(jd, lat, lon):
     """ Returns the JD of the last sunrise. """
-    return nextSunrise(jd - 1.0, lat, lon)
+    return next_sunrise(jd - 1.0, lat, lon)
 
 
-def lastSunset(jd, lat, lon):
+def last_sunset(jd, lat, lon):
     """ Returns the JD of the last sunset. """
-    return nextSunset(jd - 1.0, lat, lon)
+    return next_sunset(jd - 1.0, lat, lon)
 
 
 # === Stations === #
 
-def nextStation(ID, jd):
-    """ Returns the aproximate jd of the next station. """
-    return tools.nextStationJD(ID, jd)
+def next_station(obj_id, jd):
+    """ Returns the approximate jd of the next station. """
+    return tools.next_station_jd(obj_id, jd)
 
 
 # === Other functions === #
 
-def _signInfo(obj):
+def _sign_info(obj):
     """ Appends the sign id and longitude to an object. """
     lon = obj['lon']
     obj.update({

@@ -113,7 +113,7 @@ def getFactors(chart):
 
     # Asc ruler
     ascRulerID = essential.ruler(asc.sign)
-    ascRuler = chart.getObject(ascRulerID)
+    ascRuler = chart.get_object(ascRulerID)
     singleFactor(factors, chart, ASC_RULER, ascRuler)
     singleFactor(factors, chart, ASC_RULER_SIGN, ascRuler.sign)
 
@@ -138,13 +138,13 @@ def getFactors(chart):
         singleFactor(factors, chart, ASC_PLANETS_ASP, obj, aspect)
 
     # Moon sign and phase
-    moon = chart.getObject(const.MOON)
+    moon = chart.get_object(const.MOON)
     singleFactor(factors, chart, MOON_SIGN, moon.sign)
     singleFactor(factors, chart, MOON_PHASE, moon)
 
     # Moon dispositor
     moonRulerID = essential.ruler(moon.sign)
-    moonRuler = chart.getObject(moonRulerID)
+    moonRuler = chart.get_object(moonRulerID)
     moonFactor = singleFactor(factors, chart, MOON_DISPOSITOR_SIGN, moonRuler.sign)
     moonFactor['planetID'] = moonRulerID  # Append moon dispositor ID
 
@@ -161,7 +161,7 @@ def getFactors(chart):
         singleFactor(factors, chart, MOON_PLANETS_ASP, obj, aspect)
 
     # Sun season
-    sun = chart.getObject(const.SUN)
+    sun = chart.get_object(const.SUN)
     singleFactor(factors, chart, SUN_SEASON, sun)
 
     return factors
@@ -175,8 +175,8 @@ def getModifiers(chart):
     # Factors which can be affected
     asc = chart.getAngle(const.ASC)
     ascRulerID = essential.ruler(asc.sign)
-    ascRuler = chart.getObject(ascRulerID)
-    moon = chart.getObject(const.MOON)
+    ascRuler = chart.get_object(ascRulerID)
+    moon = chart.get_object(const.MOON)
     factors = [
         [MOD_ASC, asc],
         [MOD_ASC_RULER, ascRuler],
@@ -184,9 +184,9 @@ def getModifiers(chart):
     ]
 
     # Factors of affliction
-    mars = chart.getObject(const.MARS)
-    saturn = chart.getObject(const.SATURN)
-    sun = chart.getObject(const.SUN)
+    mars = chart.get_object(const.MARS)
+    saturn = chart.get_object(const.SATURN)
+    sun = chart.get_object(const.SUN)
     affect = [
         [mars, [0, 90, 180]],
         [saturn, [0, 90, 180]],
