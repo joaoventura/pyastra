@@ -1,16 +1,8 @@
-# Eclipse project files
-.pydevproject
-.project
-.settings
-
 # Pycharm project files
 .idea
 
 # Python cache files
 *.py[cdo]
-
-# Documentation build
-docs/build
 
 # Ignore specific files
 main.py
@@ -24,3 +16,5 @@ venv/
 
 # Build
 build/
+dist/
+pyastra.egg-info/
