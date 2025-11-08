@@ -35,7 +35,6 @@ MOD_MOON = 'Moon'
 
 def single_factor(factors, chart, factor, obj, aspect=None):
     """" Single factor for the table. """
-
     obj_id = obj if isinstance(obj, str) else obj.id
     res = {
         'factor': factor,
@@ -68,19 +67,15 @@ def single_factor(factors, chart, factor, obj, aspect=None):
         else:
             res['element'] = obj.element()
 
-    try:
-        # If there's element, insert into list
-        res['element']
+    # If there's element, insert into list
+    if 'element' in res.keys():
         factors.append(res)
-    except KeyError:
-        pass
 
     return res
 
 
 def modifier_factor(chart, factor, factor_obj, other_obj, asp_list):
     """ Computes a factor for a modifier. """
-
     asp = aspects.aspect_type(factor_obj, other_obj, asp_list)
     if asp != const.NO_ASPECT:
         return {
@@ -96,7 +91,6 @@ def modifier_factor(chart, factor, factor_obj, other_obj, asp_list):
 
 def get_factors(chart):
     """ Returns the factors for the temperament. """
-
     factors = []
 
     # Asc sign
@@ -161,7 +155,6 @@ def get_factors(chart):
 
 def get_modifiers(chart):
     """ Returns the factors of the temperament modifiers. """
-
     modifiers = []
 
     # Factors which can be affected
