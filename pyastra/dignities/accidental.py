@@ -261,7 +261,7 @@ class AccidentalDignity:
 
             if asp.type == const.NO_ASPECT:
                 continue
-            elif asp.type == const.CONJUNCTION:
+            if asp.type == const.CONJUNCTION:
                 res.append(asp.type)
             else:
                 # Only exact or applicative aspects
