@@ -18,7 +18,7 @@ from . import builder, swe, tools
 
 # === Objects === #
 
-def get_object(obj_id: float, date: Datetime, pos: GeoPos) -> Object:
+def get_object(obj_id: str, date: Datetime, pos: GeoPos) -> Object:
     """
     Returns an ephemeris object.
 

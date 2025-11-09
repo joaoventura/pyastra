@@ -21,16 +21,15 @@ def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
     Returns an object for a specific date and location.
 
     """
-    obj_lon, obj_lat, lon_speed, lat_speed = 0, 0, 0, 0
-
     if obj_id == const.SOUTH_NODE:
-        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(const.NORTH_NODE, jd)
-        obj_lon = angle.norm(obj_lon + 180)
+        obj_lon, _, _, _ = swe.swe_object(const.NORTH_NODE, jd)
+        return Object(id=obj_id, lon=angle.norm(obj_lon + 180))
 
-    elif obj_id == const.PARS_FORTUNA:
+    if obj_id == const.PARS_FORTUNA:
         obj_lon = tools.pars_fortuna_lon(jd, lat, lon)
+        return Object(id=obj_id, lon=obj_lon)
 
-    elif obj_id == const.SYZYGY:
+    if obj_id == const.SYZYGY:
         syzygy_jd = tools.syzygy_jd(jd)
         obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(const.MOON, syzygy_jd)
 
