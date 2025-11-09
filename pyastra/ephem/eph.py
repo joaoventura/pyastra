@@ -20,7 +20,7 @@ def get_object(obj_id, jd, lat, lon):
     obj_lon, obj_lat, lon_speed, lat_speed = 0, 0, 0, 0
 
     if obj_id == const.SOUTH_NODE:
-        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object_raw(const.NORTH_NODE, jd)
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(const.NORTH_NODE, jd)
         obj_lon = angle.norm(obj_lon + 180)
 
     elif obj_id == const.PARS_FORTUNA:
@@ -28,10 +28,10 @@ def get_object(obj_id, jd, lat, lon):
 
     elif obj_id == const.SYZYGY:
         syzygy_jd = tools.syzygy_jd(jd)
-        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object_raw(const.MOON, syzygy_jd)
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(const.MOON, syzygy_jd)
 
     else:
-        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object_raw(obj_id, jd)
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(obj_id, jd)
 
     obj = {
         'id': obj_id,
@@ -49,7 +49,7 @@ def get_object(obj_id, jd, lat, lon):
 
 def get_houses(jd, lat, lon, hsys):
     """ Returns lists of houses and angles. """
-    cusps, ascmc = swe.swe_houses_raw(jd, lat, lon, hsys)
+    cusps, ascmc = swe.swe_houses(jd, lat, lon, hsys)
     cusps += (cusps[0],)
     houses = [
         {

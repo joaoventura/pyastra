@@ -53,20 +53,7 @@ def set_path(path):
 
 # === Object functions === #
 
-def swe_object(obj, jd):
-    """ Returns an object from the Ephemeris. """
-    swe_obj = SWE_OBJECTS[obj]
-    swe_list, _ = swisseph.calc_ut(jd, swe_obj)
-    return {
-        'id': obj,
-        'lon': swe_list[0],
-        'lat': swe_list[1],
-        'lonspeed': swe_list[3],
-        'latspeed': swe_list[4]
-    }
-
-
-def swe_object_raw(obj: str, jd: float) -> tuple:
+def swe_object(obj: str, jd: float) -> tuple:
     """
     Returns raw positional data of an object from the Swiss Ephemeris.
 
@@ -79,13 +66,6 @@ def swe_object_raw(obj: str, jd: float) -> tuple:
     swe_obj = SWE_OBJECTS[obj]
     swe_list, _ = swisseph.calc_ut(jd, swe_obj, swisseph.FLG_SPEED)
     return swe_list[0], swe_list[1], swe_list[3], swe_list[4]
-
-
-def swe_object_lon(obj, jd):
-    """ Returns the longitude of an object. """
-    swe_obj = SWE_OBJECTS[obj]
-    swe_list, _ = swisseph.calc_ut(jd, swe_obj)
-    return swe_list[0]
 
 
 def swe_next_transit(obj, jd, lat, lon, flag):
@@ -102,20 +82,7 @@ def swe_next_transit(obj, jd, lat, lon, flag):
 
 # === Houses and angles === #
 
-def swe_houses_lon(jd, lat, lon, hsys):
-    """ Returns lists with house and angle longitudes. """
-    hsys = SWE_HOUSESYS[hsys]
-    hlist, ascmc = swisseph.houses(jd, lat, lon, hsys)
-    angles = [
-        ascmc[0],
-        ascmc[1],
-        angle.norm(ascmc[0] + 180),
-        angle.norm(ascmc[1] + 180)
-    ]
-    return hlist, angles
-
-
-def swe_houses_raw(jd: float, lat: float, lon: float, hsys: str) -> tuple:
+def swe_houses(jd: float, lat: float, lon: float, hsys: str) -> tuple:
     """
     Returns the list of houses cusps and angles.
 
