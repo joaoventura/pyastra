@@ -26,7 +26,7 @@ def get_object(obj_id: str, date: Datetime, pos: GeoPos) -> Object:
     return builder.create_object(obj_id, date.jd, pos.lat, pos.lon)
 
 
-def get_object_list(ids: list, date: Datetime, pos: GeoPos) -> ObjectList:
+def get_objects(ids: list, date: Datetime, pos: GeoPos) -> ObjectList:
     """
     Returns a list of objects.
 
@@ -74,7 +74,7 @@ def get_fixed_star(obj_id: float, date: Datetime) -> FixedStar:
     return builder.create_fixed_star(obj_id, date.jd)
 
 
-def get_fixed_star_list(ids: list, date: Datetime) -> FixedStarList:
+def get_fixed_stars(ids: list, date: Datetime) -> FixedStarList:
     """
     Returns a list of fixed stars.
 
