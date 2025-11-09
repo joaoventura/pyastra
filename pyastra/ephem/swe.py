@@ -66,6 +66,21 @@ def swe_object(obj, jd):
     }
 
 
+def swe_object_raw(obj: str, jd: float) -> tuple:
+    """
+    Returns raw positional data of an object from the Swiss Ephemeris.
+
+    The tuple returned from pyswisseph is a 6-element tuple containing:
+    - (lon, lat, distance, lon_speed, lat_speed, dist_speed).
+
+    This functions returns a tuple with (lon, lat, lon_speed, lat_speed).
+
+    """
+    swe_obj = SWE_OBJECTS[obj]
+    swe_list, _ = swisseph.calc_ut(jd, swe_obj, swisseph.FLG_SPEED)
+    return swe_list[0], swe_list[1], swe_list[3], swe_list[4]
+
+
 def swe_object_lon(obj, jd):
     """ Returns the longitude of an object. """
     swe_obj = SWE_OBJECTS[obj]
@@ -74,8 +89,9 @@ def swe_object_lon(obj, jd):
 
 
 def swe_next_transit(obj, jd, lat, lon, flag):
-    """ Returns the julian date of the next transit of
-    an object. The flag should be 'RISE' or 'SET'. 
+    """
+    Returns the julian date of the next transit of an object.
+    The flag should be 'RISE' or 'SET'.
     
     """
     swe_obj = SWE_OBJECTS[obj]
@@ -85,28 +101,6 @@ def swe_next_transit(obj, jd, lat, lon, flag):
 
 
 # === Houses and angles === #
-
-def swe_houses(jd, lat, lon, hsys):
-    """ Returns lists of houses and angles. """
-    hsys = SWE_HOUSESYS[hsys]
-    hlist, ascmc = swisseph.houses(jd, lat, lon, hsys)
-    # Add first house to the end of 'hlist' so that we can compute house sizes with an iterator
-    hlist += (hlist[0],)
-    houses = [
-        {
-            'id': const.LIST_HOUSES[i],
-            'lon': hlist[i],
-            'size': angle.distance(hlist[i], hlist[i + 1])
-        } for i in range(12)
-    ]
-    angles = [
-        {'id': const.ASC, 'lon': ascmc[0]},
-        {'id': const.MC, 'lon': ascmc[1]},
-        {'id': const.DESC, 'lon': angle.norm(ascmc[0] + 180)},
-        {'id': const.IC, 'lon': angle.norm(ascmc[1] + 180)}
-    ]
-    return houses, angles
-
 
 def swe_houses_lon(jd, lat, lon, hsys):
     """ Returns lists with house and angle longitudes. """
@@ -119,6 +113,22 @@ def swe_houses_lon(jd, lat, lon, hsys):
         angle.norm(ascmc[1] + 180)
     ]
     return hlist, angles
+
+
+def swe_houses_raw(jd: float, lat: float, lon: float, hsys: str) -> tuple:
+    """
+    Returns the list of houses cusps and angles.
+
+    From pyswisseph, the cusps are returned as a tuple of house cusps. The ascmc and additional
+    points are returned as (asc, mc, armc, vertex, equasc, coasc1, coasc2, polasc),
+    as defined in swehouse.c
+
+    This functions returns a tuple with the house cusps and the angles such as (asc, mc, desc, ic).
+    """
+    hsys = SWE_HOUSESYS[hsys]
+    cusps, ascmc = swisseph.houses(jd, lat, lon, hsys)
+    angles = (ascmc[0], ascmc[1], angle.norm(ascmc[0] + 180), angle.norm(ascmc[1] + 180))
+    return cusps, angles
 
 
 # === Fixed stars === #
