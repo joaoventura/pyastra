@@ -20,7 +20,7 @@ def is_diurnal(jd: float, lat: float, lon: float) -> bool:
 
     """
     sun_lon, sun_lat, _, _ = swe.swe_object(const.SUN, jd)
-    cusps, angles = swe.swe_houses(jd, lat, lon, const.HOUSES_DEFAULT)
+    _, angles = swe.swe_houses(jd, lat, lon, const.HOUSES_DEFAULT)
     mc_lon = angles[1]
     sun_ra, sun_decl = utils.eq_coords(sun_lon, sun_lat)
     mc_ra, _ = utils.eq_coords(mc_lon, 0.0)

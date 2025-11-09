@@ -8,14 +8,15 @@ Objects are treated as python dicts and jd/lat/lon as floats.
 
 from pyastra import angle
 from pyastra import const
+from pyastra.object import Object, House, GenericObject, FixedStar
+from pyastra.lists import HouseList, GenericList
 
-from . import swe
-from . import tools
+from . import swe, tools
 
 
 # === Objects === #
 
-def get_object(obj_id, jd, lat, lon):
+def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
     """ Returns an object for a specific date and location. """
     obj_lon, obj_lat, lon_speed, lat_speed = 0, 0, 0, 0
 
@@ -42,12 +43,13 @@ def get_object(obj_id, jd, lat, lon):
     }
 
     _sign_info(obj)
-    return obj
+    return Object.from_dict(obj)
 
 
 # === Houses === #
 
-def get_houses(jd, lat, lon, hsys):
+def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) \
+        -> tuple[HouseList, GenericList]:
     """ Returns lists of houses and angles. """
     cusps, ascmc = swe.swe_houses(jd, lat, lon, hsys)
     cusps += (cusps[0],)
@@ -69,12 +71,14 @@ def get_houses(jd, lat, lon, hsys):
     for a in angles:
         _sign_info(a)
 
-    return houses, angles
+    house_list = [House.from_dict(house) for house in houses]
+    angle_list = [GenericObject.from_dict(angle) for angle in angles]
+    return HouseList(house_list), GenericList(angle_list)
 
 
 # === Fixed stars === #
 
-def get_fixed_star(obj_id, jd):
+def create_fixed_star(obj_id: str, jd: float) -> FixedStar:
     """ Returns a fixed star. """
     mag, lon, lat = swe.swe_fixed_star(obj_id, jd)
     star = {
@@ -84,12 +88,12 @@ def get_fixed_star(obj_id, jd):
         'lat': lat
     }
     _sign_info(star)
-    return star
+    return FixedStar.from_dict(star)
 
 
 # === Other functions === #
 
-def _sign_info(obj):
+def _sign_info(obj: dict):
     """ Appends the sign id and longitude to an object. """
     lon = obj['lon']
     obj.update({

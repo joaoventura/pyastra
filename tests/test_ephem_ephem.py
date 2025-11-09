@@ -21,14 +21,14 @@ class BaseTest(unittest.TestCase):
 
     def _test_house(self, house_id):
         """Tests a house."""
-        houses, angles = ephem.get_houses(self.date, self.pos, const.HOUSES_ALCABITUS)
+        houses, angles = ephem.get_houses_and_angles(self.date, self.pos, const.HOUSES_ALCABITUS)
         house = houses.get(house_id)
         self.assertAlmostEqual(house.lon, VALUES[house_id]['lon'], 2)
         self.assertEqual(house.sign, VALUES[house_id]['sign'])
 
     def _test_angle(self, obj_id):
         """Tests an angle."""
-        houses, angles = ephem.get_houses(self.date, self.pos, const.HOUSES_ALCABITUS)
+        houses, angles = ephem.get_houses_and_angles(self.date, self.pos, const.HOUSES_ALCABITUS)
         angle = angles.get(obj_id)
         self.assertAlmostEqual(angle.lon, VALUES[obj_id]['lon'], 2)
         self.assertEqual(angle.sign, VALUES[obj_id]['sign'])
