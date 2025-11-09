@@ -1,39 +1,16 @@
 import unittest
 
 from pyastra import const
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
 from pyastra.ephem import ephem
-
-
-VALUES = {
-    const.SUN: {'lon': 352.790, 'lat': 0.000, 'sign': const.PISCES},
-    const.MOON: {'lon': 262.381, 'lat': 5.029, 'sign': const.SAGITTARIUS},
-    const.MERCURY: {'lon': 330.815, 'lat': -2.016, 'sign': const.PISCES},
-    const.VENUS: {'lon': 25.503, 'lat': -0.101, 'sign': const.ARIES},
-    const.NORTH_NODE: {'lon': 191.141, 'lat': 0.000, 'sign': const.LIBRA},
-    const.SOUTH_NODE: {'lon': 11.141, 'lat': 0.000, 'sign': const.ARIES},
-    const.PARS_FORTUNA: {'lon': 63.049, 'lat': 0.000, 'sign': const.GEMINI},
-    const.SYZYGY: {'lon': 164.839, 'lat': -2.235, 'sign': const.VIRGO},
-
-    const.HOUSE1: {'lon': 153.458, 'sign': const.VIRGO},
-    const.HOUSE4: {'lon': 239.317, 'sign': const.SCORPIO},
-    const.HOUSE7: {'lon': 333.458, 'sign': const.PISCES},
-    const.HOUSE10: {'lon': 59.317, 'sign': const.TAURUS},
-
-    const.ASC: {'lon': 153.458, 'sign': const.VIRGO},
-    const.IC: {'lon': 239.317, 'sign': const.SCORPIO},
-    const.DESC: {'lon': 333.458, 'sign': const.PISCES},
-    const.MC: {'lon': 59.317, 'sign': const.TAURUS},
-}
+from tests.fixtures.common import date, pos, VALUES
 
 
 class BaseTest(unittest.TestCase):
     """Base for all ephem tests."""
 
     def setUp(self):
-        self.date = Datetime('2015/03/13', '17:00', '+00:00')
-        self.pos = GeoPos('38n32', '8w54')
+        self.date = date
+        self.pos = pos
 
     def _test_object(self, obj_id):
         """Tests an object."""
