@@ -17,7 +17,10 @@ from . import swe, tools
 # === Objects === #
 
 def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
-    """ Returns an object for a specific date and location. """
+    """
+    Returns an object for a specific date and location.
+
+    """
     obj_lon, obj_lat, lon_speed, lat_speed = 0, 0, 0, 0
 
     if obj_id == const.SOUTH_NODE:
@@ -34,46 +37,48 @@ def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
     else:
         obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(obj_id, jd)
 
-    obj = {
-        'id': obj_id,
-        'lon': obj_lon,
-        'lat': obj_lat,
-        'lonspeed': lon_speed,
-        'latspeed': lat_speed
-    }
-
-    _sign_info(obj)
-    return Object.from_dict(obj)
+    obj = Object(
+        id = obj_id,
+        lon = obj_lon,
+        lat = obj_lat,
+        lonspeed = lon_speed,
+        latspeed = lat_speed
+    )
+    _update_sign_info(obj)
+    return obj
 
 
 # === Houses === #
 
 def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) \
         -> tuple[HouseList, GenericList]:
-    """ Returns lists of houses and angles. """
+    """
+    Returns lists of houses and angles.
+
+    """
     cusps, ascmc = swe.swe_houses(jd, lat, lon, hsys)
     cusps += (cusps[0],)
-    houses = [
-        {
-            'id': const.LIST_HOUSES[i],
-            'lon': cusps[i],
-            'size': angle.distance(cusps[i], cusps[i + 1])
-        } for i in range(12)
-    ]
-    angles = [
-        {'id': const.ASC, 'lon': ascmc[0]},
-        {'id': const.MC, 'lon': ascmc[1]},
-        {'id': const.DESC, 'lon': angle.norm(ascmc[0] + 180)},
-        {'id': const.IC, 'lon': angle.norm(ascmc[1] + 180)}
-    ]
-    for h in houses:
-        _sign_info(h)
-    for a in angles:
-        _sign_info(a)
 
-    house_list = [House.from_dict(house) for house in houses]
-    angle_list = [GenericObject.from_dict(angle) for angle in angles]
-    return HouseList(house_list), GenericList(angle_list)
+    houses = [
+        House(
+            id = const.LIST_HOUSES[i],
+            lon = cusps[i],
+            size = angle.distance(cusps[i], cusps[i+1])
+        ) for i in range(12)
+    ]
+    for house in houses:
+        _update_sign_info(house)
+
+    angles = [
+        GenericObject(id=const.ASC, lon=ascmc[0]),
+        GenericObject(id=const.MC, lon=ascmc[1]),
+        GenericObject(id=const.DESC, lon=angle.norm(ascmc[0] + 180)),
+        GenericObject(id=const.IC, lon=angle.norm(ascmc[1] + 180))
+    ]
+    for a in angles:
+        _update_sign_info(a)
+
+    return HouseList(houses), GenericList(angles)
 
 
 # === Fixed stars === #
@@ -81,22 +86,22 @@ def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) \
 def create_fixed_star(obj_id: str, jd: float) -> FixedStar:
     """ Returns a fixed star. """
     mag, lon, lat = swe.swe_fixed_star(obj_id, jd)
-    star = {
-        'id': obj_id,
-        'mag': mag,
-        'lon': lon,
-        'lat': lat
-    }
-    _sign_info(star)
-    return FixedStar.from_dict(star)
+    star = FixedStar(
+        id = obj_id,
+        mag = mag,
+        lon = lon,
+        lat = lat,
+    )
+    _update_sign_info(star)
+    return star
 
 
-# === Other functions === #
+# === Sign information === #
 
-def _sign_info(obj: dict):
-    """ Appends the sign id and longitude to an object. """
-    lon = obj['lon']
-    obj.update({
-        'sign': const.LIST_SIGNS[int(lon / 30)],
-        'signlon': lon % 30
-    })
+def _update_sign_info(obj: GenericObject):
+    """
+    Appends the sign information to a Generic Object.
+
+    """
+    obj.sign = const.LIST_SIGNS[int(obj.lon / 30)]
+    obj.signlon = obj.lon % 30
