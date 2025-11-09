@@ -26,8 +26,6 @@ class GenericObject:
         self.type = const.OBJ_GENERIC
         self.lon = 0.0
         self.lat = 0.0
-        self.sign = const.ARIES
-        self.signlon = 0.0
         self.__dict__.update(kwargs)
 
     @classmethod
@@ -46,6 +44,16 @@ class GenericObject:
         return f'<{self.id} {self.sign} {lon}>'
 
     # === Properties === #
+
+    @property
+    def sign(self) -> str:
+        """ Object sign (from longitude). """
+        return const.LIST_SIGNS[int(self.lon / 30)]
+
+    @property
+    def signlon(self) -> float:
+        """ Object longitude in sign. """
+        return self.lon % 30
 
     def orb(self):
         """ Returns the orb of this object. """
