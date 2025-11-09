@@ -17,27 +17,29 @@ from . import tools
 
 def get_object(obj_id, jd, lat, lon):
     """ Returns an object for a specific date and location. """
+    obj_lon, obj_lat, lon_speed, lat_speed = 0, 0, 0, 0
+
     if obj_id == const.SOUTH_NODE:
-        obj = swe.swe_object(const.NORTH_NODE, jd)
-        obj.update({
-            'id': const.SOUTH_NODE,
-            'lon': angle.norm(obj['lon'] + 180)
-        })
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object_raw(const.NORTH_NODE, jd)
+        obj_lon = angle.norm(obj_lon + 180)
+
     elif obj_id == const.PARS_FORTUNA:
-        pflon = tools.pf_lon(jd, lat, lon)
-        obj = {
-            'id': obj_id,
-            'lon': pflon,
-            'lat': 0,
-            'lonspeed': 0,
-            'latspeed': 0
-        }
+        obj_lon = tools.pf_lon(jd, lat, lon)
+
     elif obj_id == const.SYZYGY:
-        szjd = tools.syzygy_jd(jd)
-        obj = swe.swe_object(const.MOON, szjd)
-        obj['id'] = const.SYZYGY
+        syzygy_jd = tools.syzygy_jd(jd)
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object_raw(const.MOON, syzygy_jd)
+
     else:
-        obj = swe.swe_object(obj_id, jd)
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object_raw(obj_id, jd)
+
+    obj = {
+        'id': obj_id,
+        'lon': obj_lon,
+        'lat': obj_lat,
+        'lonspeed': lon_speed,
+        'latspeed': lat_speed
+    }
 
     _sign_info(obj)
     return obj
@@ -47,11 +49,26 @@ def get_object(obj_id, jd, lat, lon):
 
 def get_houses(jd, lat, lon, hsys):
     """ Returns lists of houses and angles. """
-    houses, angles = swe.swe_houses(jd, lat, lon, hsys)
+    cusps, ascmc = swe.swe_houses_raw(jd, lat, lon, hsys)
+    cusps += (cusps[0],)
+    houses = [
+        {
+            'id': const.LIST_HOUSES[i],
+            'lon': cusps[i],
+            'size': angle.distance(cusps[i], cusps[i + 1])
+        } for i in range(12)
+    ]
+    angles = [
+        {'id': const.ASC, 'lon': ascmc[0]},
+        {'id': const.MC, 'lon': ascmc[1]},
+        {'id': const.DESC, 'lon': angle.norm(ascmc[0] + 180)},
+        {'id': const.IC, 'lon': angle.norm(ascmc[1] + 180)}
+    ]
     for h in houses:
         _sign_info(h)
     for a in angles:
         _sign_info(a)
+
     return houses, angles
 
 
