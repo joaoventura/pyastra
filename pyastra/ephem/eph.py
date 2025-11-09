@@ -24,7 +24,7 @@ def get_object(obj_id, jd, lat, lon):
         obj_lon = angle.norm(obj_lon + 180)
 
     elif obj_id == const.PARS_FORTUNA:
-        obj_lon = tools.pf_lon(jd, lat, lon)
+        obj_lon = tools.pars_fortuna_lon(jd, lat, lon)
 
     elif obj_id == const.SYZYGY:
         syzygy_jd = tools.syzygy_jd(jd)

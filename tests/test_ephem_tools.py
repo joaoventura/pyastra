@@ -48,7 +48,7 @@ class ToolsTest(BaseTest):
         self.assertAlmostEqual(ns, 2457096.208, 2)
 
     def test_pars_fortuna_lon(self):
-        pf_lon = tools.pf_lon(self.date.jd, self.pos.lat, self.pos.lon)
+        pf_lon = tools.pars_fortuna_lon(self.date.jd, self.pos.lat, self.pos.lon)
         self.assertAlmostEqual(pf_lon, 63.049, 2)
 
     def test_syzygy_jd(self):
