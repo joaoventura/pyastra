@@ -37,9 +37,9 @@ class SweTests(unittest.TestCase):
         self.assertAlmostEqual(ascmc[1], VALUES[const.MC]['lon'], 2)
 
     def test_sirius_position(self):
-        star_lon = swe.swe_fixed_star(const.STAR_SIRIUS, date.jd)['lon']
-        self.assertAlmostEqual(star_lon, VALUES[const.STAR_SIRIUS]['lon'], 2)
+        mag, lon, lat = swe.swe_fixed_star(const.STAR_SIRIUS, date.jd)
+        self.assertAlmostEqual(lon, VALUES[const.STAR_SIRIUS]['lon'], 2)
 
     def test_regulus_position(self):
-        star_lon = swe.swe_fixed_star(const.STAR_REGULUS, date.jd)['lon']
-        self.assertAlmostEqual(star_lon, VALUES[const.STAR_REGULUS]['lon'], 2)
+        mag, lon, lat = swe.swe_fixed_star(const.STAR_REGULUS, date.jd)
+        self.assertAlmostEqual(lon, VALUES[const.STAR_REGULUS]['lon'], 2)

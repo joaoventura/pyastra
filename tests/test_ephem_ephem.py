@@ -33,6 +33,13 @@ class BaseTest(unittest.TestCase):
         self.assertAlmostEqual(angle.lon, VALUES[obj_id]['lon'], 2)
         self.assertEqual(angle.sign, VALUES[obj_id]['sign'])
 
+    def _test_fixed_star(self, obj_id):
+        """Tests a fixed star."""
+        obj = ephem.get_fixed_star(obj_id, self.date)
+        self.assertAlmostEqual(obj.lon, VALUES[obj_id]['lon'], 2)
+        self.assertAlmostEqual(obj.lat, VALUES[obj_id]['lat'], 2)
+        self.assertEqual(obj.sign, VALUES[obj_id]['sign'])
+
 
 class ObjectTest(BaseTest):
     """Tests object."""
@@ -92,3 +99,13 @@ class AngleTest(BaseTest):
 
     def test_mc(self):
         self._test_angle(const.MC)
+
+
+class FixedStarTest(BaseTest):
+    """Tests the fixed stars."""
+
+    def test_fixed_star_sirius(self):
+        self._test_fixed_star(const.STAR_SIRIUS)
+
+    def test_fixed_star_regulus(self):
+        self._test_fixed_star(const.STAR_REGULUS)

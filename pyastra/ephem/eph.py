@@ -76,7 +76,13 @@ def get_houses(jd, lat, lon, hsys):
 
 def get_fixed_star(obj_id, jd):
     """ Returns a fixed star. """
-    star = swe.swe_fixed_star(obj_id, jd)
+    mag, lon, lat = swe.swe_fixed_star(obj_id, jd)
+    star = {
+        'id': obj_id,
+        'mag': mag,
+        'lon': lon,
+        'lat': lat
+    }
     _sign_info(star)
     return star
 
@@ -97,12 +103,12 @@ def prev_solar_return(jd, lon):
 
 def next_sunrise(jd, lat, lon):
     """ Returns the JD of the next sunrise. """
-    return swe.swe_next_transit(const.SUN, jd, lat, lon, 'RISE')
+    return swe.swe_next_transit(const.SUN, jd, lat, lon, swe.CALC_RISE)
 
 
 def next_sunset(jd, lat, lon):
     """ Returns the JD of the next sunset. """
-    return swe.swe_next_transit(const.SUN, jd, lat, lon, 'SET')
+    return swe.swe_next_transit(const.SUN, jd, lat, lon, swe.CALC_SET)
 
 
 def last_sunrise(jd, lat, lon):

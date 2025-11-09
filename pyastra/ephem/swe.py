@@ -43,6 +43,10 @@ SWE_HOUSESYS = {
     const.HOUSES_MORINUS: b'M'
 }
 
+# Flags
+CALC_RISE = swisseph.CALC_RISE
+CALC_SET = swisseph.CALC_SET
+
 
 # ==== Internal functions ==== #
 
@@ -75,7 +79,6 @@ def swe_next_transit(obj, jd, lat, lon, flag):
     
     """
     swe_obj = SWE_OBJECTS[obj]
-    flag = swisseph.CALC_RISE if flag == 'RISE' else swisseph.CALC_SET
     trans = swisseph.rise_trans(jd, swe_obj, flag, (lon, lat, 0))
     return trans[1][0]
 
@@ -100,19 +103,17 @@ def swe_houses(jd: float, lat: float, lon: float, hsys: str) -> tuple:
 
 # === Fixed stars === #
 
-# Beware: the swisseph.fixstar_mag function is really slow because it parses the fixstars.cat file
-# every time.
+def swe_fixed_star(obj_id, jd):
+    """
+    Returns a fixed star from the Ephemeris.
+    Caution: the swisseph.fixstar2_mag function is slow because it parses 'fixstars.cat' every time.
 
-def swe_fixed_star(star, jd):
-    """ Returns a fixed star from the Ephemeris. """
-    swe_list, _, _ = swisseph.fixstar2_ut(star, jd)
-    mag = swisseph.fixstar2_mag(star)
-    return {
-        'id': star,
-        'mag': mag,
-        'lon': swe_list[0],
-        'lat': swe_list[1]
-    }
+    Returns a tuple with (mag, lon, lat)
+    
+    """
+    swe_list, _, _ = swisseph.fixstar2_ut(obj_id, jd)
+    mag = swisseph.fixstar2_mag(obj_id)
+    return mag, swe_list[0], swe_list[1]
 
 
 # === Eclipses === #
