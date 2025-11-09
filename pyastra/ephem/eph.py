@@ -87,47 +87,6 @@ def get_fixed_star(obj_id, jd):
     return star
 
 
-# === Solar returns === #
-
-def next_solar_return(jd, lon):
-    """ Return the JD of the next solar return. """
-    return tools.solar_return_jd(jd, lon, True)
-
-
-def prev_solar_return(jd, lon):
-    """ Returns the JD of the previous solar return. """
-    return tools.solar_return_jd(jd, lon, False)
-
-
-# === Sunrise and sunsets === #
-
-def next_sunrise(jd, lat, lon):
-    """ Returns the JD of the next sunrise. """
-    return swe.swe_next_transit(const.SUN, jd, lat, lon, swe.CALC_RISE)
-
-
-def next_sunset(jd, lat, lon):
-    """ Returns the JD of the next sunset. """
-    return swe.swe_next_transit(const.SUN, jd, lat, lon, swe.CALC_SET)
-
-
-def last_sunrise(jd, lat, lon):
-    """ Returns the JD of the last sunrise. """
-    return next_sunrise(jd - 1.0, lat, lon)
-
-
-def last_sunset(jd, lat, lon):
-    """ Returns the JD of the last sunset. """
-    return next_sunset(jd - 1.0, lat, lon)
-
-
-# === Stations === #
-
-def next_station(obj_id, jd):
-    """ Returns the approximate jd of the next station. """
-    return tools.next_station_jd(obj_id, jd)
-
-
 # === Other functions === #
 
 def _sign_info(obj):

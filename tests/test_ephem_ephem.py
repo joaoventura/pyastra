@@ -109,3 +109,55 @@ class FixedStarTest(BaseTest):
 
     def test_fixed_star_regulus(self):
         self._test_fixed_star(const.STAR_REGULUS)
+
+
+class SolarReturnTest(BaseTest):
+    """Tests solar returns."""
+
+    def test_next_solar_return(self):
+        sr_date = ephem.next_solar_return(date, VALUES[const.SUN]['lon'] + 1)
+        self.assertAlmostEqual(sr_date.jd, 2457096.210, 2)
+
+    def test_prev_solar_return(self):
+        sr_date = ephem.prev_solar_return(date, VALUES[const.SUN]['lon'] - 1)
+        self.assertAlmostEqual(sr_date.jd, 2457094.206, 2)
+
+
+class SunRiseAndSetTest(BaseTest):
+    """Tests sun rises and sets."""
+
+    def test_next_sunrise(self):
+        expected = ephem.next_sunrise(date, pos)
+        self.assertAlmostEqual(expected.jd, 2457095.783, 2)
+
+    def test_next_sunset(self):
+        expected = ephem.next_sunset(date, pos)
+        self.assertAlmostEqual(expected.jd, 2457095.278, 2)
+
+    def test_last_sunrise(self):
+        expected = ephem.last_sunrise(date, pos)
+        self.assertAlmostEqual(expected.jd, 2457094.784, 2)
+
+    def test_last_sunset(self):
+        expected = ephem.last_sunset(date, pos)
+        self.assertAlmostEqual(expected.jd, 2457094.277, 2)
+
+
+class StationTest(BaseTest):
+    """Tests planet stationary."""
+
+    def test_sun_stationary(self):
+        expected = ephem.next_station(const.SUN, date)
+        self.assertIsNone(expected)
+
+    def test_moon_stationary(self):
+        expected = ephem.next_station(const.MOON, date)
+        self.assertIsNone(expected)
+
+    def test_mercury_stationary(self):
+        expected = ephem.next_station(const.MERCURY, date)
+        self.assertAlmostEqual(expected.jd, 2457161.708, 2)
+
+    def test_venus_stationary(self):
+        expected = ephem.next_station(const.VENUS, date)
+        self.assertAlmostEqual(expected.jd, 2457229.208, 2)
