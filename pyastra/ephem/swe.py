@@ -48,52 +48,36 @@ CALC_RISE = swisseph.CALC_RISE
 CALC_SET = swisseph.CALC_SET
 
 
-# ==== Internal functions ==== #
-
-def set_path(path):
+def set_path(path: str):
     """ Sets the path for the swe files. """
     swisseph.set_ephe_path(path)
 
 
-# === Object functions === #
-
-def swe_object(obj: str, jd: float) -> tuple:
+def swe_object(obj_id: str, jd: float) -> tuple:
     """
-    Returns raw positional data of an object from the Swiss Ephemeris.
+    Get raw positional data of an object from the ephemeris.
 
     The tuple returned from pyswisseph is a 6-element tuple containing:
     - (lon, lat, distance, lon_speed, lat_speed, dist_speed).
 
-    This functions returns a tuple with (lon, lat, lon_speed, lat_speed).
+    Returns a tuple with (lon, lat, lon_speed, lat_speed).
 
     """
-    swe_obj = SWE_OBJECTS[obj]
+    swe_obj = SWE_OBJECTS[obj_id]
     swe_list, _ = swisseph.calc_ut(jd, swe_obj, swisseph.FLG_SPEED)
     return swe_list[0], swe_list[1], swe_list[3], swe_list[4]
 
 
-def swe_next_transit(obj, jd, lat, lon, flag):
-    """
-    Returns the julian date of the next transit of an object.
-    The flag should be 'RISE' or 'SET'.
-    
-    """
-    swe_obj = SWE_OBJECTS[obj]
-    trans = swisseph.rise_trans(jd, swe_obj, flag, (lon, lat, 0))
-    return trans[1][0]
-
-
-# === Houses and angles === #
-
 def swe_houses(jd: float, lat: float, lon: float, hsys: str) -> tuple:
     """
-    Returns the list of houses cusps and angles.
+    Get the list of houses cusps and angles from the ephemeris.
 
     From pyswisseph, the cusps are returned as a tuple of house cusps. The ascmc and additional
     points are returned as (asc, mc, armc, vertex, equasc, coasc1, coasc2, polasc),
     as defined in swehouse.c
 
-    This functions returns a tuple with the house cusps and the angles such as (asc, mc, desc, ic).
+    Returns a tuple with the house cusps and the angles such as (asc, mc, desc, ic).
+
     """
     hsys = SWE_HOUSESYS[hsys]
     cusps, ascmc = swisseph.houses(jd, lat, lon, hsys)
@@ -101,19 +85,29 @@ def swe_houses(jd: float, lat: float, lon: float, hsys: str) -> tuple:
     return cusps, angles
 
 
-# === Fixed stars === #
-
-def swe_fixed_star(obj_id, jd):
+def swe_fixed_star(obj_id: str, jd: float) -> tuple:
     """
-    Returns a fixed star from the Ephemeris.
+    Get a fixed star from the ephemeris.
     Caution: the swisseph.fixstar2_mag function is slow because it parses 'fixstars.cat' every time.
 
-    Returns a tuple with (mag, lon, lat)
-    
+    Returns a tuple with (mag, lon, lat).
+
     """
     swe_list, _, _ = swisseph.fixstar2_ut(obj_id, jd)
     mag = swisseph.fixstar2_mag(obj_id)
     return mag, swe_list[0], swe_list[1]
+
+
+def swe_next_transit(obj_id: str, jd: float, lat: float, lon: float, flag: int) -> float:
+    """
+    Get the julian date of the next transit of an object.
+    Transit can be CALC_RISE, CALC_SET, or CALC_MTRANSIT (for meridian)
+
+    Returns a float with the julian date.
+    """
+    swe_obj = SWE_OBJECTS[obj_id]
+    trans = swisseph.rise_trans(jd, swe_obj, flag, (lon, lat, 0))
+    return trans[1][0]
 
 
 # === Eclipses === #
