@@ -13,78 +13,94 @@ from . import swe
 MAX_ERROR = 0.0003
 
 
-# === Object positions === #
+def is_diurnal(jd: float, lat: float, lon: float) -> bool:
+    """
+    Returns if the sun is above the horizon for a given date and location.
+    It computes the result using the sun's and MC's Right Ascension and Declination values.
 
-def pf_lon(jd, lat, lon):
-    """ Returns the ecliptic longitude of Pars Fortuna. """
-    sun = swe.swe_object_lon(const.SUN, jd)
-    moon = swe.swe_object_lon(const.MOON, jd)
-    asc = swe.swe_houses_lon(jd, lat, lon,
-                             const.HOUSES_DEFAULT)[1][0]
+    """
+    sun_lon, sun_lat, _, _ = swe.swe_object(const.SUN, jd)
+    _, angles = swe.swe_houses(jd, lat, lon, const.HOUSES_DEFAULT)
+    mc_lon = angles[1]
+    sun_ra, sun_decl = utils.eq_coords(sun_lon, sun_lat)
+    mc_ra, _ = utils.eq_coords(mc_lon, 0.0)
+    return utils.is_above_horizon(sun_ra, sun_decl, mc_ra, lat)
+
+
+def pars_fortuna_lon(jd: float, lat: float, lon: float) -> float:
+    """
+    Returns the ecliptic longitude of Pars Fortuna.
+    It computes the longitude using the respective diurnal and nocturnal formulas.
+
+    """
+    sun_lon, _, _, _ = swe.swe_object(const.SUN, jd)
+    moon_lon, _, _, _ = swe.swe_object(const.MOON, jd)
+    asc_lon = swe.swe_houses(jd, lat, lon, const.HOUSES_DEFAULT)[1][0]
 
     if is_diurnal(jd, lat, lon):
-        return angle.norm(asc + moon - sun)
-    return angle.norm(asc + sun - moon)
-
-
-# === Diurnal  === #
-
-def is_diurnal(jd, lat, lon):
-    """ Returns if the sun is above the horizon for a given date and location. """
-    sun = swe.swe_object(const.SUN, jd)
-    mc = swe.swe_houses_lon(jd, lat, lon,
-                            const.HOUSES_DEFAULT)[1][1]
-    ra, decl = utils.eq_coords(sun['lon'], sun['lat'])
-    mc_ra, _ = utils.eq_coords(mc, 0.0)
-    return utils.is_above_horizon(ra, decl, mc_ra, lat)
+        return angle.norm(asc_lon + moon_lon - sun_lon)
+    return angle.norm(asc_lon + sun_lon - moon_lon)
 
 
 # === Iterative algorithms === #
 
-def syzygy_jd(jd):
-    """ Finds the latest new or full moon and returns the julian date of that event. """
-    sun = swe.swe_object_lon(const.SUN, jd)
-    moon = swe.swe_object_lon(const.MOON, jd)
-    dist = angle.distance(sun, moon)
+def syzygy_jd(jd: float) -> float:
+    """
+    Finds the previous new moon or full moon and returns the julian date of that event.
+    The syzygy is the location of the pre-natal moon (new moon or full moon).
 
-    # Offset represents the Syzygy type.
-    # Zero is conjunction and 180 is opposition.
+    """
+    sun_lon, _, _, _ = swe.swe_object(const.SUN, jd)
+    moon_lon, _, _, _ = swe.swe_object(const.MOON, jd)
+    dist = angle.distance(sun_lon, moon_lon)
+
+    # Offset represents the Syzygy type, where zero is conjunction and 180 is opposition.
     offset = 180 if (dist >= 180) else 0
     while abs(dist) > MAX_ERROR:
         jd = jd - dist / 13.1833  # Moon mean daily motion
-        sun = swe.swe_object_lon(const.SUN, jd)
-        moon = swe.swe_object_lon(const.MOON, jd)
-        dist = angle.closest_distance(sun - offset, moon)
+        sun_lon, _, _, _ = swe.swe_object(const.SUN, jd)
+        moon_lon, _, _, _ = swe.swe_object(const.MOON, jd)
+        dist = angle.closest_distance(sun_lon - offset, moon_lon)
     return jd
 
 
-def solar_return_jd(jd, lon, forward=True):
+def solar_return_jd(jd: float, lon: float, forward:str=True) -> float:
     """
-    Finds the julian date before or after 'jd' when the sun is at longitude 'lon'.
+    Finds the julian date before or after 'jd' when the sun is at longitude given by 'lon'.
     It searches forward by default.
     
     """
-    sun = swe.swe_object_lon(const.SUN, jd)
+    sun_lon, _, _, _ = swe.swe_object(const.SUN, jd)
     if forward:
-        dist = angle.distance(sun, lon)
+        dist = angle.distance(sun_lon, lon)
     else:
-        dist = -angle.distance(lon, sun)
+        dist = -angle.distance(lon, sun_lon)
 
     while abs(dist) > MAX_ERROR:
-        jd = jd + dist / 0.9833  # Sun mean motion
-        sun = swe.swe_object_lon(const.SUN, jd)
-        dist = angle.closest_distance(sun, lon)
+        jd = jd + dist / 0.9833  # Sun mean daily motion
+        sun_lon, _, _, _ = swe.swe_object(const.SUN, jd)
+        dist = angle.closest_distance(sun_lon, lon)
     return jd
 
 
-# === Other algorithms === #
+def find_next_station(obj_id: str, jd: float) -> tuple | None:
+    """
+    Finds the approximate julian date and type of the next planetary station.
+    A station occurs when the planet's longitudinal speed crosses zero.
 
-def next_station_jd(obj_id, jd):
-    """ Finds the aproximate julian date of the next station of a planet. """
-    speed = swe.swe_object(obj_id, jd)['lonspeed']
-    for i in range(2000):
-        nextjd = jd + i / 2
-        nextspeed = swe.swe_object(obj_id, nextjd)['lonspeed']
-        if speed * nextspeed <= 0:
-            return nextjd
+    Returns a tuple containing the julian date and the type of station (direct to retrograde or
+    vice versa).
+
+    """
+    _, _, initial_speed, _ = swe.swe_object(obj_id, jd)
+    for i in range(1, 2000):
+        next_jd = jd + i / 2
+        _, _, next_lon_speed, _ = swe.swe_object(obj_id, next_jd)
+        if initial_speed * next_lon_speed <= 0:
+            if initial_speed > 0:
+                station_type = const.STATION_TO_RETROGRADE
+            else:
+                station_type = const.STATION_TO_DIRECT
+
+            return next_jd, station_type
     return None

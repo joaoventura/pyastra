@@ -7,137 +7,154 @@ PyAstra users will want to use this module for accessing the ephemeris.
     
 """
 
+from pyastra import const
 from pyastra.datetime import Datetime
-from pyastra.object import GenericObject, Object, House, FixedStar
+from pyastra.geopos import GeoPos
+from pyastra.object import Object, FixedStar
 from pyastra.lists import GenericList, ObjectList, HouseList, FixedStarList
 
-from . import eph
-from . import swe
+from . import builder, swe, tools
 
 
 # === Objects === #
 
-def get_object(obj_id, date, pos):
-    """ Returns an ephemeris object. """
-    obj = eph.get_object(obj_id, date.jd, pos.lat, pos.lon)
-    return Object.from_dict(obj)
+def get_object(obj_id: str, date: Datetime, pos: GeoPos) -> Object:
+    """
+    Returns an ephemeris object.
+
+    """
+    return builder.create_object(obj_id, date.jd, pos.lat, pos.lon)
 
 
-def get_object_list(ids, date, pos):
-    """ Returns a list of objects. """
+def get_objects(ids: list, date: Datetime, pos: GeoPos) -> ObjectList:
+    """
+    Returns a list of objects.
+
+    """
     obj_list = [get_object(ID, date, pos) for ID in ids]
     return ObjectList(obj_list)
 
 
 # === Houses and angles === #
 
-def get_houses(date, pos, hsys):
+def get_houses_and_angles(date: Datetime, pos: GeoPos, hsys: str) -> tuple:
     """
     Returns the lists of houses and angles.
     Since houses and angles are computed at the same time, this function should be fast.
     
     """
-    houses, angles = eph.get_houses(date.jd, pos.lat, pos.lon, hsys)
-    house_list = [House.from_dict(house) for house in houses]
-    angle_list = [GenericObject.from_dict(angle) for angle in angles]
-    return HouseList(house_list), GenericList(angle_list)
+    return builder.create_houses_and_angles(date.jd, pos.lat, pos.lon, hsys)
 
 
-def get_house_list(date, pos, hsys):
-    """ Returns a list of houses. """
-    houses, _ = get_houses(date, pos, hsys)
+def get_houses(date: Datetime, pos: GeoPos, hsys: str) -> HouseList:
+    """
+    Returns a list of houses.
+
+    """
+    houses, _ = get_houses_and_angles(date, pos, hsys)
     return houses
 
 
-def get_angle_list(date, pos, hsys):
-    """ Returns a list of angles (Asc, MC..) """
-    _, angles = get_houses(date, pos, hsys)
+def get_angles(date: Datetime, pos: GeoPos, hsys: str) -> GenericList:
+    """
+    Returns a list of angles (Asc, MC.)
+
+    """
+    _, angles = get_houses_and_angles(date, pos, hsys)
     return angles
 
 
 # === Fixed stars === #
 
-def get_fixed_star(obj_id, date):
-    """ Returns a fixed star from the ephemeris. """
-    star = eph.get_fixed_star(obj_id, date.jd)
-    return FixedStar.from_dict(star)
+def get_fixed_star(obj_id: str, date: Datetime) -> FixedStar:
+    """
+    Returns a fixed star from the ephemeris.
+
+    """
+    return builder.create_fixed_star(obj_id, date.jd)
 
 
-def get_fixed_star_list(ids, date):
-    """ Returns a list of fixed stars. """
+def get_fixed_stars(ids: list, date: Datetime) -> FixedStarList:
+    """
+    Returns a list of fixed stars.
+
+    """
     star_list = [get_fixed_star(ID, date) for ID in ids]
     return FixedStarList(star_list)
 
 
 # === Solar returns === #
 
-def next_solar_return(date, lon):
-    """ Returns the next date when sun is at longitude 'lon'. """
-    jd = eph.next_solar_return(date.jd, lon)
+def next_solar_return(date: Datetime, lon: float) -> Datetime:
+    """
+    Returns the next date when sun will be at longitude 'lon'.
+
+    """
+    jd = tools.solar_return_jd(date.jd, lon, True)
     return Datetime.from_jd(jd, date.utcoffset)
 
 
-def prev_solar_return(date, lon):
-    """ Returns the previous date when sun is at longitude 'lon'. """
-    jd = eph.prev_solar_return(date.jd, lon)
+def prev_solar_return(date: Datetime, lon: float) -> Datetime:
+    """
+    Returns the previous date when sun was at longitude 'lon'.
+
+    """
+    jd = tools.solar_return_jd(date.jd, lon, False)
     return Datetime.from_jd(jd, date.utcoffset)
 
 
 # === Sunrise and sunsets === #
 
-def next_sunrise(date, pos):
-    """ Returns the date of the next sunrise. """
-    jd = eph.next_sunrise(date.jd, pos.lat, pos.lon)
+def next_sunrise(date: Datetime, pos: GeoPos) -> Datetime:
+    """
+    Returns the date of the next sunrise relative to 'date'.
+
+    """
+    jd = swe.swe_next_transit(const.SUN, date.jd, pos.lat, pos.lon, swe.CALC_RISE)
     return Datetime.from_jd(jd, date.utcoffset)
 
 
-def next_sunset(date, pos):
-    """ Returns the date of the next sunset. """
-    jd = eph.next_sunset(date.jd, pos.lat, pos.lon)
+def next_sunset(date: Datetime, pos: GeoPos) -> Datetime:
+    """
+    Returns the date of the next sunset relative to 'date'.
+
+    """
+    jd = swe.swe_next_transit(const.SUN, date.jd, pos.lat, pos.lon, swe.CALC_SET)
     return Datetime.from_jd(jd, date.utcoffset)
 
 
-def last_sunrise(date, pos):
-    """ Returns the date of the last sunrise. """
-    jd = eph.last_sunrise(date.jd, pos.lat, pos.lon)
-    return Datetime.from_jd(jd, date.utcoffset)
+def prev_sunrise(date: Datetime, pos: GeoPos) -> Datetime:
+    """
+    Returns the date of the previous sunrise relative to 'date'.
+
+    """
+    new_date = Datetime.from_jd(date.jd - 1, date.utcoffset)
+    return next_sunrise(new_date, pos)
 
 
-def last_sunset(date, pos):
-    """ Returns the date of the last sunset. """
-    jd = eph.last_sunset(date.jd, pos.lat, pos.lon)
-    return Datetime.from_jd(jd, date.utcoffset)
+def prev_sunset(date: Datetime, pos: GeoPos) -> Datetime:
+    """
+    Returns the date of the previous sunset relative to 'date'.
+
+    """
+    new_date = Datetime.from_jd(date.jd - 1, date.utcoffset)
+    return next_sunset(new_date, pos)
 
 
 # === Station === #
 
-def next_station(obj_id, date):
-    """ Returns the approximate date of the next station. """
-    jd = eph.next_station(obj_id, date.jd)
-    return Datetime.from_jd(jd, date.utcoffset)
+def find_next_station(obj_id: str, date: Datetime) -> tuple | None:
+    """
+    Finds the approximate date and type of the next planetary station.
+    A station occurs when the planet's longitudinal speed crosses zero, or, in other words, when
+    the planet goes from direct to retrograde or from retrograde to direct.
 
+    Returns a tuple containing the datetime and the type of station (const.STATION_TO_DIRECT or
+    const.STATION_TO_RETROGRADE), or None if the planet does not become stationary.
+    """
+    res = tools.find_next_station(obj_id, date.jd)
+    if res:
+        station_jd, station_type = res
+        return Datetime.from_jd(station_jd, date.utcoffset), station_type
 
-# === Eclipses === #
-
-def prev_solar_eclipse(date):
-    """ Returns the Datetime of the maximum phase of the previous global solar eclipse. """
-    eclipse = swe.solar_eclipse_global(date.jd, backwards=True)
-    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)
-
-
-def next_solar_eclipse(date):
-    """ Returns the Datetime of the maximum phase of the next global solar eclipse. """
-    eclipse = swe.solar_eclipse_global(date.jd, backwards=False)
-    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)
-
-
-def prev_lunar_eclipse(date):
-    """ Returns the Datetime of the maximum phase of the previous global lunar eclipse. """
-    eclipse = swe.lunar_eclipse_global(date.jd, backwards=True)
-    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)
-
-
-def next_lunar_eclipse(date):
-    """ Returns the Datetime of the maximum phase of the next global lunar eclipse. """
-    eclipse = swe.lunar_eclipse_global(date.jd, backwards=False)
-    return Datetime.from_jd(eclipse['maximum'], date.utcoffset)
+    return None

@@ -100,6 +100,8 @@ NO_PLANET = 'None'
 DIRECT = 'Direct'
 RETROGRADE = 'Retrograde'
 STATIONARY = 'Stationary'
+STATION_TO_RETROGRADE = 'Stationary (Direct to Retrograde)'
+STATION_TO_DIRECT = 'Stationary (Retrograde to Direct)'
 
 # Mean daily motions
 MEAN_MOTION_SUN = 0.9833
