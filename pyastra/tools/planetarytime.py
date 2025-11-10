@@ -64,17 +64,17 @@ def hour_table(date, pos):
     
     """
 
-    last_sunrise = ephem.last_sunrise(date, pos)
-    middle_sunset = ephem.next_sunset(last_sunrise, pos)
+    prev_sunrise = ephem.prev_sunrise(date, pos)
+    middle_sunset = ephem.next_sunset(prev_sunrise, pos)
     next_sunrise = ephem.next_sunrise(date, pos)
     table = []
 
     # Create diurnal hour sequence
-    length = (middle_sunset.jd - last_sunrise.jd) / 12.0
+    length = (middle_sunset.jd - prev_sunrise.jd) / 12.0
     for i in range(12):
-        start = last_sunrise.jd + i * length
+        start = prev_sunrise.jd + i * length
         end = start + length
-        ruler = nth_ruler(i, last_sunrise.date.dayofweek())
+        ruler = nth_ruler(i, prev_sunrise.date.dayofweek())
         table.append([start, end, ruler])
 
     # Create nocturnal hour sequence
@@ -82,7 +82,7 @@ def hour_table(date, pos):
     for i in range(12):
         start = middle_sunset.jd + i * length
         end = start + length
-        ruler = nth_ruler(i + 12, last_sunrise.date.dayofweek())
+        ruler = nth_ruler(i + 12, prev_sunrise.date.dayofweek())
         table.append([start, end, ruler])
 
     return table

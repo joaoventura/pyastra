@@ -134,17 +134,17 @@ class SunRiseAndSetTest(BaseTest):
         expected = ephem.next_sunset(date, pos)
         self.assertAlmostEqual(expected.jd, 2457095.278, 2)
 
-    def test_last_sunrise(self):
-        expected = ephem.last_sunrise(date, pos)
+    def test_prev_sunrise(self):
+        expected = ephem.prev_sunrise(date, pos)
         self.assertAlmostEqual(expected.jd, 2457094.784, 2)
 
-    def test_last_sunset(self):
-        expected = ephem.last_sunset(date, pos)
+    def test_prev_sunset(self):
+        expected = ephem.prev_sunset(date, pos)
         self.assertAlmostEqual(expected.jd, 2457094.277, 2)
 
 
 class StationTest(BaseTest):
-    """Tests planet stationary."""
+    """Tests when planets are stationary."""
 
     def test_sun_stationary(self):
         expected = ephem.next_station(const.SUN, date)

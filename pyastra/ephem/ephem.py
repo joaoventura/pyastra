@@ -107,7 +107,7 @@ def prev_solar_return(date: Datetime, lon: float) -> Datetime:
 
 def next_sunrise(date: Datetime, pos: GeoPos) -> Datetime:
     """
-    Returns the date of the next sunrise.
+    Returns the date of the next sunrise relative to 'date'.
 
     """
     jd = swe.swe_next_transit(const.SUN, date.jd, pos.lat, pos.lon, swe.CALC_RISE)
@@ -116,25 +116,25 @@ def next_sunrise(date: Datetime, pos: GeoPos) -> Datetime:
 
 def next_sunset(date: Datetime, pos: GeoPos) -> Datetime:
     """
-    Returns the date of the next sunset.
+    Returns the date of the next sunset relative to 'date'.
 
     """
     jd = swe.swe_next_transit(const.SUN, date.jd, pos.lat, pos.lon, swe.CALC_SET)
     return Datetime.from_jd(jd, date.utcoffset)
 
 
-def last_sunrise(date: Datetime, pos: GeoPos) -> Datetime:
+def prev_sunrise(date: Datetime, pos: GeoPos) -> Datetime:
     """
-    Returns the date of the last sunrise.
+    Returns the date of the previous sunrise relative to 'date'.
 
     """
     new_date = Datetime.from_jd(date.jd - 1, date.utcoffset)
     return next_sunrise(new_date, pos)
 
 
-def last_sunset(date: Datetime, pos: GeoPos) -> Datetime:
+def prev_sunset(date: Datetime, pos: GeoPos) -> Datetime:
     """
-    Returns the date of the last sunset.
+    Returns the date of the previous sunset relative to 'date'.
 
     """
     new_date = Datetime.from_jd(date.jd - 1, date.utcoffset)
