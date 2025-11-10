@@ -48,8 +48,9 @@ def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) -> tu
 
     """
     cusps, ascmc = swe.swe_houses(jd, lat, lon, hsys)
-    cusps += (cusps[0],)
 
+    # Append the first cusp to the end to simplify size calculation in the loop
+    cusps += (cusps[0],)
     houses = [
         House(
             id = const.LIST_HOUSES[i],
