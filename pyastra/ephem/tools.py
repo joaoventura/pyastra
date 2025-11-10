@@ -44,7 +44,7 @@ def pars_fortuna_lon(jd: float, lat: float, lon: float) -> float:
 
 # === Iterative algorithms === #
 
-def syzygy_jd(jd):
+def syzygy_jd(jd: float) -> float:
     """
     Finds the previous new moon or full moon and returns the julian date of that event.
     The syzygy is the location of the pre-natal moon (new moon or full moon).
@@ -64,7 +64,7 @@ def syzygy_jd(jd):
     return jd
 
 
-def solar_return_jd(jd, lon, forward=True):
+def solar_return_jd(jd: float, lon: float, forward:str=True) -> float:
     """
     Finds the julian date before or after 'jd' when the sun is at longitude given by 'lon'.
     It searches forward by default.
@@ -83,7 +83,7 @@ def solar_return_jd(jd, lon, forward=True):
     return jd
 
 
-def next_station_jd(obj_id, jd):
+def next_station_jd(obj_id: float, jd: float) -> float:
     """
     Finds the approximate julian date of the next station of a planet.
     The station of a planet occurs when the planet is expected to have zero longitudinal speed.
