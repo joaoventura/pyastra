@@ -93,7 +93,7 @@ def find_next_station(obj_id: str, jd: float) -> tuple | None:
 
     """
     _, _, initial_speed, _ = swe.swe_object(obj_id, jd)
-    for i in range(2000):
+    for i in range(1, 2000):
         next_jd = jd + i / 2
         _, _, next_lon_speed, _ = swe.swe_object(obj_id, next_jd)
         if initial_speed * next_lon_speed <= 0:
