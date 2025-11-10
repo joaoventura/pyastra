@@ -87,7 +87,7 @@ def get_fixed_stars(ids: list, date: Datetime) -> FixedStarList:
 
 def next_solar_return(date: Datetime, lon: float) -> Datetime:
     """
-    Returns the next date when sun is at longitude 'lon'.
+    Returns the next date when sun will be at longitude 'lon'.
 
     """
     jd = tools.solar_return_jd(date.jd, lon, True)
