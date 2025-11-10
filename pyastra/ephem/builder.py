@@ -1,8 +1,7 @@
 """
 Functions for retrieving astronomical and astrological data from an ephemeris.
     
-It is as middle layer between the Swiss Ephemeris and user software.
-Objects are treated as python dicts and jd/lat/lon as floats.
+It is the middle layer between the Swiss Ephemeris and user software.
 
 """
 
@@ -13,8 +12,6 @@ from pyastra.lists import HouseList, GenericList
 
 from . import swe, tools
 
-
-# === Objects === #
 
 def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
     """
@@ -45,8 +42,6 @@ def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
     )
 
 
-# === Houses === #
-
 def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) \
         -> tuple[HouseList, GenericList]:
     """
@@ -73,8 +68,6 @@ def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) \
 
     return HouseList(houses), GenericList(angles)
 
-
-# === Fixed stars === #
 
 def create_fixed_star(obj_id: str, jd: float) -> FixedStar:
     """ Returns a fixed star. """

@@ -58,9 +58,9 @@ def swe_object(obj_id: str, jd: float) -> tuple:
     Get raw positional data of an object from the ephemeris.
 
     The tuple returned from pyswisseph is a 6-element tuple containing:
-    - (lon, lat, distance, lon_speed, lat_speed, dist_speed).
+        (lon, lat, distance, lon_speed, lat_speed, dist_speed).
 
-    Returns a tuple with (lon, lat, lon_speed, lat_speed).
+    Returns: tuple with (lon, lat, lon_speed, lat_speed).
 
     """
     swe_obj = SWE_OBJECTS[obj_id]
@@ -76,7 +76,7 @@ def swe_houses(jd: float, lat: float, lon: float, hsys: str) -> tuple:
     points are returned as (asc, mc, armc, vertex, equasc, coasc1, coasc2, polasc),
     as defined in swehouse.c
 
-    Returns a tuple with the house cusps and the angles such as (asc, mc, desc, ic).
+    Returns: tuple with the house cusps and the angles as (asc, mc, desc, ic).
 
     """
     hsys = SWE_HOUSESYS[hsys]
@@ -88,9 +88,9 @@ def swe_houses(jd: float, lat: float, lon: float, hsys: str) -> tuple:
 def swe_fixed_star(obj_id: str, jd: float) -> tuple:
     """
     Get a fixed star from the ephemeris.
-    Caution: the swisseph.fixstar2_mag function is slow because it parses 'fixstars.cat' every time.
 
-    Returns a tuple with (mag, lon, lat).
+    Caution: the swisseph.fixstar2_mag function is slow because it parses 'fixstars.cat' every time.
+    Returns: tuple with (mag, lon, lat).
 
     """
     swe_list, _, _ = swisseph.fixstar2_ut(obj_id, jd)
@@ -101,6 +101,7 @@ def swe_fixed_star(obj_id: str, jd: float) -> tuple:
 def swe_next_transit(obj_id: str, jd: float, lat: float, lon: float, flag: int) -> float:
     """
     Get the julian date of the next transit of an object.
+
     Transit can be CALC_RISE, CALC_SET, or CALC_MTRANSIT (for meridian)
 
     Returns a float with the julian date.
@@ -108,33 +109,3 @@ def swe_next_transit(obj_id: str, jd: float, lat: float, lon: float, flag: int) 
     swe_obj = SWE_OBJECTS[obj_id]
     trans = swisseph.rise_trans(jd, swe_obj, flag, (lon, lat, 0))
     return trans[1][0]
-
-
-# === Eclipses === #
-
-def solar_eclipse_global(jd, backwards):
-    """ Returns the jd details of previous or next global solar eclipse. """
-    swe_list = swisseph.sol_eclipse_when_glob(jd, backwards=backwards)
-    return {
-        'maximum': swe_list[1][0],
-        'begin': swe_list[1][2],
-        'end': swe_list[1][3],
-        'totality_begin': swe_list[1][4],
-        'totality_end': swe_list[1][5],
-        'center_line_begin': swe_list[1][6],
-        'center_line_end': swe_list[1][7],
-    }
-
-
-def lunar_eclipse_global(jd, backwards):
-    """ Returns the jd details of previous or next global lunar eclipse. """
-    swe_list = swisseph.lun_eclipse_when(jd, backwards=backwards)
-    return {
-        'maximum': swe_list[1][0],
-        'partial_begin': swe_list[1][2],
-        'partial_end': swe_list[1][3],
-        'totality_begin': swe_list[1][4],
-        'totality_end': swe_list[1][5],
-        'penumbral_begin': swe_list[1][6],
-        'penumbral_end': swe_list[1][7],
-    }
