@@ -27,25 +27,33 @@ class ToolsTest(BaseTest):
         is_diurnal = tools.is_diurnal(date.jd, self.pos.lat, self.pos.lon)
         self.assertEqual(is_diurnal, False)
 
+    def test_next_station_sun(self):
+        expected = tools.find_next_station(const.SUN, self.date.jd)
+        self.assertIsNone(expected)
+
+    def test_next_station_moon(self):
+        expected = tools.find_next_station(const.MOON, self.date.jd)
+        self.assertIsNone(expected)
+
     def test_next_station_mercury(self):
-        ns = tools.next_station_jd(const.MERCURY, self.date.jd)
-        self.assertAlmostEqual(ns, 2457161.708, 2)
+        station_jd, station_type = tools.find_next_station(const.MERCURY, self.date.jd)
+        self.assertAlmostEqual(station_jd, 2457161.708, 2)
 
     def test_next_station_venus(self):
-        ns = tools.next_station_jd(const.VENUS, self.date.jd)
-        self.assertAlmostEqual(ns, 2457229.208, 2)
+        station_jd, station_type = tools.find_next_station(const.VENUS, self.date.jd)
+        self.assertAlmostEqual(station_jd, 2457229.208, 2)
 
     def test_next_station_mars(self):
-        ns = tools.next_station_jd(const.MARS, self.date.jd)
-        self.assertAlmostEqual(ns, 2457496.208, 2)
+        station_jd, station_type = tools.find_next_station(const.MARS, self.date.jd)
+        self.assertAlmostEqual(station_jd, 2457496.208, 2)
 
     def test_next_station_jupiter(self):
-        ns = tools.next_station_jd(const.JUPITER, self.date.jd)
-        self.assertAlmostEqual(ns, 2457121.208, 2)
+        station_jd, station_type = tools.find_next_station(const.JUPITER, self.date.jd)
+        self.assertAlmostEqual(station_jd, 2457121.208, 2)
 
     def test_next_station_saturn(self):
-        ns = tools.next_station_jd(const.SATURN, self.date.jd)
-        self.assertAlmostEqual(ns, 2457096.208, 2)
+        station_jd, station_type = tools.find_next_station(const.SATURN, self.date.jd)
+        self.assertAlmostEqual(station_jd, 2457096.208, 2)
 
     def test_pars_fortuna_lon(self):
         pf_lon = tools.pars_fortuna_lon(self.date.jd, self.pos.lat, self.pos.lon)

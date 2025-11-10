@@ -147,17 +147,34 @@ class StationTest(BaseTest):
     """Tests when planets are stationary."""
 
     def test_sun_stationary(self):
-        expected = ephem.next_station_date(const.SUN, date)
+        expected = ephem.find_next_station(const.SUN, date)
         self.assertIsNone(expected)
 
     def test_moon_stationary(self):
-        expected = ephem.next_station_date(const.MOON, date)
+        expected = ephem.find_next_station(const.MOON, date)
         self.assertIsNone(expected)
 
     def test_mercury_stationary(self):
-        expected = ephem.next_station_date(const.MERCURY, date)
-        self.assertAlmostEqual(expected.jd, 2457161.708, 2)
+        station_date, station_type = ephem.find_next_station(const.MERCURY, date)
+        self.assertAlmostEqual(station_date.jd, 2457161.708, 2)
+        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
 
     def test_venus_stationary(self):
-        expected = ephem.next_station_date(const.VENUS, date)
-        self.assertAlmostEqual(expected.jd, 2457229.208, 2)
+        station_date, station_type = ephem.find_next_station(const.VENUS, date)
+        self.assertAlmostEqual(station_date.jd, 2457229.208, 2)
+        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
+
+    def test_mars_stationary(self):
+        station_date, station_type = ephem.find_next_station(const.MARS, date)
+        self.assertAlmostEqual(station_date.jd, 2457496.208, 2)
+        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
+
+    def test_jupiter_stationary(self):
+        station_date, station_type = ephem.find_next_station(const.JUPITER, date)
+        self.assertAlmostEqual(station_date.jd, 2457121.208, 2)
+        self.assertEqual(station_type, const.STATION_TO_DIRECT)
+
+    def test_saturn_stationary(self):
+        station_date, station_type = ephem.find_next_station(const.SATURN, date)
+        self.assertAlmostEqual(station_date.jd, 2457096.208, 2)
+        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)

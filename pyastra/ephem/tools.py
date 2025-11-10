@@ -83,16 +83,24 @@ def solar_return_jd(jd: float, lon: float, forward:str=True) -> float:
     return jd
 
 
-def next_station_jd(obj_id: float, jd: float) -> float:
+def find_next_station(obj_id: str, jd: float) -> tuple | None:
     """
-    Finds the approximate julian date of the next station of a planet.
-    The station of a planet occurs when the planet is expected to have zero longitudinal speed.
+    Finds the approximate julian date and type of the next planetary station.
+    A station occurs when the planet's longitudinal speed crosses zero.
+
+    Returns a tuple containing the julian date and the type of station (direct to retrograde or
+    vice versa).
 
     """
-    _, _, lon_speed, _ = swe.swe_object(obj_id, jd)
+    _, _, initial_speed, _ = swe.swe_object(obj_id, jd)
     for i in range(2000):
         next_jd = jd + i / 2
         _, _, next_lon_speed, _ = swe.swe_object(obj_id, next_jd)
-        if lon_speed * next_lon_speed <= 0:
-            return next_jd
+        if initial_speed * next_lon_speed <= 0:
+            if initial_speed > 0:
+                station_type = const.STATION_TO_RETROGRADE
+            else:
+                station_type = const.STATION_TO_DIRECT
+
+            return next_jd, station_type
     return None

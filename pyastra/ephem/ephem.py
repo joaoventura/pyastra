@@ -143,11 +143,18 @@ def prev_sunset(date: Datetime, pos: GeoPos) -> Datetime:
 
 # === Station === #
 
-def next_station_date(obj_id: float, date: Datetime) -> Datetime | None:
+def find_next_station(obj_id: str, date: Datetime) -> tuple | None:
     """
-    Returns the approximate date of the next station of an object.
-    The station of a planet occurs when the planet is expected to have zero longitudinal speed.
+    Finds the approximate date and type of the next planetary station.
+    A station occurs when the planet's longitudinal speed crosses zero, or, in other words, when
+    the planet goes from direct to retrograde or from retrograde to direct.
 
+    Returns a tuple containing the datetime and the type of station (const.STATION_TO_DIRECT or
+    const.STATION_TO_RETROGRADE), or None if the planet does not become stationary.
     """
-    jd = tools.next_station_jd(obj_id, date.jd)
-    return Datetime.from_jd(jd, date.utcoffset) if jd else None
+    res = tools.find_next_station(obj_id, date.jd)
+    if res:
+        station_jd, station_type = res
+        return Datetime.from_jd(station_jd, date.utcoffset), station_type
+
+    return None
