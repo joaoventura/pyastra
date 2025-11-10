@@ -1,6 +1,6 @@
 # PyAstra
 
-PyAstra is a python library for Traditional Astrology.
+PyAstra is a python 3.10+ library for Traditional Astrology.
 
 It is the successor of flatlib (https://github.com/flatangle/flatlib/) and it is currently under
 heavy development and rewrite.
