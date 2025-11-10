@@ -6,7 +6,6 @@ Implements a simple interface with the C Swiss Ephemeris using the pyswisseph li
 # pylint: disable=c-extension-no-member
 
 import swisseph
-from pyastra import angle
 from pyastra import const
 
 # Map objects
@@ -74,14 +73,14 @@ def swe_houses(jd: float, lat: float, lon: float, hsys: str) -> tuple:
 
     From pyswisseph, the cusps are returned as a tuple of house cusps. The ascmc and additional
     points are returned as (asc, mc, armc, vertex, equasc, coasc1, coasc2, polasc),
-    as defined in swehouse.c
+    as defined in swehouse.c.
 
-    Returns: tuple with the house cusps and the angles as (asc, mc, desc, ic).
+    Returns: tuple with (1) the house cusps and (2) the angles as (asc, mc).
 
     """
     hsys = SWE_HOUSESYS[hsys]
     cusps, ascmc = swisseph.houses(jd, lat, lon, hsys)
-    angles = (ascmc[0], ascmc[1], angle.norm(ascmc[0] + 180), angle.norm(ascmc[1] + 180))
+    angles = (ascmc[0], ascmc[1])
     return cusps, angles
 
 

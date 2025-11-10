@@ -42,10 +42,9 @@ def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
     )
 
 
-def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) \
-        -> tuple[HouseList, GenericList]:
+def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) -> tuple:
     """
-    Returns lists of houses and angles.
+    Returns tuple with the lists of houses and angles.
 
     """
     cusps, ascmc = swe.swe_houses(jd, lat, lon, hsys)
@@ -70,7 +69,10 @@ def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) \
 
 
 def create_fixed_star(obj_id: str, jd: float) -> FixedStar:
-    """ Returns a fixed star. """
+    """
+    Returns a fixed star.
+
+    """
     mag, lon, lat = swe.swe_fixed_star(obj_id, jd)
     return FixedStar(
         id = obj_id,
