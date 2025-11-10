@@ -143,9 +143,10 @@ def prev_sunset(date: Datetime, pos: GeoPos) -> Datetime:
 
 # === Station === #
 
-def next_station(obj_id: float, date: Datetime) -> Datetime | None:
+def next_station_date(obj_id: float, date: Datetime) -> Datetime | None:
     """
-    Returns the approximate date of the next station.
+    Returns the approximate date of the next station of an object.
+    The station of a planet occurs when the planet is expected to have zero longitudinal speed.
 
     """
     jd = tools.next_station_jd(obj_id, date.jd)

@@ -147,17 +147,17 @@ class StationTest(BaseTest):
     """Tests when planets are stationary."""
 
     def test_sun_stationary(self):
-        expected = ephem.next_station(const.SUN, date)
+        expected = ephem.next_station_date(const.SUN, date)
         self.assertIsNone(expected)
 
     def test_moon_stationary(self):
-        expected = ephem.next_station(const.MOON, date)
+        expected = ephem.next_station_date(const.MOON, date)
         self.assertIsNone(expected)
 
     def test_mercury_stationary(self):
-        expected = ephem.next_station(const.MERCURY, date)
+        expected = ephem.next_station_date(const.MERCURY, date)
         self.assertAlmostEqual(expected.jd, 2457161.708, 2)
 
     def test_venus_stationary(self):
-        expected = ephem.next_station(const.VENUS, date)
+        expected = ephem.next_station_date(const.VENUS, date)
         self.assertAlmostEqual(expected.jd, 2457229.208, 2)
