@@ -42,3 +42,7 @@ Homepage = "https://github.com/joaoventura/pyastra"
 
 [tool.setuptools.package-data]
 pyastra = ["resources/README.md", "resources/swefiles/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
