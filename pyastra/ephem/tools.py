@@ -77,7 +77,7 @@ def solar_return_jd(jd, lon, forward=True):
         dist = -angle.distance(lon, sun_lon)
 
     while abs(dist) > MAX_ERROR:
-        jd = jd + dist / 0.9833  # Sun mean motion
+        jd = jd + dist / 0.9833  # Sun mean daily motion
         sun_lon, _, _, _ = swe.swe_object(const.SUN, jd)
         dist = angle.closest_distance(sun_lon, lon)
     return jd
