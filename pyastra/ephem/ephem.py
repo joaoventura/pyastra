@@ -66,7 +66,7 @@ def get_angles(date: Datetime, pos: GeoPos, hsys: str) -> GenericList:
 
 # === Fixed stars === #
 
-def get_fixed_star(obj_id: float, date: Datetime) -> FixedStar:
+def get_fixed_star(obj_id: str, date: Datetime) -> FixedStar:
     """
     Returns a fixed star from the ephemeris.
 
