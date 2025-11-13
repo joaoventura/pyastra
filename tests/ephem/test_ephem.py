@@ -8,10 +8,8 @@ from tests.fixtures.common import date, pos, VALUES_TROPICAL, VALUES_SIDEREAL_FA
 
 class BaseTest(unittest.TestCase):
     """Base for all ephem tests."""
-
-    def setUp(self):
-        self.context = None
-        self.expected = None
+    context = None
+    expected = None
 
     def _test_object(self, obj_id):
         """Tests an object."""
@@ -42,20 +40,31 @@ class BaseTest(unittest.TestCase):
         self.assertEqual(obj.sign, self.expected[obj_id]['sign'])
 
 
-class BaseTropicalTests(BaseTest):
-    """Base for all ephem tests using the Tropical zodiac."""
-
-    def setUp(self):
-        self.context = ChartContext(
-            jd = date.jd,
-            lon = pos.lon,
-            lat = pos.lat
-        )
-        self.expected = VALUES_TROPICAL
+class BaseTestTropicalZodiac(BaseTest):
+    __test__ = False
+    context = ChartContext(
+        jd=date.jd,
+        lon=pos.lon,
+        lat=pos.lat
+    )
+    expected = VALUES_TROPICAL
 
 
-class ObjectTropicalTests(BaseTropicalTests):
-    """Tests objects using the tropical zodiac."""
+class BaseTestSiderealZodiac(BaseTest):
+    __test__ = False
+    context = ChartContext(
+        jd=date.jd,
+        lon=pos.lon,
+        lat=pos.lat,
+        zodiac=const.ZODIAC_SIDEREAL,
+        ayanamsa=const.AYANANMSA_FAGAN_BRADLEY
+    )
+    expected = VALUES_SIDEREAL_FAGAN_BRADLEY
+
+
+class ObjectTest(BaseTest):
+    """Tests objects."""
+    __test__ = False
 
     def test_sun(self):
         self._test_object(const.SUN)
@@ -68,6 +77,15 @@ class ObjectTropicalTests(BaseTropicalTests):
 
     def test_venus(self):
         self._test_object(const.VENUS)
+
+    def test_mars(self):
+        self._test_object(const.MARS)
+
+    def test_jupiter(self):
+        self._test_object(const.JUPITER)
+
+    def test_saturn(self):
+        self._test_object(const.SATURN)
 
     def test_north_node(self):
         self._test_object(const.NORTH_NODE)
@@ -82,24 +100,50 @@ class ObjectTropicalTests(BaseTropicalTests):
         self._test_object(const.SYZYGY)
 
 
-class HouseTropicalTests(BaseTropicalTests):
+class HouseTest(BaseTest):
     """Tests houses."""
+    __test__ = False
 
     def test_house1(self):
         self._test_house(const.HOUSE1)
 
+    def test_house2(self):
+        self._test_house(const.HOUSE2)
+
+    def test_house3(self):
+        self._test_house(const.HOUSE3)
+
     def test_house4(self):
         self._test_house(const.HOUSE4)
+
+    def test_house5(self):
+        self._test_house(const.HOUSE5)
+
+    def test_house6(self):
+        self._test_house(const.HOUSE7)
 
     def test_house7(self):
         self._test_house(const.HOUSE7)
 
+    def test_house8(self):
+        self._test_house(const.HOUSE8)
+
+    def test_house9(self):
+        self._test_house(const.HOUSE9)
+
     def test_house10(self):
         self._test_house(const.HOUSE10)
 
+    def test_house11(self):
+        self._test_house(const.HOUSE11)
 
-class AngleTropicalTests(BaseTropicalTests):
+    def test_house12(self):
+        self._test_house(const.HOUSE12)
+
+
+class AngleTest(BaseTest):
     """Tests the angles."""
+    __test__ = False
 
     def test_asc(self):
         self._test_angle(const.ASC)
@@ -114,8 +158,9 @@ class AngleTropicalTests(BaseTropicalTests):
         self._test_angle(const.MC)
 
 
-class FixedStarTropicalTests(BaseTropicalTests):
+class FixedStarTest(BaseTest):
     """Tests the fixed stars."""
+    __test__ = False
 
     def test_fixed_star_sirius(self):
         self._test_fixed_star(const.STAR_SIRIUS)
@@ -124,20 +169,22 @@ class FixedStarTropicalTests(BaseTropicalTests):
         self._test_fixed_star(const.STAR_REGULUS)
 
 
-class SolarReturnTropicalTests(BaseTropicalTests):
+class SolarReturnTest(BaseTest):
     """Tests solar returns."""
+    __test__ = False
 
     def test_next_solar_return(self):
-        sr_date = ephem.next_solar_return(date, VALUES_TROPICAL[const.SUN]['lon'] + 1)
+        sr_date = ephem.next_solar_return(date, self.expected[const.SUN]['lon'] + 1)
         self.assertAlmostEqual(sr_date.jd, 2457096.210, 2)
 
     def test_prev_solar_return(self):
-        sr_date = ephem.prev_solar_return(date, VALUES_TROPICAL[const.SUN]['lon'] - 1)
+        sr_date = ephem.prev_solar_return(date, self.expected[const.SUN]['lon'] - 1)
         self.assertAlmostEqual(sr_date.jd, 2457094.206, 2)
 
 
-class SunRiseAndSetTropicalTests(BaseTropicalTests):
+class SunRiseAndSetTest(BaseTest):
     """Tests sun rises and sets."""
+    __test__ = False
 
     def test_next_sunrise(self):
         expected = ephem.next_sunrise(date, pos)
@@ -156,8 +203,9 @@ class SunRiseAndSetTropicalTests(BaseTropicalTests):
         self.assertAlmostEqual(expected.jd, 2457094.277, 2)
 
 
-class StationTropicalTests(BaseTropicalTests):
+class StationTest(BaseTest):
     """Tests when planets are stationary."""
+    __test__ = False
 
     def test_sun_stationary(self):
         expected = ephem.find_next_station(const.SUN, date)
@@ -193,154 +241,57 @@ class StationTropicalTests(BaseTropicalTests):
         self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
 
 
-class BaseSiderealTests(BaseTest):
-    """Base for all ephem tests using the Sidereal zodiac."""
-
-    def setUp(self):
-        self.context = ChartContext(
-            jd = date.jd,
-            lon = pos.lon,
-            lat = pos.lat,
-            zodiac = const.ZODIAC_SIDEREAL,
-            ayanamsa = const.AYANANMSA_FAGAN_BRADLEY
-        )
-        self.expected = VALUES_SIDEREAL_FAGAN_BRADLEY
+class ObjectTestTropicalZodiac(ObjectTest, BaseTestTropicalZodiac):
+    __test__ = True
 
 
-class ObjectSiderealTests(BaseSiderealTests):
-    """Tests objects using the sidereal zodiac."""
-
-    def test_sun(self):
-        self._test_object(const.SUN)
-
-    def test_moon(self):
-        self._test_object(const.MOON)
-
-    def test_mercury(self):
-        self._test_object(const.MERCURY)
-
-    def test_venus(self):
-        self._test_object(const.VENUS)
-
-    def test_north_node(self):
-        self._test_object(const.NORTH_NODE)
-
-    def test_south_node(self):
-        self._test_object(const.SOUTH_NODE)
-
-    def test_pars_fortuna(self):
-        self._test_object(const.PARS_FORTUNA)
-
-    def test_syzygy(self):
-        self._test_object(const.SYZYGY)
+class ObjectTestSiderealZodiac(ObjectTest, BaseTestSiderealZodiac):
+    __test__ = True
 
 
-class HouseSiderealTests(BaseSiderealTests):
-    """Tests houses using the sidereal zodiac."""
-
-    def test_house1(self):
-        self._test_house(const.HOUSE1)
-
-    def test_house4(self):
-        self._test_house(const.HOUSE4)
-
-    def test_house7(self):
-        self._test_house(const.HOUSE7)
-
-    def test_house10(self):
-        self._test_house(const.HOUSE10)
+class HouseTestTropicalZodiac(HouseTest, BaseTestTropicalZodiac):
+    __test__ = True
 
 
-class AngleSiderealTests(BaseSiderealTests):
-    """Tests the angles using the sidereal zodiac."""
-
-    def test_asc(self):
-        self._test_angle(const.ASC)
-
-    def test_ic(self):
-        self._test_angle(const.IC)
-
-    def test_desc(self):
-        self._test_angle(const.DESC)
-
-    def test_mc(self):
-        self._test_angle(const.MC)
+class HouseTestSiderealZodiac(HouseTest, BaseTestSiderealZodiac):
+    __test__ = True
 
 
-class FixedStarSiderealTests(BaseSiderealTests):
-    """Tests the fixed stars using the sidereal zodiac."""
-
-    def test_fixed_star_sirius(self):
-        self._test_fixed_star(const.STAR_SIRIUS)
-
-    def test_fixed_star_regulus(self):
-        self._test_fixed_star(const.STAR_REGULUS)
+class AngleTestTropicalZodiac(AngleTest, BaseTestTropicalZodiac):
+    __test__ = True
 
 
-class SolarReturnSiderealTests(BaseSiderealTests):
-    """Tests solar returns using the sidereal zodiac."""
-
-    def test_next_solar_return(self):
-        sr_date = ephem.next_solar_return(date, VALUES_TROPICAL[const.SUN]['lon'] + 1)
-        self.assertAlmostEqual(sr_date.jd, 2457096.210, 2)
-
-    def test_prev_solar_return(self):
-        sr_date = ephem.prev_solar_return(date, VALUES_TROPICAL[const.SUN]['lon'] - 1)
-        self.assertAlmostEqual(sr_date.jd, 2457094.206, 2)
+class AngleTestSiderealZodiac(AngleTest, BaseTestSiderealZodiac):
+    __test__ = True
 
 
-class SunRiseAndSetSiderealTests(BaseSiderealTests):
-    """Tests sun rises and sets using the sidereal zodiac."""
-
-    def test_next_sunrise(self):
-        expected = ephem.next_sunrise(date, pos)
-        self.assertAlmostEqual(expected.jd, 2457095.783, 2)
-
-    def test_next_sunset(self):
-        expected = ephem.next_sunset(date, pos)
-        self.assertAlmostEqual(expected.jd, 2457095.278, 2)
-
-    def test_prev_sunrise(self):
-        expected = ephem.prev_sunrise(date, pos)
-        self.assertAlmostEqual(expected.jd, 2457094.784, 2)
-
-    def test_prev_sunset(self):
-        expected = ephem.prev_sunset(date, pos)
-        self.assertAlmostEqual(expected.jd, 2457094.277, 2)
+class FixedStarTestTropicalZodiac(FixedStarTest, BaseTestTropicalZodiac):
+    __test__ = True
 
 
-class StationSiderealTests(BaseSiderealTests):
-    """Tests when planets are stationary using the sidereal zodiac."""
+class FixedStarTestSiderealZodiac(FixedStarTest, BaseTestSiderealZodiac):
+    __test__ = True
 
-    def test_sun_stationary(self):
-        expected = ephem.find_next_station(const.SUN, date)
-        self.assertIsNone(expected)
 
-    def test_moon_stationary(self):
-        expected = ephem.find_next_station(const.MOON, date)
-        self.assertIsNone(expected)
+class SolarReturnTestTropicalZodiac(SolarReturnTest, BaseTestTropicalZodiac):
+    __test__ = True
 
-    def test_mercury_stationary(self):
-        station_date, station_type = ephem.find_next_station(const.MERCURY, date)
-        self.assertAlmostEqual(station_date.jd, 2457161.708, 2)
-        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
 
-    def test_venus_stationary(self):
-        station_date, station_type = ephem.find_next_station(const.VENUS, date)
-        self.assertAlmostEqual(station_date.jd, 2457229.208, 2)
-        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
+class SolarReturnTestSiderealZodiac(SolarReturnTest, BaseTestSiderealZodiac):
+    __test__ = False
 
-    def test_mars_stationary(self):
-        station_date, station_type = ephem.find_next_station(const.MARS, date)
-        self.assertAlmostEqual(station_date.jd, 2457496.208, 2)
-        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
 
-    def test_jupiter_stationary(self):
-        station_date, station_type = ephem.find_next_station(const.JUPITER, date)
-        self.assertAlmostEqual(station_date.jd, 2457121.208, 2)
-        self.assertEqual(station_type, const.STATION_TO_DIRECT)
+class SunRiseAndSetTropicalTests(SunRiseAndSetTest, BaseTestTropicalZodiac):
+    __test__ = True
 
-    def test_saturn_stationary(self):
-        station_date, station_type = ephem.find_next_station(const.SATURN, date)
-        self.assertAlmostEqual(station_date.jd, 2457096.208, 2)
-        self.assertEqual(station_type, const.STATION_TO_RETROGRADE)
+
+class SunRiseAndSetSiderealTests(SunRiseAndSetTest, BaseTestSiderealZodiac):
+    __test__ = True
+
+
+class StationTropicalTests(StationTest, BaseTestTropicalZodiac):
+    __test__ = True
+
+
+class StationSiderealTests(StationTest, BaseTestSiderealZodiac):
+    __test__ = True
