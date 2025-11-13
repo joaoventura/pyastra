@@ -10,7 +10,7 @@ from pyastra.geopos import GeoPos
 date = Datetime('2015/03/13', '17:00', '+00:00')
 pos = GeoPos('38n32', '8w54')
 
-VALUES = {
+VALUES_TROPICAL = {
     const.SUN: {'lon': 352.7901775496469, 'lat': 0.00014414517761478568, 'sign': const.PISCES}, 
     const.MOON: {'lon': 262.38170335764823, 'lat': 5.0295581635409015, 'sign': const.SAGITTARIUS}, 
     const.MERCURY: {'lon': 330.8159619417929, 'lat': -2.016388564383163, 'sign': const.PISCES}, 
@@ -77,3 +77,80 @@ VALUES = {
     const.STAR_ACHERNAR: {'lon': 345.5170329665451, 'lat': -59.37830474568324, 'sign': const.PISCES},
 
 }
+
+VALUES_SIDEREAL_FAGAN_BRADLEY = {
+    "Sun": {"lon": 327.836552645053, "lat": 0.00014414517761542888, "sign": "Aquarius"},
+    "Moon": {"lon": 237.4280784530544, "lat": 5.029558163540909, "sign": "Scorpio"},
+    "Mercury": {"lon": 305.8623370371991, "lat": -2.0163885643831616, "sign": "Aquarius"},
+    "Venus": {"lon": 0.5494885478649718, "lat": -0.10138015090476742, "sign": "Aries"},
+    "Mars": {"lon": 351.59307622353265, "lat": -0.3380896321593395, "sign": "Pisces"},
+    "Jupiter": {"lon": 108.68989499508349, "lat": 0.9817697082853729, "sign": "Cancer"},
+    "Saturn": {"lon": 219.97569443102, "lat": 2.0925014023293125, "sign": "Scorpio"},
+    "North Node": {"lon": 166.18755296198265, "lat": -2.7998803283568783e-16, "sign": "Virgo"},
+    "South Node": {"lon": 346.18755296198265, "lat": 0.0, "sign": "Pisces"},
+    "Syzygy": {"lon": 139.88628225465519, "lat": -2.2354152114936525, "sign": "Leo"},
+    "Pars Fortuna": {"lon": 38.096339134218454, "lat": 0.0, "sign": "Taurus"},
+
+    "House1": {"lon": 128.50481332621703, "size": 30.0, "sign": "Leo"},
+    "House2": {"lon": 157.90414454746866, "size": 30.0, "sign": "Virgo"},
+    "House3": {"lon": 187.08735853985536, "size": 30.0, "sign": "Libra"},
+    "House4": {"lon": 214.36391295407716, "size": 30.0, "sign": "Scorpio"},
+    "House5": {"lon": 244.9235172445288, "size": 30.0, "sign": "Sagittarius"},
+    "House6": {"lon": 275.47119126307183, "size": 30.0, "sign": "Capricorn"},
+    "House7": {"lon": 308.50481332621706, "size": 30.0, "sign": "Aquarius"},
+    "House8": {"lon": 337.90414454746866, "size": 30.0, "sign": "Pisces"},
+    "House9": {"lon": 7.087358539855366, "size": 30.0, "sign": "Aries"},
+    "House10": {"lon": 34.363912954077165, "size": 30.0, "sign": "Taurus"},
+    "House11": {"lon": 64.9235172445288, "size": 30.0, "sign": "Gemini"},
+    "House12": {"lon": 95.47119126307183, "size": 30.0, "sign": "Cancer"},
+
+    "Asc": {"lon": 128.50481332621703, "sign": "Leo"},
+    "IC": {"lon": 214.36391295407716, "sign": "Scorpio"},
+    "Desc": {"lon": 308.504813326217, "sign": "Aquarius"},
+    "MC": {"lon": 34.363912954077165, "sign": "Taurus"},
+
+    "Algenib": {"lon": 344.4097073043064, "lat": 12.600754908395206, "sign": "Pisces"},
+    "Alpheratz": {"lon": 349.56164648011804, "lat": 25.681178583648933, "sign": "Pisces"},
+    "Algol": {"lon": 31.42422497082554, "lat": 22.43223304126827, "sign": "Taurus"},
+    "Alcyone": {"lon": 35.24995477301004, "lat": 4.052932584247497, "sign": "Taurus"},
+    "Aldebaran": {"lon": 45.047895015129924, "lat": -5.466765551372646, "sign": "Taurus"},
+    "Rigel": {"lon": 52.088902828708896, "lat": -31.12374200250941, "sign": "Taurus"},
+    "Capella": {"lon": 57.117758120388096, "lat": 22.866658332696808, "sign": "Taurus"},
+    "Betelgeuse": {"lon": 64.01511844302404, "lat": -16.026542330520854, "sign": "Gemini"},
+    "Sirius": {"lon": 79.34123622878768, "lat": -39.61213299774761, "sign": "Gemini"},
+    "Canopus": {"lon": 80.22704838184201, "lat": -75.82699840809937, "sign": "Gemini"},
+    "Castor": {"lon": 85.50211489645926, "lat": 10.097703453992672, "sign": "Gemini"},
+    "Pollux": {"lon": 88.47585963731645, "lat": 6.685853967964131, "sign": "Gemini"},
+    "Procyon": {"lon": 91.04591945629646, "lat": -16.0240613590668, "sign": "Cancer"},
+    "Asellus Borealis": {"lon": 102.80195906074704, "lat": 3.191912330340208, "sign": "Cancer"},
+    "Asellus Australis": {"lon": 103.98606161493359, "lat": 0.07765374170096874, "sign": "Cancer"},
+    "Alphard": {"lon": 122.5437050617335, "lat": -22.382250795959845, "sign": "Leo"},
+    "Regulus": {"lon": 125.09316946604511, "lat": 0.46535773172484923, "sign": "Leo"},
+    "Denebola": {"lon": 146.8817613269446, "lat": 12.265703318069994, "sign": "Leo"},
+    "Algorab": {"lon": 168.71587972615598, "lat": -12.197372351357942, "sign": "Virgo"},
+    "Spica": {"lon": 179.10573008806966, "lat": -2.055526411260265, "sign": "Virgo"},
+    "Arcturus": {"lon": 179.4987934197039, "lat": 30.724129476258618, "sign": "Virgo"},
+    "Alphecca": {"lon": 197.5627410869933, "lat": 44.31879461160149, "sign": "Libra"},
+    "Zuben Eshamali": {"lon": 204.6342752720981, "lat": 8.493417675530758, "sign": "Libra"},
+    "Unukalhai": {"lon": 207.3390679226308, "lat": 25.50452033420928, "sign": "Libra"},
+    "Agena": {"lon": 209.05457317673563, "lat": -44.13599183235419, "sign": "Libra"},
+    "Rigel Kentaurus": {"lon": 214.72115411425665, "lat": -42.598004633009104, "sign": "Scorpio"},
+    "Antares": {"lon": 225.02310419013864, "lat": -4.571525824852803, "sign": "Scorpio"},
+    "Lesath": {"lon": 239.27213179673052, "lat": -14.009044269945003, "sign": "Scorpio"},
+    "Vega": {"lon": 260.57214375169036, "lat": 61.72744725222478, "sign": "Sagittarius"},
+    "Altair": {"lon": 277.0341973808733, "lat": 29.300815471768864, "sign": "Capricorn"},
+    "Deneb Algedi": {"lon": 298.7979105712278, "lat": -2.604137631339397, "sign": "Capricorn"},
+    "Fomalhaut": {"lon": 309.1158911933259, "lat": -21.136898342598553, "sign": "Aquarius"},
+    "Deneb": {"lon": 310.57475489044305, "lat": 59.90408622617344, "sign": "Aquarius"},
+    "Achernar": {"lon": 320.5634080619513, "lat": -59.37830474568324, "sign": "Aquarius"}
+}
+
+from pyastra import angle
+values = []
+for k, v in VALUES_TROPICAL.items():
+    v1 = VALUES_SIDEREAL_FAGAN_BRADLEY[k]
+    print(k, angle.norm(v['lon']-v1['lon']))
+    values.append(angle.norm(v['lon']-v1['lon']))
+
+print(values)
+print(sum(values)/len(values))

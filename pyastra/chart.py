@@ -11,10 +11,13 @@ the list of angles. The angles should be used when you want to deal with angle's
 There are also methods to access fixed stars.
     
 """
+import copy
 
 from . import angle
 from . import const
 from . import utils
+
+from .context import ChartContext
 from .ephem import ephem
 from .datetime import Datetime
 
@@ -41,8 +44,15 @@ class Chart:
         self.date = date
         self.pos = pos
         self.hsys = hsys
-        self.objects = ephem.get_objects(ids, date, pos)
-        self.houses, self.angles = ephem.get_houses_and_angles(date, pos, hsys)
+        self.context = ChartContext(
+            jd = self.date.jd,
+            lat = self.pos.lat,
+            lon = self.pos.lon,
+            **kwargs
+        )
+
+        self.objects = ephem.get_objects(ids, context=self.context)
+        self.houses, self.angles = ephem.get_houses_and_angles(context=self.context)
 
     def copy(self):
         """ Returns a deep copy of this chart. """
@@ -53,6 +63,7 @@ class Chart:
         chart.objects = self.objects.copy()
         chart.houses = self.houses.copy()
         chart.angles = self.angles.copy()
+        chart.context = copy.copy(self.context)
         return chart
 
     # === Properties === #
@@ -84,12 +95,12 @@ class Chart:
 
     def get_fixed_star(self, obj_id):
         """ Returns a fixed star from the ephemeris. """
-        return ephem.get_fixed_star(obj_id, self.date)
+        return ephem.get_fixed_star(obj_id, context=self.context)
 
     def get_fixed_stars(self):
         """ Returns a list with all fixed stars. """
         ids = const.LIST_FIXED_STARS
-        return ephem.get_fixed_stars(ids, self.date)
+        return ephem.get_fixed_stars(ids, context=self.context)
 
     # === Houses and angles === #
 

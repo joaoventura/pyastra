@@ -1,10 +1,11 @@
 import unittest
 
 from pyastra import const
+from pyastra.context import ChartContext
 from pyastra.datetime import Datetime
 from pyastra.ephem import tools
 from pyastra.ephem import ephem
-from tests.fixtures.common import date, pos, VALUES
+from tests.fixtures.common import date, pos, VALUES_TROPICAL
 
 
 class BaseTest(unittest.TestCase):
@@ -13,18 +14,24 @@ class BaseTest(unittest.TestCase):
     def setUp(self):
         self.date = date
         self.pos = pos
+        self.context = ChartContext(
+            jd=self.date.jd,
+            lon=self.pos.lon,
+            lat=self.pos.lat
+        )
 
 
 class ToolsTest(BaseTest):
     """Tests ephem tools."""
 
     def test_is_diurnal(self):
-        is_diurnal = tools.is_diurnal(self.date.jd, self.pos.lat, self.pos.lon)
+        is_diurnal = tools.is_diurnal(self.context)
         self.assertEqual(is_diurnal, True)
 
     def test_is_not_diurnal(self):
         date = Datetime('2015/03/13', '23:00', '+00:00')
-        is_diurnal = tools.is_diurnal(date.jd, self.pos.lat, self.pos.lon)
+        context = ChartContext(jd=date.jd, lat=pos.lat, lon=pos.lon)
+        is_diurnal = tools.is_diurnal(context)
         self.assertEqual(is_diurnal, False)
 
     def test_next_station_sun(self):
@@ -56,7 +63,7 @@ class ToolsTest(BaseTest):
         self.assertAlmostEqual(station_jd, 2457096.208, 2)
 
     def test_pars_fortuna_lon(self):
-        pf_lon = tools.pars_fortuna_lon(self.date.jd, self.pos.lat, self.pos.lon)
+        pf_lon = tools.pars_fortuna_lon(self.context)
         self.assertAlmostEqual(pf_lon, 63.049, 2)
 
     def test_syzygy_jd(self):
@@ -64,11 +71,11 @@ class ToolsTest(BaseTest):
         self.assertAlmostEqual(sz_jd, 2457087.253, 2)
 
     def test_solar_return_jd_backwards(self):
-        sun = ephem.get_object(const.SUN, self.date, self.pos)
+        sun = ephem.get_object(const.SUN, context=self.context)
         sr_jd = tools.solar_return_jd(self.date.jd, sun.lon, forward=False)
         self.assertAlmostEqual(sr_jd, 2457095.208, 2)
 
     def test_solar_return_jd_forward(self):
-        sun = ephem.get_object(const.SUN, self.date, self.pos)
+        sun = ephem.get_object(const.SUN, context=self.context)
         sr_jd = tools.solar_return_jd(self.date.jd, sun.lon, forward=True)
         self.assertAlmostEqual(sr_jd, 2457095.208, 2)

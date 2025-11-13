@@ -8,6 +8,7 @@ PyAstra users will want to use this module for accessing the ephemeris.
 """
 
 from pyastra import const
+from pyastra.context import ChartContext
 from pyastra.datetime import Datetime
 from pyastra.geopos import GeoPos
 from pyastra.object import Object, FixedStar
@@ -18,68 +19,67 @@ from . import builder, swe, tools
 
 # === Objects === #
 
-def get_object(obj_id: str, date: Datetime, pos: GeoPos) -> Object:
+def get_object(obj_id: str, context: ChartContext) -> Object:
     """
     Returns an ephemeris object.
 
     """
-    return builder.create_object(obj_id, date.jd, pos.lat, pos.lon)
+    return builder.create_object(obj_id, context)
 
 
-def get_objects(ids: list, date: Datetime, pos: GeoPos) -> ObjectList:
+def get_objects(obj_ids: list, context: ChartContext) -> ObjectList:
     """
     Returns a list of objects.
 
     """
-    obj_list = [get_object(ID, date, pos) for ID in ids]
-    return ObjectList(obj_list)
+    return ObjectList([get_object(obj_id, context) for obj_id in obj_ids])
 
 
 # === Houses and angles === #
 
-def get_houses_and_angles(date: Datetime, pos: GeoPos, hsys: str) -> tuple:
+def get_houses_and_angles(context: ChartContext) -> tuple:
     """
     Returns the lists of houses and angles.
     Since houses and angles are computed at the same time, this function should be fast.
     
     """
-    return builder.create_houses_and_angles(date.jd, pos.lat, pos.lon, hsys)
+    return builder.create_houses_and_angles(context)
 
 
-def get_houses(date: Datetime, pos: GeoPos, hsys: str) -> HouseList:
+def get_houses(context: ChartContext) -> HouseList:
     """
     Returns a list of houses.
 
     """
-    houses, _ = get_houses_and_angles(date, pos, hsys)
+    houses, _ = get_houses_and_angles(context)
     return houses
 
 
-def get_angles(date: Datetime, pos: GeoPos, hsys: str) -> GenericList:
+def get_angles(context: ChartContext) -> GenericList:
     """
     Returns a list of angles (Asc, MC.)
 
     """
-    _, angles = get_houses_and_angles(date, pos, hsys)
+    _, angles = get_houses_and_angles(context)
     return angles
 
 
 # === Fixed stars === #
 
-def get_fixed_star(obj_id: str, date: Datetime) -> FixedStar:
+def get_fixed_star(obj_id: str, context: ChartContext) -> FixedStar:
     """
     Returns a fixed star from the ephemeris.
 
     """
-    return builder.create_fixed_star(obj_id, date.jd)
+    return builder.create_fixed_star(obj_id, context)
 
 
-def get_fixed_stars(ids: list, date: Datetime) -> FixedStarList:
+def get_fixed_stars(ids: list, context: ChartContext) -> FixedStarList:
     """
     Returns a list of fixed stars.
 
     """
-    star_list = [get_fixed_star(ID, date) for ID in ids]
+    star_list = [get_fixed_star(ID, context) for ID in ids]
     return FixedStarList(star_list)
 
 
