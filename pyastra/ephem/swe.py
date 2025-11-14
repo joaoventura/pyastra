@@ -162,7 +162,7 @@ def swe_fixed_star(obj_id: str, context: ChartContext) -> tuple:
         swe_list, _, _ = swisseph.fixstar2_ut(obj_id, context.jd, flags)
         mag = swisseph.fixstar2_mag(obj_id)
 
-    return mag, swe_list[0], swe_list[1]
+    return mag[0], swe_list[0], swe_list[1]
 
 
 def swe_next_transit(obj_id: str, jd: float, lat: float, lon: float, flag: int) -> float:
