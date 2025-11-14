@@ -46,6 +46,9 @@ class GenericObject:
         lon = angle.to_string(self.signlon)
         return f'<{self.id} {self.sign} {lon}>'
 
+    def __repr__(self):
+        return self.__str__()
+
     # === Properties === #
 
     @property
