@@ -109,14 +109,14 @@ class Object(GenericObject):
 
     def __init__(self, *args, **kwargs):
         self.type = const.OBJ_PLANET
-        self.lonspeed = 0.0
-        self.latspeed = 0.0
+        self.lon_speed = 0.0
+        self.lat_speed = 0.0
         super().__init__(*args, **kwargs)
 
     def __str__(self):
         string = super().__str__()[:-1]
-        lonspeed = angle.to_string(self.lonspeed)
-        return f'{string} {lonspeed}>'
+        lon_speed = angle.to_string(self.lon_speed)
+        return f'{string} {lon_speed}>'
 
     # === Properties === #
 
@@ -133,9 +133,9 @@ class Object(GenericObject):
         or stationary. 
         
         """
-        if abs(self.lonspeed) < 0.0003:
+        if abs(self.lon_speed) < 0.0003:
             return const.STATIONARY
-        if self.lonspeed > 0:
+        if self.lon_speed > 0:
             return const.DIRECT
         return const.RETROGRADE
 
@@ -167,7 +167,7 @@ class Object(GenericObject):
 
     def is_fast(self):
         """ Returns if this object is in fast motion. """
-        return abs(self.lonspeed) >= self.mean_motion()
+        return abs(self.lon_speed) >= self.mean_motion()
 
 
 # ------------------ #

@@ -16,9 +16,9 @@ class BaseTest(unittest.TestCase):
         """Tests an object."""
         obj = ephem.get_object(obj_id, context=self.context)
         self.assertAlmostEqual(obj.lon, self.expected[obj_id]['lon'], 2)
-        self.assertAlmostEqual(obj.lonspeed, self.expected[obj_id]['lon_speed'], 2)
+        self.assertAlmostEqual(obj.lon_speed, self.expected[obj_id]['lon_speed'], 2)
         self.assertAlmostEqual(obj.lat, self.expected[obj_id]['lat'], 2)
-        self.assertAlmostEqual(obj.latspeed, self.expected[obj_id]['lat_speed'], 2)
+        self.assertAlmostEqual(obj.lat_speed, self.expected[obj_id]['lat_speed'], 2)
         self.assertEqual(obj.sign, self.expected[obj_id]['sign'])
 
     def _test_house(self, house_id):

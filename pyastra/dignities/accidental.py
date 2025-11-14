@@ -50,7 +50,7 @@ def sun_relation(obj, sun):
 def light(obj, sun):
     """ Returns if an object is augmenting or diminishing light. """
     dist = angle.distance(sun.lon, obj.lon)
-    faster = sun if sun.lonspeed > obj.lonspeed else obj
+    faster = sun if sun.lon_speed > obj.lon_speed else obj
     if faster == sun:
         return LIGHT_DIMINISHING if dist < 180 else LIGHT_AUGMENTING
     return LIGHT_AUGMENTING if dist < 180 else LIGHT_DIMINISHING

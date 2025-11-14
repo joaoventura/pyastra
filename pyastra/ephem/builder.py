@@ -41,8 +41,8 @@ def create_object(obj_id: str, context: ChartContext, chart: Chart = None) -> Ob
         id = obj_id,
         lon = obj_lon,
         lat = obj_lat,
-        lonspeed = lon_speed,
-        latspeed = lat_speed,
+        lon_speed = lon_speed,
+        lat_speed = lat_speed,
         chart = chart
     )
 
@@ -58,15 +58,15 @@ def create_houses_and_angles(context: ChartContext, chart: Chart = None) -> tupl
             id = const.LIST_HOUSES[i],
             lon = cusps[i],
             size = angle.distance(cusps[i], cusps[i+1]),
-            _chart_ref = chart
+            chart = chart
         ) for i in range(12)
     ]
 
     angles = [
-        GenericObject(id=const.ASC, lon=ascmc[0], _chart_ref=chart),
-        GenericObject(id=const.MC, lon=ascmc[1], _chart_ref=chart),
-        GenericObject(id=const.DESC, lon=angle.norm(ascmc[0] + 180), _chart_ref=chart),
-        GenericObject(id=const.IC, lon=angle.norm(ascmc[1] + 180), _chart_ref=chart)
+        GenericObject(id=const.ASC, lon=ascmc[0], chart=chart),
+        GenericObject(id=const.MC, lon=ascmc[1], chart=chart),
+        GenericObject(id=const.DESC, lon=angle.norm(ascmc[0] + 180), chart=chart),
+        GenericObject(id=const.IC, lon=angle.norm(ascmc[1] + 180), chart=chart)
     ]
 
     return HouseList(houses), GenericList(angles)
@@ -80,5 +80,5 @@ def create_fixed_star(obj_id: str, context: ChartContext, chart: Chart = None) -
         mag = mag,
         lon = lon,
         lat = lat,
-        _chart_ref = chart
+        chart = chart
     )
