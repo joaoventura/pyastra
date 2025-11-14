@@ -70,6 +70,23 @@ class ObjectList(GenericList):
                 res.append(obj)
         return ObjectList(res)
 
+    def _repr_html_(self) -> str:
+        """Jupyter/IPython hook to render the list as HTML table."""
+        html = "<table>"
+        html += "<thead><tr><th>Object</th><th>Position</th><th>Sign</th><th>Speed</th><th>Ret.</th></tr></thead>"
+        html += "<tbody>"
+        for obj in self:
+            pos_in_sign = f"{obj.signlon:.2f}°" if hasattr(obj, 'signlon') else "N/A"
+            sign = obj.sign if hasattr(obj, 'sign') else "N/A"
+            speed = f"{obj.lon_speed:+.4f}" if hasattr(obj, 'lon_speed') else "N/A"
+            is_retro = "R" if hasattr(obj, 'is_retrograde') and obj.is_retrograde() else ""
+            html += f"<tr><td>{obj.id}</td><td>{pos_in_sign}</td><td>{sign}</td><td>{speed}</td><td>{is_retro}</td></tr>"
+        html += "</tbody>"
+
+        html += "</table>"
+
+        return html
+
 
 # ---------------- #
 #    House List    #
