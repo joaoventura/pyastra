@@ -83,7 +83,7 @@ def solar_return_jd(lon: float, context: ChartContext, forward: bool=True) -> fl
         context = dataclasses.replace(context, jd = jd)
         sun_lon, _, _, _ = swe.swe_object(const.SUN, context=context)
         dist = angle.closest_distance(sun_lon, lon)
-    return jd
+    return context.jd
 
 
 def find_next_station(obj_id: str, jd: float) -> tuple | None:
