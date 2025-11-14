@@ -26,6 +26,9 @@ class GenericObject:
         self.type = const.OBJ_GENERIC
         self.lon = 0.0
         self.lat = 0.0
+
+        # Strong reference to chart which may cause problems in long-running applications.
+        self.chart = None
         self.__dict__.update(kwargs)
 
     @classmethod
@@ -79,14 +82,14 @@ class GenericObject:
         self.lon = angle.norm(lon)
 
     def antiscia(self):
-        """ Returns antiscia object. """
+        """ Returns the antiscia object. """
         obj = self.copy()
         obj.type = const.OBJ_GENERIC
         obj.relocate(360 - obj.lon + 180)
         return obj
 
     def cantiscia(self):
-        """ Returns contra-antiscia object. """
+        """ Returns the contra-antiscia object. """
         obj = self.copy()
         obj.type = const.OBJ_GENERIC
         obj.relocate(360 - obj.lon)
