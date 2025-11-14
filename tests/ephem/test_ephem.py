@@ -174,11 +174,11 @@ class SolarReturnTest(BaseTest):
     __test__ = False
 
     def test_next_solar_return(self):
-        sr_date = ephem.next_solar_return(date, self.expected[const.SUN]['lon'] + 1)
+        sr_date = ephem.next_solar_return(self.expected[const.SUN]['lon'] + 1, self.context)
         self.assertAlmostEqual(sr_date.jd, 2457096.210, 2)
 
     def test_prev_solar_return(self):
-        sr_date = ephem.prev_solar_return(date, self.expected[const.SUN]['lon'] - 1)
+        sr_date = ephem.prev_solar_return(self.expected[const.SUN]['lon'] - 1, self.context)
         self.assertAlmostEqual(sr_date.jd, 2457094.206, 2)
 
 

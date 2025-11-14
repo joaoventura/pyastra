@@ -66,13 +66,12 @@ def syzygy_jd(jd: float) -> float:
     return jd
 
 
-def solar_return_jd(jd: float, lon: float, forward:str=True) -> float:
+def solar_return_jd(lon: float, context: ChartContext, forward:bool=True) -> float:
     """
     Finds the julian date before or after 'jd' when the sun is at longitude given by 'lon'.
     It searches forward by default.
     
     """
-    context = ChartContext(jd=jd, lat=0, lon=0)
     sun_lon, _, _, _ = swe.swe_object(const.SUN, context=context)
     if forward:
         dist = angle.distance(sun_lon, lon)
@@ -80,8 +79,8 @@ def solar_return_jd(jd: float, lon: float, forward:str=True) -> float:
         dist = -angle.distance(lon, sun_lon)
 
     while abs(dist) > MAX_ERROR:
-        jd = jd + dist / 0.9833  # Sun mean daily motion
-        context = dataclasses.replace(context, jd=jd)
+        jd = context.jd + dist / 0.9833  # Sun mean daily motion
+        context = dataclasses.replace(context, jd = jd)
         sun_lon, _, _, _ = swe.swe_object(const.SUN, context=context)
         dist = angle.closest_distance(sun_lon, lon)
     return jd

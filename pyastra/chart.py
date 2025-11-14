@@ -12,6 +12,7 @@ There are also methods to access fixed stars.
     
 """
 import copy
+import dataclasses
 
 from . import angle
 from . import const
@@ -150,5 +151,6 @@ class Chart:
         """ Returns this chart's solar return for a given year. """
         sun = self.get_object(const.SUN)
         date = Datetime(f'{year}/01/01', '00:00', self.date.utcoffset)
-        sr_date = ephem.next_solar_return(date, sun.lon)
+        context = dataclasses.replace(self.context, jd=date.jd)
+        sr_date = ephem.next_solar_return(sun.lon, context=context)
         return Chart(sr_date, self.pos, hsys=self.hsys)

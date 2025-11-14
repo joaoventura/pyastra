@@ -21,6 +21,7 @@ class ChartContext:
     jd: float
     lat: float
     lon: float
+    utc_offset: float = 0.0
     hsys: str = const.HOUSES_DEFAULT
     zodiac: str = const.ZODIAC_TROPICAL
     ayanamsa: str = const.AYANANMSA_FAGAN_BRADLEY

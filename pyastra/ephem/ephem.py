@@ -85,22 +85,22 @@ def get_fixed_stars(ids: list, context: ChartContext) -> FixedStarList:
 
 # === Solar returns === #
 
-def next_solar_return(date: Datetime, lon: float) -> Datetime:
+def next_solar_return(lon: float, context: ChartContext) -> Datetime:
     """
     Returns the next date when sun will be at longitude 'lon'.
 
     """
-    jd = tools.solar_return_jd(date.jd, lon, True)
-    return Datetime.from_jd(jd, date.utcoffset)
+    jd = tools.solar_return_jd(lon, context, True)
+    return Datetime.from_jd(jd, context.utc_offset)
 
 
-def prev_solar_return(date: Datetime, lon: float) -> Datetime:
+def prev_solar_return(lon: float, context: ChartContext) -> Datetime:
     """
     Returns the previous date when sun was at longitude 'lon'.
 
     """
-    jd = tools.solar_return_jd(date.jd, lon, False)
-    return Datetime.from_jd(jd, date.utcoffset)
+    jd = tools.solar_return_jd(lon, context, False)
+    return Datetime.from_jd(jd, context.utc_offset)
 
 
 # === Sunrise and sunsets === #
