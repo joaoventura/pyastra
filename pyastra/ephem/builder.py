@@ -16,10 +16,7 @@ from . import swe, tools
 
 
 def create_object(obj_id: str, context: ChartContext) -> Object:
-    """
-    Returns an object for a specific date and location.
-
-    """
+    """Returns an object for a specific date and location."""
     if obj_id == const.SOUTH_NODE:
         obj_lon, _, _, _ = swe.swe_object(const.NORTH_NODE, context=context)
         return Object(id=obj_id, lon=angle.norm(obj_lon + 180))
@@ -46,10 +43,7 @@ def create_object(obj_id: str, context: ChartContext) -> Object:
 
 
 def create_houses_and_angles(context: ChartContext) -> tuple:
-    """
-    Returns tuple with the lists of houses and angles.
-
-    """
+    """Returns a tuple with lists of houses and angles."""
     cusps, ascmc = swe.swe_houses(context=context)
 
     # Append the first cusp to the end to simplify size calculation in the loop
@@ -73,10 +67,7 @@ def create_houses_and_angles(context: ChartContext) -> tuple:
 
 
 def create_fixed_star(obj_id: str, context: ChartContext) -> FixedStar:
-    """
-    Returns a fixed star.
-
-    """
+    """Returns a fixed star."""
     mag, lon, lat = swe.swe_fixed_star(obj_id, context)
     return FixedStar(
         id = obj_id,

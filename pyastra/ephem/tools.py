@@ -19,7 +19,6 @@ def is_diurnal(context: ChartContext) -> bool:
     """
     Returns if the sun is above the horizon for a given date and location.
     It computes the result using the sun's and MC's Right Ascension and Declination values.
-
     """
     sun_lon, sun_lat, _, _ = swe.swe_object(const.SUN, context=context)
     _, angles = swe.swe_houses(context=context)
@@ -33,7 +32,6 @@ def pars_fortuna_lon(context: ChartContext) -> float:
     """
     Returns the ecliptic longitude of Pars Fortuna.
     It computes the longitude using the respective diurnal and nocturnal formulas.
-
     """
     sun_lon, _, _, _ = swe.swe_object(const.SUN, context=context)
     moon_lon, _, _, _ = swe.swe_object(const.MOON, context=context)
@@ -50,7 +48,6 @@ def syzygy_jd(jd: float) -> float:
     """
     Finds the previous new moon or full moon and returns the julian date of that event.
     The syzygy is the location of the pre-natal moon (new moon or full moon).
-
     """
     sun_lon, _, _, _ = swe.swe_object_fast(const.SUN, jd)
     moon_lon, _, _, _ = swe.swe_object_fast(const.MOON, jd)
@@ -70,7 +67,6 @@ def solar_return_jd(lon: float, context: ChartContext, forward: bool=True) -> fl
     """
     Finds the julian date before or after 'jd' when the sun is at longitude given by 'lon'.
     It searches forward by default.
-    
     """
     sun_lon, _, _, _ = swe.swe_object(const.SUN, context=context)
     if forward:
@@ -93,7 +89,6 @@ def find_next_station(obj_id: str, jd: float) -> tuple | None:
 
     Returns a tuple containing the julian date and the type of station (direct to retrograde or
     vice versa).
-
     """
     _, _, initial_speed, _ = swe.swe_object_fast(obj_id, jd)
     for i in range(1, 2000):

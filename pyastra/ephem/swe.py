@@ -2,9 +2,10 @@
 Implements a simple interface with the C Swiss Ephemeris using the pyswisseph library.
 
 """
-import threading
+
 # pylint: disable=c-extension-no-member
 
+import threading
 from contextlib import contextmanager
 
 import swisseph
@@ -109,7 +110,6 @@ def swe_object(obj_id: str, context: ChartContext) -> tuple:
     Get raw positional data of an object from the ephemeris.
 
     Returns: tuple with (lon, lat, lon_speed, lat_speed).
-
     """
     with swe_context(context) as flags:
         swe_obj = SWE_OBJECTS[obj_id]
@@ -124,7 +124,6 @@ def swe_object_fast(obj_id: str, jd: float) -> tuple:
     zodiac type, ayanamsa, etc.
 
     Returns: tuple with (lon, lat, lon_speed, lat_speed).
-
     """
     swe_obj = SWE_OBJECTS[obj_id]
     swe_list, _ = swisseph.calc_ut(jd, swe_obj, swisseph.FLG_SPEED)
@@ -138,9 +137,7 @@ def swe_houses(context: ChartContext) -> tuple:
     From pyswisseph, the cusps are returned as a tuple of house cusps. The ascmc and additional
     points are returned as (asc, mc, armc, vertex, equasc, coasc1, coasc2, polasc),
     as defined in swehouse.c.
-
     Returns: tuple with (1) the house cusps and (2) the angles as (asc, mc).
-
     """
     with swe_context(context) as flags:
         hsys = SWE_HOUSESYS[context.hsys]
@@ -156,7 +153,6 @@ def swe_fixed_star(obj_id: str, context: ChartContext) -> tuple:
 
     Caution: the swisseph.fixstar2_mag function is slow because it parses 'fixstars.cat' every time.
     Returns: tuple with (mag, lon, lat).
-
     """
     with swe_context(context) as flags:
         swe_list, _, _ = swisseph.fixstar2_ut(obj_id, context.jd, flags)
@@ -170,7 +166,6 @@ def swe_next_transit(obj_id: str, jd: float, lat: float, lon: float, flag: int) 
     Get the julian date of the next transit of an object.
 
     Transit can be CALC_RISE, CALC_SET, or CALC_MTRANSIT (for meridian)
-
     Returns a float with the julian date.
     """
     swe_obj = SWE_OBJECTS[obj_id]
