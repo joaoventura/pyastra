@@ -16,7 +16,9 @@ class BaseTest(unittest.TestCase):
         """Tests an object."""
         obj = ephem.get_object(obj_id, context=self.context)
         self.assertAlmostEqual(obj.lon, self.expected[obj_id]['lon'], 2)
+        self.assertAlmostEqual(obj.lonspeed, self.expected[obj_id]['lon_speed'], 2)
         self.assertAlmostEqual(obj.lat, self.expected[obj_id]['lat'], 2)
+        self.assertAlmostEqual(obj.latspeed, self.expected[obj_id]['lat_speed'], 2)
         self.assertEqual(obj.sign, self.expected[obj_id]['sign'])
 
     def _test_house(self, house_id):
@@ -24,6 +26,7 @@ class BaseTest(unittest.TestCase):
         houses = ephem.get_houses(context=self.context)
         house = houses.get(house_id)
         self.assertAlmostEqual(house.lon, self.expected[house_id]['lon'], 2)
+        self.assertAlmostEqual(house.size, self.expected[house_id]['size'], 2)
         self.assertEqual(house.sign, self.expected[house_id]['sign'])
 
     def _test_angle(self, obj_id):
@@ -36,6 +39,7 @@ class BaseTest(unittest.TestCase):
     def _test_fixed_star(self, obj_id):
         """Tests a fixed star."""
         obj = ephem.get_fixed_star(obj_id, context=self.context)
+        self.assertAlmostEqual(obj.mag, self.expected[obj_id]['mag'], 2)
         self.assertAlmostEqual(obj.lon, self.expected[obj_id]['lon'], 2)
         self.assertAlmostEqual(obj.lat, self.expected[obj_id]['lat'], 2)
         self.assertEqual(obj.sign, self.expected[obj_id]['sign'])
