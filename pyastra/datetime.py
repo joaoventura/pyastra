@@ -197,3 +197,6 @@ class Datetime:
         return '<%s %s %s>' % (self.date.to_string(),
                                self.time.to_string(),
                                self.utcoffset.to_string())
+
+    def __repr__(self):
+        return self.__str__()

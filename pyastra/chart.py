@@ -67,6 +67,12 @@ class Chart:
         chart.context = copy.copy(self.context)
         return chart
 
+    def __str__(self):
+        return f"<Chart {self.date} {self.pos} [{self.context.hsys}] [{self.context.zodiac}]>"
+
+    def __repr__(self):
+        return self.__str__()
+
     # === Properties === #
 
     def get_object(self, obj_id):
