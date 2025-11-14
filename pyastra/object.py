@@ -77,8 +77,6 @@ class GenericObject:
     def relocate(self, lon):
         """ Relocates this object to a new longitude. """
         self.lon = angle.norm(lon)
-        self.signlon = self.lon % 30
-        self.sign = const.LIST_SIGNS[int(self.lon / 30.0)]
 
     def antiscia(self):
         """ Returns antiscia object. """
@@ -107,10 +105,10 @@ class Object(GenericObject):
     """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.type = const.OBJ_PLANET
         self.lonspeed = 0.0
         self.latspeed = 0.0
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         string = super().__str__()[:-1]
@@ -180,9 +178,9 @@ class House(GenericObject):
     _OFFSET = -5.0
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.type = const.OBJ_HOUSE
         self.size = 30.0
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         string = super().__str__()[:-1]
@@ -229,9 +227,9 @@ class FixedStar(GenericObject):
     """ This class represents a generic fixed star. """
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.type = const.OBJ_FIXED_STAR
         self.mag = 0.0
+        super().__init__(*args, **kwargs)
 
     def __str__(self):
         string = super().__str__()[:-1]

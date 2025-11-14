@@ -4,34 +4,34 @@ Functions for retrieving astronomical and astrological data from an ephemeris.
 It is the middle layer between the Swiss Ephemeris and user software.
 
 """
+import dataclasses
 
 from pyastra import angle
 from pyastra import const
+from pyastra.context import ChartContext
 from pyastra.object import Object, House, GenericObject, FixedStar
 from pyastra.lists import HouseList, GenericList
 
 from . import swe, tools
 
 
-def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
-    """
-    Returns an object for a specific date and location.
-
-    """
+def create_object(obj_id: str, context: ChartContext) -> Object:
+    """Returns an object for a specific date and location."""
     if obj_id == const.SOUTH_NODE:
-        obj_lon, _, _, _ = swe.swe_object(const.NORTH_NODE, jd)
+        obj_lon, _, _, _ = swe.swe_object(const.NORTH_NODE, context=context)
         return Object(id=obj_id, lon=angle.norm(obj_lon + 180))
 
     if obj_id == const.PARS_FORTUNA:
-        obj_lon = tools.pars_fortuna_lon(jd, lat, lon)
+        obj_lon = tools.pars_fortuna_lon(context=context)
         return Object(id=obj_id, lon=obj_lon)
 
     if obj_id == const.SYZYGY:
-        syzygy_jd = tools.syzygy_jd(jd)
-        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(const.MOON, syzygy_jd)
+        syzygy_jd = tools.syzygy_jd(context.jd)
+        syzygy_context = dataclasses.replace(context, jd=syzygy_jd)
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(const.MOON, context=syzygy_context)
 
     else:
-        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(obj_id, jd)
+        obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(obj_id, context=context)
 
     return Object(
         id = obj_id,
@@ -42,12 +42,9 @@ def create_object(obj_id: str, jd: float, lat: float, lon: float) -> Object:
     )
 
 
-def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) -> tuple:
-    """
-    Returns tuple with the lists of houses and angles.
-
-    """
-    cusps, ascmc = swe.swe_houses(jd, lat, lon, hsys)
+def create_houses_and_angles(context: ChartContext) -> tuple:
+    """Returns a tuple with lists of houses and angles."""
+    cusps, ascmc = swe.swe_houses(context=context)
 
     # Append the first cusp to the end to simplify size calculation in the loop
     cusps += (cusps[0],)
@@ -69,12 +66,9 @@ def create_houses_and_angles(jd: float, lat: float, lon: float, hsys: str) -> tu
     return HouseList(houses), GenericList(angles)
 
 
-def create_fixed_star(obj_id: str, jd: float) -> FixedStar:
-    """
-    Returns a fixed star.
-
-    """
-    mag, lon, lat = swe.swe_fixed_star(obj_id, jd)
+def create_fixed_star(obj_id: str, context: ChartContext) -> FixedStar:
+    """Returns a fixed star."""
+    mag, lon, lat = swe.swe_fixed_star(obj_id, context)
     return FixedStar(
         id = obj_id,
         mag = mag,

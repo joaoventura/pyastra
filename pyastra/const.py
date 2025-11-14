@@ -243,6 +243,24 @@ MAJOR_ASPECTS = [0, 60, 90, 120, 180]
 MINOR_ASPECTS = [30, 36, 45, 72, 108, 135, 144, 150]
 ALL_ASPECTS = MAJOR_ASPECTS + MINOR_ASPECTS
 
+
+# === Zodiac Types === */
+ZODIAC_TROPICAL = "Tropical Zodiac"
+ZODIAC_SIDEREAL = "Sidereal Zodiac"
+
+
+# === Ayanamsas / Sidereal Zodiac === */
+
+AYANANMSA_FAGAN_BRADLEY = "Ayanamsa Fagan Bradley"
+AYANANMSA_LAHIRI = "Ayanamsa Lahiri"
+AYANANMSA_DELUCE = "Ayanamsa De Luce"
+AYANANMSA_RAMAN = "Ayanamsa Raman"
+AYANANMSA_KRISHNAMURTI = "Ayanamsa Krishnamurti"
+AYANANMSA_SASSANIAN = "Ayanamsa Sassanian"
+AYANANMSA_ALDEBARAN_15TAU = "Ayanamsa Aldebaran 15 Taurus"
+AYANANMSA_GALCENTER_0SAG = "Ayanamsa Galactic Eq. 00 Sag"
+
+
 # === Some Lists === */
 
 LIST_SIGNS = [
