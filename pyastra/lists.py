@@ -43,6 +43,12 @@ class GenericList:
         """ Returns an iterator to this list. """
         return self.content.values().__iter__()
 
+    def __str__(self):
+        return "".join(f"{obj}\n" for obj in self)
+
+    def __repr__(self):
+        return self.__str__()
+
 
 # ---------------- #
 #    Object List   #
