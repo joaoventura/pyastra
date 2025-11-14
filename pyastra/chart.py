@@ -52,8 +52,8 @@ class Chart:
             **kwargs
         )
 
-        self.objects = ephem.get_objects(ids, context=self.context)
-        self.houses, self.angles = ephem.get_houses_and_angles(context=self.context)
+        self.objects = ephem.get_objects(ids, context=self.context, chart=self)
+        self.houses, self.angles = ephem.get_houses_and_angles(context=self.context, chart=self)
 
     def copy(self):
         """ Returns a deep copy of this chart. """
@@ -96,12 +96,12 @@ class Chart:
 
     def get_fixed_star(self, obj_id):
         """ Returns a fixed star from the ephemeris. """
-        return ephem.get_fixed_star(obj_id, context=self.context)
+        return ephem.get_fixed_star(obj_id, context=self.context, chart=self)
 
     def get_fixed_stars(self):
         """ Returns a list with all fixed stars. """
         ids = const.LIST_FIXED_STARS
-        return ephem.get_fixed_stars(ids, context=self.context)
+        return ephem.get_fixed_stars(ids, context=self.context, chart=self)
 
     # === Houses and angles === #
 

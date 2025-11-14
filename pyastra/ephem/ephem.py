@@ -7,60 +7,66 @@ PyAstra users will want to use this module for accessing the ephemeris.
     
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from pyastra import const
 from pyastra.context import ChartContext
 from pyastra.datetime import Datetime
 from pyastra.geopos import GeoPos
 from pyastra.object import Object, FixedStar
 from pyastra.lists import GenericList, ObjectList, HouseList, FixedStarList
-
 from . import builder, swe, tools
+
+if TYPE_CHECKING:
+    from pyastra.chart import Chart
 
 
 # === Objects === #
 
-def get_object(obj_id: str, context: ChartContext) -> Object:
+def get_object(obj_id: str, context: ChartContext, chart: Chart = None) -> Object:
     """Returns an ephemeris object."""
-    return builder.create_object(obj_id, context)
+    return builder.create_object(obj_id, context, chart)
 
 
-def get_objects(obj_ids: list, context: ChartContext) -> ObjectList:
+def get_objects(obj_ids: list, context: ChartContext, chart: Chart = None) -> ObjectList:
     """Returns a list of objects."""
-    return ObjectList([get_object(obj_id, context) for obj_id in obj_ids])
+    return ObjectList([get_object(obj_id, context, chart) for obj_id in obj_ids])
 
 
 # === Houses and angles === #
 
-def get_houses_and_angles(context: ChartContext) -> tuple:
+def get_houses_and_angles(context: ChartContext, chart: Chart = None) -> tuple:
     """
     Returns the lists of houses and angles.
     Since houses and angles are computed at the same time, this function should be fast.
     """
-    return builder.create_houses_and_angles(context)
+    return builder.create_houses_and_angles(context, chart)
 
 
-def get_houses(context: ChartContext) -> HouseList:
+def get_houses(context: ChartContext, chart: Chart = None) -> HouseList:
     """Returns a list of houses."""
-    houses, _ = get_houses_and_angles(context)
+    houses, _ = get_houses_and_angles(context, chart)
     return houses
 
 
-def get_angles(context: ChartContext) -> GenericList:
+def get_angles(context: ChartContext, chart: Chart = None) -> GenericList:
     """Returns a list of angles (Asc, MC.)"""
-    _, angles = get_houses_and_angles(context)
+    _, angles = get_houses_and_angles(context, chart)
     return angles
 
 
 # === Fixed stars === #
 
-def get_fixed_star(obj_id: str, context: ChartContext) -> FixedStar:
+def get_fixed_star(obj_id: str, context: ChartContext, chart: Chart = None) -> FixedStar:
     """Returns a fixed star from the ephemeris."""
-    return builder.create_fixed_star(obj_id, context)
+    return builder.create_fixed_star(obj_id, context, chart)
 
 
-def get_fixed_stars(ids: list, context: ChartContext) -> FixedStarList:
+def get_fixed_stars(ids: list, context: ChartContext, chart: Chart = None) -> FixedStarList:
     """Returns a list of fixed stars."""
-    star_list = [get_fixed_star(ID, context) for ID in ids]
+    star_list = [get_fixed_star(ID, context, chart) for ID in ids]
     return FixedStarList(star_list)
 
 

@@ -157,8 +157,8 @@ def _aspect_properties(obj1, obj2, asp_dict):
         # if it has a different direction..
         # Note: Non-planets have zero speed
         prop2['movement'] = const.NO_MOVEMENT
-        obj2speed = obj2.lonspeed if obj2.is_planet() else 0.0
-        same_dir = obj1.lonspeed * obj2speed >= 0
+        obj2speed = obj2.lon_speed if obj2.is_planet() else 0.0
+        same_dir = obj1.lon_speed * obj2speed >= 0
         if not same_dir:
             prop2['movement'] = prop1['movement']
 
@@ -167,8 +167,8 @@ def _aspect_properties(obj1, obj2, asp_dict):
 
 def _get_active_passive(obj1, obj2):
     """ Returns which is the active and the passive objects. """
-    speed1 = abs(obj1.lonspeed) if obj1.is_planet() else -1.0
-    speed2 = abs(obj2.lonspeed) if obj2.is_planet() else -1.0
+    speed1 = abs(obj1.lon_speed) if obj1.is_planet() else -1.0
+    speed2 = abs(obj2.lon_speed) if obj2.is_planet() else -1.0
     if speed1 > speed2:
         return {
             'active': obj1,

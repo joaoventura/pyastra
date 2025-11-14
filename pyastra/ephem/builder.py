@@ -4,18 +4,24 @@ Functions for retrieving astronomical and astrological data from an ephemeris.
 It is the middle layer between the Swiss Ephemeris and user software.
 
 """
+
+from __future__ import annotations
+
 import dataclasses
+from typing import TYPE_CHECKING
 
 from pyastra import angle
 from pyastra import const
 from pyastra.context import ChartContext
 from pyastra.object import Object, House, GenericObject, FixedStar
 from pyastra.lists import HouseList, GenericList
-
 from . import swe, tools
 
+if TYPE_CHECKING:
+    from pyastra.chart import Chart
 
-def create_object(obj_id: str, context: ChartContext) -> Object:
+
+def create_object(obj_id: str, context: ChartContext, chart: Chart = None) -> Object:
     """Returns an object for a specific date and location."""
     if obj_id == const.SOUTH_NODE:
         obj_lon, _, _, _ = swe.swe_object(const.NORTH_NODE, context=context)
@@ -37,12 +43,13 @@ def create_object(obj_id: str, context: ChartContext) -> Object:
         id = obj_id,
         lon = obj_lon,
         lat = obj_lat,
-        lonspeed = lon_speed,
-        latspeed = lat_speed
+        lon_speed = lon_speed,
+        lat_speed = lat_speed,
+        chart = chart
     )
 
 
-def create_houses_and_angles(context: ChartContext) -> tuple:
+def create_houses_and_angles(context: ChartContext, chart: Chart = None) -> tuple:
     """Returns a tuple with lists of houses and angles."""
     cusps, ascmc = swe.swe_houses(context=context)
 
@@ -52,21 +59,22 @@ def create_houses_and_angles(context: ChartContext) -> tuple:
         House(
             id = const.LIST_HOUSES[i],
             lon = cusps[i],
-            size = angle.distance(cusps[i], cusps[i+1])
+            size = angle.distance(cusps[i], cusps[i+1]),
+            chart = chart
         ) for i in range(12)
     ]
 
     angles = [
-        GenericObject(id=const.ASC, lon=ascmc[0]),
-        GenericObject(id=const.MC, lon=ascmc[1]),
-        GenericObject(id=const.DESC, lon=angle.norm(ascmc[0] + 180)),
-        GenericObject(id=const.IC, lon=angle.norm(ascmc[1] + 180))
+        GenericObject(id=const.ASC, lon=ascmc[0], chart=chart),
+        GenericObject(id=const.MC, lon=ascmc[1], chart=chart),
+        GenericObject(id=const.DESC, lon=angle.norm(ascmc[0] + 180), chart=chart),
+        GenericObject(id=const.IC, lon=angle.norm(ascmc[1] + 180), chart=chart)
     ]
 
     return HouseList(houses), GenericList(angles)
 
 
-def create_fixed_star(obj_id: str, context: ChartContext) -> FixedStar:
+def create_fixed_star(obj_id: str, context: ChartContext, chart: Chart = None) -> FixedStar:
     """Returns a fixed star."""
     mag, lon, lat = swe.swe_fixed_star(obj_id, context)
     return FixedStar(
@@ -74,4 +82,5 @@ def create_fixed_star(obj_id: str, context: ChartContext) -> FixedStar:
         mag = mag,
         lon = lon,
         lat = lat,
+        chart = chart
     )
