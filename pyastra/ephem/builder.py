@@ -20,10 +20,6 @@ def create_object(obj_id: str, context: ChartContext) -> Object:
     Returns an object for a specific date and location.
 
     """
-    jd = context.jd
-    lat = context.lat
-    lon = context.lon
-
     if obj_id == const.SOUTH_NODE:
         obj_lon, _, _, _ = swe.swe_object(const.NORTH_NODE, context=context)
         return Object(id=obj_id, lon=angle.norm(obj_lon + 180))
@@ -33,7 +29,7 @@ def create_object(obj_id: str, context: ChartContext) -> Object:
         return Object(id=obj_id, lon=obj_lon)
 
     if obj_id == const.SYZYGY:
-        syzygy_jd = tools.syzygy_jd(jd)
+        syzygy_jd = tools.syzygy_jd(context.jd)
         syzygy_context = dataclasses.replace(context, jd=syzygy_jd)
         obj_lon, obj_lat, lon_speed, lat_speed = swe.swe_object(const.MOON, context=syzygy_context)
 

@@ -66,7 +66,7 @@ def syzygy_jd(jd: float) -> float:
     return jd
 
 
-def solar_return_jd(lon: float, context: ChartContext, forward:bool=True) -> float:
+def solar_return_jd(lon: float, context: ChartContext, forward: bool=True) -> float:
     """
     Finds the julian date before or after 'jd' when the sun is at longitude given by 'lon'.
     It searches forward by default.
