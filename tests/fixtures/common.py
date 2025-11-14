@@ -146,6 +146,75 @@ VALUES_SIDEREAL_FAGAN_BRADLEY = {
 }
 
 
+VALUES_SIDEREAL_LAHIRI = {
+    "Sun": {"lon": 328.71976028788066, "lat": 0.00014414517761542888, "sign": "Aquarius"},
+    "Moon": {"lon": 238.311286095882, "lat": 5.029558163540909, "sign": "Scorpio"},
+    "Mercury": {"lon": 306.7455446800267, "lat": -2.016388564383161, "sign": "Aquarius"},
+    "Venus": {"lon": 1.432696190692557, "lat": -0.10138015090476742, "sign": "Aries"},
+    "Mars": {"lon": 352.47628386636023, "lat": -0.3380896321593395, "sign": "Pisces"},
+    "Jupiter": {"lon": 109.57310263791108, "lat": 0.9817697082853731, "sign": "Cancer"},
+    "Saturn": {"lon": 220.8589020738476, "lat": 2.0925014023293125, "sign": "Scorpio"},
+    "North Node": {"lon": 167.07076060481023, "lat": -2.7998803283568783e-16, "sign": "Virgo"},
+    "South Node": {"lon": 347.07076060481023, "lat": 0.0, "sign": "Pisces"},
+    "Syzygy": {"lon": 140.76948989747996, "lat": -2.2354152114936525, "sign": "Leo"},
+    "Pars Fortuna": {"lon": 38.97954677704598, "lat": 0.0, "sign": "Taurus"},
+
+    "House1": {"lon": 129.38802096904462, "size": 30.0, "sign": "Leo"},
+    "House2": {"lon": 158.78735219029625, "size": 30.0, "sign": "Virgo"},
+    "House3": {"lon": 187.97056618268294, "size": 30.0, "sign": "Libra"},
+    "House4": {"lon": 215.24712059690475, "size": 30.0, "sign": "Scorpio"},
+    "House5": {"lon": 245.80672488735638, "size": 30.0, "sign": "Sagittarius"},
+    "House6": {"lon": 276.3543989058994, "size": 30.0, "sign": "Capricorn"},
+    "House7": {"lon": 309.38802096904465, "size": 30.0, "sign": "Aquarius"},
+    "House8": {"lon": 338.78735219029625, "size": 30.0, "sign": "Pisces"},
+    "House9": {"lon": 7.970566182682951, "size": 30.0, "sign": "Aries"},
+    "House10": {"lon": 35.24712059690475, "size": 30.0, "sign": "Taurus"},
+    "House11": {"lon": 65.80672488735638, "size": 30.0, "sign": "Gemini"},
+    "House12": {"lon": 96.35439890589942, "size": 30.0, "sign": "Cancer"},
+
+    "Asc": {"lon": 129.38802096904462, "sign": "Leo"},
+    "IC": {"lon": 215.24712059690475, "sign": "Scorpio"},
+    "Desc": {"lon": 309.38802096904465, "sign": "Aquarius"},
+    "MC": {"lon": 35.24712059690475, "sign": "Taurus"},
+
+    "Algenib": {"lon": 345.29291494713397, "lat": 12.600754908395206, "sign": "Pisces"},
+    "Alpheratz": {"lon": 350.4448541229456, "lat": 25.681178583648936, "sign": "Pisces"},
+    "Algol": {"lon": 32.307432613653134, "lat": 22.43223304126827, "sign": "Taurus"},
+    "Alcyone": {"lon": 36.133162415837624, "lat": 4.052932584247497, "sign": "Taurus"},
+    "Aldebaran": {"lon": 45.93110265795752, "lat": -5.466765551372646, "sign": "Taurus"},
+    "Rigel": {"lon": 52.972110471536475, "lat": -31.123742002509417, "sign": "Taurus"},
+    "Capella": {"lon": 58.000965763215675, "lat": 22.866658332696808, "sign": "Taurus"},
+    "Betelgeuse": {"lon": 64.89832608585162, "lat": -16.026542330520854, "sign": "Gemini"},
+    "Sirius": {"lon": 80.22444387161526, "lat": -39.61213299774761, "sign": "Gemini"},
+    "Canopus": {"lon": 81.11025602466961, "lat": -75.82699840809937, "sign": "Gemini"},
+    "Castor": {"lon": 86.38532253928685, "lat": 10.097703453992668, "sign": "Gemini"},
+    "Pollux": {"lon": 89.35906728014403, "lat": 6.685853967964131, "sign": "Gemini"},
+    "Procyon": {"lon": 91.92912709912405, "lat": -16.024061359066803, "sign": "Cancer"},
+    "Asellus Borealis": {"lon": 103.68516670357462, "lat": 3.1919123303402084, "sign": "Cancer"},
+    "Asellus Australis": {"lon": 104.86926925776118, "lat": 0.07765374170096874, "sign": "Cancer"},
+    "Alphard": {"lon": 123.42691270456109, "lat": -22.382250795959845, "sign": "Leo"},
+    "Regulus": {"lon": 125.9763771088727, "lat": 0.46535773172484923, "sign": "Leo"},
+    "Denebola": {"lon": 147.76496896977218, "lat": 12.265703318069994, "sign": "Leo"},
+    "Algorab": {"lon": 169.59908736898356, "lat": -12.197372351357942, "sign": "Virgo"},
+    "Spica": {"lon": 179.98893773089725, "lat": -2.055526411260265, "sign": "Virgo"},
+    "Arcturus": {"lon": 180.38200106253146, "lat": 30.724129476258618, "sign": "Libra"},
+    "Alphecca": {"lon": 198.44594872982088, "lat": 44.31879461160149, "sign": "Libra"},
+    "Zuben Eshamali": {"lon": 205.5174829149257, "lat": 8.493417675530758, "sign": "Libra"},
+    "Unukalhai": {"lon": 208.22227556545838, "lat": 25.50452033420928, "sign": "Libra"},
+    "Agena": {"lon": 209.9377808195632, "lat": -44.13599183235419, "sign": "Libra"},
+    "Rigel Kentaurus": {"lon": 215.6043617570842, "lat": -42.598004633009104, "sign": "Scorpio"},
+    "Antares": {"lon": 225.9063118329662, "lat": -4.571525824852803, "sign": "Scorpio"},
+    "Lesath": {"lon": 240.1553394395581, "lat": -14.009044269945003, "sign": "Sagittarius"},
+    "Vega": {"lon": 261.45535139451795, "lat": 61.72744725222478, "sign": "Sagittarius"},
+    "Altair": {"lon": 277.9174050237009, "lat": 29.300815471768857, "sign": "Capricorn"},
+    "Deneb Algedi": {"lon": 299.6811182140554, "lat": -2.604137631339397, "sign": "Capricorn"},
+    "Fomalhaut": {"lon": 309.9990988361535, "lat": -21.136898342598553, "sign": "Aquarius"},
+    "Deneb": {"lon": 311.45796253327063, "lat": 59.90408622617344, "sign": "Aquarius"},
+    "Achernar": {"lon": 321.4466157047789, "lat": -59.37830474568324, "sign": "Aquarius"}
+}
+
+
+
 if __name__ == '__main__':
     # Check for correctness of ayanamsa diff from tropical to sidereal zodiac
     from pyastra import angle

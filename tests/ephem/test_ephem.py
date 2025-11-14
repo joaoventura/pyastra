@@ -3,7 +3,8 @@ import unittest
 from pyastra import const
 from pyastra.context import ChartContext
 from pyastra.ephem import ephem
-from tests.fixtures.common import date, pos, VALUES_TROPICAL, VALUES_SIDEREAL_FAGAN_BRADLEY
+from tests.fixtures.common import (date, pos, VALUES_TROPICAL, VALUES_SIDEREAL_FAGAN_BRADLEY,
+                                   VALUES_SIDEREAL_LAHIRI)
 
 
 class BaseTest(unittest.TestCase):
@@ -50,7 +51,7 @@ class BaseTestTropicalZodiac(BaseTest):
     expected = VALUES_TROPICAL
 
 
-class BaseTestSiderealZodiac(BaseTest):
+class BaseTestSiderealZodiacFaganBradley(BaseTest):
     __test__ = False
     context = ChartContext(
         jd=date.jd,
@@ -60,6 +61,18 @@ class BaseTestSiderealZodiac(BaseTest):
         ayanamsa=const.AYANANMSA_FAGAN_BRADLEY
     )
     expected = VALUES_SIDEREAL_FAGAN_BRADLEY
+
+
+class BaseTestSiderealZodiacLahiri(BaseTest):
+    __test__ = False
+    context = ChartContext(
+        jd=date.jd,
+        lon=pos.lon,
+        lat=pos.lat,
+        zodiac=const.ZODIAC_SIDEREAL,
+        ayanamsa=const.AYANANMSA_LAHIRI
+    )
+    expected = VALUES_SIDEREAL_LAHIRI
 
 
 class ObjectTest(BaseTest):
@@ -245,7 +258,11 @@ class ObjectTestTropicalZodiac(ObjectTest, BaseTestTropicalZodiac):
     __test__ = True
 
 
-class ObjectTestSiderealZodiac(ObjectTest, BaseTestSiderealZodiac):
+class ObjectTestSiderealZodiacFaganBradley(ObjectTest, BaseTestSiderealZodiacFaganBradley):
+    __test__ = True
+
+
+class ObjectTestSiderealZodiacLahiri(ObjectTest, BaseTestSiderealZodiacLahiri):
     __test__ = True
 
 
@@ -253,7 +270,11 @@ class HouseTestTropicalZodiac(HouseTest, BaseTestTropicalZodiac):
     __test__ = True
 
 
-class HouseTestSiderealZodiac(HouseTest, BaseTestSiderealZodiac):
+class HouseTestSiderealZodiacFaganBradley(HouseTest, BaseTestSiderealZodiacFaganBradley):
+    __test__ = True
+
+
+class HouseTestSiderealZodiacLahiri(HouseTest, BaseTestSiderealZodiacLahiri):
     __test__ = True
 
 
@@ -261,7 +282,11 @@ class AngleTestTropicalZodiac(AngleTest, BaseTestTropicalZodiac):
     __test__ = True
 
 
-class AngleTestSiderealZodiac(AngleTest, BaseTestSiderealZodiac):
+class AngleTestSiderealZodiacFaganBradley(AngleTest, BaseTestSiderealZodiacFaganBradley):
+    __test__ = True
+
+
+class AngleTestSiderealZodiacLahiri(AngleTest, BaseTestSiderealZodiacLahiri):
     __test__ = True
 
 
@@ -269,7 +294,11 @@ class FixedStarTestTropicalZodiac(FixedStarTest, BaseTestTropicalZodiac):
     __test__ = True
 
 
-class FixedStarTestSiderealZodiac(FixedStarTest, BaseTestSiderealZodiac):
+class FixedStarTestSiderealZodiacFaganBradley(FixedStarTest, BaseTestSiderealZodiacFaganBradley):
+    __test__ = True
+
+
+class FixedStarTestSiderealZodiacLahiri(FixedStarTest, BaseTestSiderealZodiacLahiri):
     __test__ = True
 
 
@@ -277,15 +306,23 @@ class SolarReturnTestTropicalZodiac(SolarReturnTest, BaseTestTropicalZodiac):
     __test__ = True
 
 
-class SolarReturnTestSiderealZodiac(SolarReturnTest, BaseTestSiderealZodiac):
-    __test__ = False
+class SolarReturnTestSiderealZodiacFaganBradley(SolarReturnTest, BaseTestSiderealZodiacFaganBradley):
+    __test__ = True
+
+
+class SolarReturnTestSiderealZodiacLahiri(SolarReturnTest, BaseTestSiderealZodiacLahiri):
+    __test__ = True
 
 
 class SunRiseAndSetTropicalTests(SunRiseAndSetTest, BaseTestTropicalZodiac):
     __test__ = True
 
 
-class SunRiseAndSetSiderealTests(SunRiseAndSetTest, BaseTestSiderealZodiac):
+class SunRiseAndSetSiderealTestsFaganBradley(SunRiseAndSetTest, BaseTestSiderealZodiacFaganBradley):
+    __test__ = True
+
+
+class SunRiseAndSetSiderealTestsLahiri(SunRiseAndSetTest, BaseTestSiderealZodiacLahiri):
     __test__ = True
 
 
@@ -293,5 +330,9 @@ class StationTropicalTests(StationTest, BaseTestTropicalZodiac):
     __test__ = True
 
 
-class StationSiderealTests(StationTest, BaseTestSiderealZodiac):
+class StationSiderealTestsFaganBradley(StationTest, BaseTestSiderealZodiacFaganBradley):
+    __test__ = True
+
+
+class StationSiderealTestsLahiri(StationTest, BaseTestSiderealZodiacLahiri):
     __test__ = True
