@@ -6,11 +6,10 @@ from pyastra.ephem import swe
 from tests.fixtures.common import date, pos, VALUES_TROPICAL, VALUES_SIDEREAL_FAGAN_BRADLEY
 
 
-class SweTropicalTests(unittest.TestCase):
-
-    def setUp(self):
-        self.context = ChartContext(jd=date.jd, lat=pos.lat, lon=pos.lon)
-        self.expected = VALUES_TROPICAL
+class BaseTest(unittest.TestCase):
+    __test__ = False
+    context = ChartContext(jd=date.jd, lat=pos.lat, lon=pos.lon)
+    expected = VALUES_TROPICAL
 
     def test_sun_position(self):
         lon, lat, lon_speed, lat_speed = swe.swe_object(const.SUN, context=self.context)
@@ -25,6 +24,14 @@ class SweTropicalTests(unittest.TestCase):
     def test_house1_position(self):
         cusps, _ = swe.swe_houses(context=self.context)
         self.assertAlmostEqual(cusps[0], self.expected[const.HOUSE1]['lon'], 2)
+
+    def test_house4_position(self):
+        cusps, _ = swe.swe_houses(context=self.context)
+        self.assertAlmostEqual(cusps[3], self.expected[const.HOUSE4]['lon'], 2)
+
+    def test_house7_position(self):
+        cusps, _ = swe.swe_houses(context=self.context)
+        self.assertAlmostEqual(cusps[6], self.expected[const.HOUSE7]['lon'], 2)
 
     def test_house10_position(self):
         cusps, _ = swe.swe_houses(context=self.context)
@@ -47,24 +54,19 @@ class SweTropicalTests(unittest.TestCase):
         self.assertAlmostEqual(lon, self.expected[const.STAR_REGULUS]['lon'], 2)
 
 
-class SweSiderealTests(unittest.TestCase):
+class SweTropicalTests(BaseTest):
+    __test__ = True
+    context = ChartContext(jd=date.jd, lat=pos.lat, lon=pos.lon)
+    expected = VALUES_TROPICAL
 
-    def setUp(self):
-        self.context = ChartContext(
+
+class SweSiderealTests(BaseTest):
+    __test__ = True
+    context = ChartContext(
             jd=date.jd,
             lat=pos.lat,
             lon=pos.lon,
             zodiac=const.ZODIAC_SIDEREAL,
             ayanamsa=const.AYANANMSA_FAGAN_BRADLEY
         )
-        self.expected = VALUES_SIDEREAL_FAGAN_BRADLEY
-
-    def test_sun_position(self):
-        lon, lat, lon_speed, lat_speed = swe.swe_object(const.SUN, context=self.context)
-        self.assertAlmostEqual(lon, self.expected[const.SUN]['lon'], 2)
-        self.assertAlmostEqual(lat, self.expected[const.SUN]['lat'], 2)
-
-    def test_moon_position(self):
-        lon, lat, lon_speed, lat_speed = swe.swe_object(const.MOON, context=self.context)
-        self.assertAlmostEqual(lon, self.expected[const.MOON]['lon'], 2)
-        self.assertAlmostEqual(lat, self.expected[const.MOON]['lat'], 2)
+    expected = VALUES_SIDEREAL_FAGAN_BRADLEY
