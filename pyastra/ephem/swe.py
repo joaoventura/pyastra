@@ -2,8 +2,10 @@
 Implements a simple interface with the C Swiss Ephemeris using the pyswisseph library.
 
 """
-
+import threading
 # pylint: disable=c-extension-no-member
+
+from contextlib import contextmanager
 
 import swisseph
 from pyastra import const
@@ -59,6 +61,43 @@ SWE_AYANAMSAS = {
 CALC_RISE = swisseph.CALC_RISE
 CALC_SET = swisseph.CALC_SET
 
+# Thread lock
+SWE_LOCK = threading.Lock()
+
+
+@contextmanager
+def swe_context(context: ChartContext):
+    """
+    Context manager to safely set and reset swisseph's global state.
+    It acquires a lock, sets the topographic and sidereal modes based on the chart context,
+    yields control, and then reliably cleans up.
+    """
+    SWE_LOCK.acquire()
+    try:
+        # Get the speed and use the Swiss Ephemeris
+        flags = swisseph.FLG_SPEED | swisseph.FLG_SWIEPH
+
+        # Consider topocentric positions
+        if context.amsl > 0.0:
+            swisseph.set_topo(context.lat, context.lon, context.amsl)
+            flags |= swisseph.FLG_TOPOCTR
+
+        # Use tropical or sidereal zodiac
+        if context.zodiac == const.ZODIAC_SIDEREAL:
+            eph_mode = SWE_AYANAMSAS[context.ayanamsa]
+            swisseph.set_sid_mode(eph_mode)
+            flags |= swisseph.FLG_SIDEREAL
+        else:
+            swisseph.set_sid_mode(0)
+
+        # Yield flags to caller
+        yield flags
+
+    finally:
+        # Restore zodiac mode
+        swisseph.set_sid_mode(0)
+        SWE_LOCK.release()
+
 
 def set_path(path: str):
     """ Sets the path for the swe files. """
@@ -72,32 +111,17 @@ def swe_object(obj_id: str, context: ChartContext) -> tuple:
     Returns: tuple with (lon, lat, lon_speed, lat_speed).
 
     """
-    swe_obj = SWE_OBJECTS[obj_id]
-    flags = swisseph.FLG_SPEED + swisseph.FLG_SWIEPH
-
-    # Use topocentric positions
-    if context.amsl:
-        swisseph.set_topo(context.lat, context.lon, context.amsl)
-        flags += swisseph.FLG_TOPOCTR
-
-    # Use sidereal zodiac
-    if context.zodiac == const.ZODIAC_SIDEREAL:
-        eph_mode = SWE_AYANAMSAS[context.ayanamsa]
-        swisseph.set_sid_mode(eph_mode)
-        flags += swisseph.FLG_SIDEREAL
-
-    swe_list, _ = swisseph.calc_ut(context.jd, swe_obj, flags)
-
-    # Restore mode
-    swisseph.set_sid_mode(0)
+    with swe_context(context) as flags:
+        swe_obj = SWE_OBJECTS[obj_id]
+        swe_list, _ = swisseph.calc_ut(context.jd, swe_obj, flags)
 
     return swe_list[0], swe_list[1], swe_list[3], swe_list[4]
 
 
 def swe_object_fast(obj_id: str, jd: float) -> tuple:
     """
-    Get raw positional data of an object from the ephemeris, ignoring chart context information
-    such as zodiac type, ayanamsa, etc.
+    Get raw positional data of an object from the ephemeris, ignoring any context such as
+    zodiac type, ayanamsa, etc.
 
     Returns: tuple with (lon, lat, lon_speed, lat_speed).
 
@@ -118,25 +142,10 @@ def swe_houses(context: ChartContext) -> tuple:
     Returns: tuple with (1) the house cusps and (2) the angles as (asc, mc).
 
     """
-    flags = swisseph.FLG_SPEED + swisseph.FLG_SWIEPH
-
-    # Use topocentric positions
-    if context.amsl:
-        swisseph.set_topo(context.lat, context.lon, context.amsl)
-        flags += swisseph.FLG_TOPOCTR
-
-    # Use sidereal zodiac
-    if context.zodiac == const.ZODIAC_SIDEREAL:
-        eph_mode = SWE_AYANAMSAS[context.ayanamsa]
-        swisseph.set_sid_mode(eph_mode)
-        flags += swisseph.FLG_SIDEREAL
-
-    hsys = SWE_HOUSESYS[context.hsys]
-    cusps, ascmc = swisseph.houses_ex(context.jd, context.lat, context.lon, hsys, flags)
-    angles = (ascmc[0], ascmc[1])
-
-    # Restore mode
-    swisseph.set_sid_mode(0)
+    with swe_context(context) as flags:
+        hsys = SWE_HOUSESYS[context.hsys]
+        cusps, ascmc = swisseph.houses_ex(context.jd, context.lat, context.lon, hsys, flags)
+        angles = (ascmc[0], ascmc[1])
 
     return cusps, angles
 
@@ -149,24 +158,9 @@ def swe_fixed_star(obj_id: str, context: ChartContext) -> tuple:
     Returns: tuple with (mag, lon, lat).
 
     """
-    flags = swisseph.FLG_SPEED + swisseph.FLG_SWIEPH
-
-    # Use topocentric positions
-    if context.amsl:
-        swisseph.set_topo(context.lat, context.lon, context.amsl)
-        flags += swisseph.FLG_TOPOCTR
-
-    # Use sidereal zodiac
-    if context.zodiac == const.ZODIAC_SIDEREAL:
-        eph_mode = SWE_AYANAMSAS[context.ayanamsa]
-        swisseph.set_sid_mode(eph_mode)
-        flags += swisseph.FLG_SIDEREAL
-
-    swe_list, _, _ = swisseph.fixstar2_ut(obj_id, context.jd, flags)
-    mag = swisseph.fixstar2_mag(obj_id)
-
-    # Restore mode
-    swisseph.set_sid_mode(0)
+    with swe_context(context) as flags:
+        swe_list, _, _ = swisseph.fixstar2_ut(obj_id, context.jd, flags)
+        mag = swisseph.fixstar2_mag(obj_id)
 
     return mag, swe_list[0], swe_list[1]
 
