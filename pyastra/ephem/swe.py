@@ -79,8 +79,8 @@ def swe_context(context: ChartContext):
         flags = swisseph.FLG_SPEED | swisseph.FLG_SWIEPH
 
         # Consider topocentric positions
-        if context.amsl > 0.0:
-            swisseph.set_topo(context.lat, context.lon, context.amsl)
+        if context.alt > 0.0:
+            swisseph.set_topo(context.lat, context.lon, context.alt)
             flags |= swisseph.FLG_TOPOCTR
 
         # Use tropical or sidereal zodiac

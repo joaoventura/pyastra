@@ -25,4 +25,4 @@ class ChartContext:
     hsys: str = const.HOUSES_DEFAULT
     zodiac: str = const.ZODIAC_TROPICAL
     ayanamsa: str = const.AYANANMSA_FAGAN_BRADLEY
-    amsl: float = 0.0   # Altitude above mean sea level
+    alt: float = 0.0   # Altitude above mean sea level
