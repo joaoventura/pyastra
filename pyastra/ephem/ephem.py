@@ -7,6 +7,8 @@ PyAstra users will want to use this module for accessing the ephemeris.
     
 """
 
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from pyastra import const

@@ -5,6 +5,8 @@ It is the middle layer between the Swiss Ephemeris and user software.
 
 """
 
+from __future__ import annotations
+
 import dataclasses
 from typing import TYPE_CHECKING
 
