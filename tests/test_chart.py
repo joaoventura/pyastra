@@ -59,3 +59,25 @@ class SolarReturnTest(ChartTests):
         """Solar return charts dates must match."""
         sr_chart = self.chart_sidereal.solar_return(2025)
         self.assertAlmostEqual(sr_chart.date.jd, 2460747.7716551097, 2)
+
+    def test_solar_return_tropical_objects(self):
+        """Solar return charts dates must calculate the same objects."""
+        sr_chart = self.chart_tropical.solar_return(2025)
+        ids = [obj.id for obj in self.chart_tropical.objects]
+        ids_sr = [obj.id for obj in sr_chart.objects]
+        self.assertListEqual(ids, ids_sr)
+
+    def test_solar_return_sidereal_objects(self):
+        """Solar return charts dates must calculate the same objects."""
+        sr_chart = self.chart_sidereal.solar_return(2025)
+        ids = [obj.id for obj in self.chart_sidereal.objects]
+        ids_sr = [obj.id for obj in sr_chart.objects]
+        self.assertListEqual(ids, ids_sr)
+
+    def test_solar_return_tropical_objects_complete(self):
+        """Solar return charts dates must calculate the same objects."""
+        chart = Chart(date, pos, ids=const.LIST_OBJECTS)
+        sr_chart = chart.solar_return(2025)
+        ids = [obj.id for obj in chart.objects]
+        ids_sr = [obj.id for obj in sr_chart.objects]
+        self.assertListEqual(ids, ids_sr)

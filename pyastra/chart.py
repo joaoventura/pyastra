@@ -41,7 +41,7 @@ class Chart:
         """
         # Handle optional arguments
         hsys = kwargs.get('hsys', const.HOUSES_DEFAULT)
-        ids = kwargs.get('IDs', const.LIST_OBJECTS_TRADITIONAL)
+        ids = kwargs.pop('ids', const.LIST_OBJECTS_TRADITIONAL)
 
         self.date = date
         self.pos = pos
@@ -57,7 +57,7 @@ class Chart:
         self.houses, self.angles = ephem.get_houses_and_angles(context=self.context, chart=self)
 
     @classmethod
-    def from_context(cls, context: ChartContext) -> Chart:
+    def from_context(cls, context: ChartContext, ids=const.LIST_OBJECTS_TRADITIONAL) -> Chart:
         """
         Creates a new chart from a ChartContext.
         Object ids are not restored from the context.
@@ -68,7 +68,7 @@ class Chart:
         del context_dict['lon']
         date = Datetime.from_jd(context.jd, context.utc_offset)
         pos = GeoPos(context.lat, context.lon)
-        return Chart(date, pos, **context_dict)
+        return Chart(date, pos, ids=ids, **context_dict)
 
     def copy(self):
         """ Returns a deep copy of this chart. """
@@ -175,4 +175,5 @@ class Chart:
         context = dataclasses.replace(self.context, jd=date.jd)
         sr_date = ephem.next_solar_return(sun.lon, context=context)
         context = dataclasses.replace(self.context, jd=sr_date.jd)
-        return Chart.from_context(context)
+        ids = [obj.id for obj in self.objects]
+        return Chart.from_context(context, ids)
