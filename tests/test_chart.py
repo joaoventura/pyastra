@@ -1,19 +1,61 @@
 import unittest
+from dataclasses import asdict
 
 from pyastra import const
 from pyastra.chart import Chart
 from pyastra.datetime import Datetime
 from pyastra.geopos import GeoPos
 
+from tests.fixtures.common import (date, pos, VALUES_TROPICAL, VALUES_SIDEREAL_FAGAN_BRADLEY,
+                                   VALUES_SIDEREAL_LAHIRI)
+
 
 class ChartTests(unittest.TestCase):
 
     def setUp(self):
-        self.date = Datetime('2015/03/13', '17:00', '+00:00')
-        self.pos = GeoPos('38n32', '8w54')
+        self.chart_tropical = Chart(date, pos)
+        self.chart_sidereal = Chart(date, pos, zodiac=const.ZODIAC_SIDEREAL,
+                                    ayanamsa=const.AYANANMSA_FAGAN_BRADLEY)
 
-    def test_solar_return_hsys(self):
-        """Solar return charts must maintain original house system."""
-        chart = Chart(self.date, self.pos, hsys=const.HOUSES_MORINUS)
-        sr_chart = chart.solar_return(2018)
-        self.assertEqual(chart.hsys, sr_chart.hsys)
+
+class SolarReturnTest(ChartTests):
+
+    def test_solar_return_tropical_sun_lon(self):
+        """Sun must return to same longitude."""
+        sr_chart = self.chart_tropical.solar_return(2025)
+        self.assertAlmostEqual(self.chart_tropical.get(const.SUN).lon,
+                               sr_chart.get(const.SUN).lon, 2)
+
+    def test_solar_return_sidereal_sun_lon(self):
+        """Sun must return to same longitude."""
+        sr_chart = self.chart_sidereal.solar_return(2025)
+        self.assertAlmostEqual(self.chart_sidereal.get(const.SUN).lon,
+                               sr_chart.get(const.SUN).lon, 2)
+
+    def test_solar_return_tropical_context(self):
+        """Solar return charts must maintain similar contexts, except jd."""
+        sr_chart = self.chart_tropical.solar_return(2025)
+        context = asdict(self.chart_tropical.context)
+        context_sr = asdict(sr_chart.context)
+        del context['jd']
+        del context_sr['jd']
+        self.assertDictEqual(context, context_sr)
+
+    def test_solar_return_sidereal_context(self):
+        """Solar return charts must maintain similar contexts, except jd."""
+        sr_chart = self.chart_sidereal.solar_return(2025)
+        context = asdict(self.chart_sidereal.context)
+        context_sr = asdict(sr_chart.context)
+        del context['jd']
+        del context_sr['jd']
+        self.assertDictEqual(context, context_sr)
+
+    def test_solar_return_tropical_2025(self):
+        """Solar return charts dates must match."""
+        sr_chart = self.chart_tropical.solar_return(2025)
+        self.assertAlmostEqual(sr_chart.date.jd, 2460747.632236115, 2)
+
+    def test_solar_return_sidereal_2025(self):
+        """Solar return charts dates must match."""
+        sr_chart = self.chart_sidereal.solar_return(2025)
+        self.assertAlmostEqual(sr_chart.date.jd, 2460747.7716551097, 2)
