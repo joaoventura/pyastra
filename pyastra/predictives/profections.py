@@ -16,8 +16,8 @@ def compute(chart, date, fixed_objects=False):
     """
 
     sun = chart.get_object(const.SUN)
-    prev_sr = ephem.prev_solar_return(date, sun.lon)
-    next_sr = ephem.next_solar_return(date, sun.lon)
+    prev_sr = ephem.prev_solar_return(sun.lon, chart.context)
+    next_sr = ephem.next_solar_return(sun.lon, chart.context)
 
     # In one year, rotate chart 30º
     rotation = 30 * (date.jd - prev_sr.jd) / (next_sr.jd - prev_sr.jd)
