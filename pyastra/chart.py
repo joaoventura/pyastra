@@ -57,7 +57,7 @@ class Chart:
         self.houses, self.angles = ephem.get_houses_and_angles(context=self.context, chart=self)
 
     @classmethod
-    def from_context(cls, context: ChartContext, ids=const.LIST_OBJECTS_TRADITIONAL) -> Chart:
+    def from_context(cls, context, ids=const.LIST_OBJECTS_TRADITIONAL):
         """
         Creates a new chart from a ChartContext.
         Object ids are not restored from the context.
