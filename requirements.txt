@@ -1,1 +1,5 @@
 pyswisseph == 2.10.3.2
+
+# Dev
+pylint
+pytest
