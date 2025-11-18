@@ -3,11 +3,8 @@ from dataclasses import asdict
 
 from pyastra import const
 from pyastra.chart import Chart
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
 
-from tests.fixtures.common import (date, pos, VALUES_TROPICAL, VALUES_SIDEREAL_FAGAN_BRADLEY,
-                                   VALUES_SIDEREAL_LAHIRI)
+from tests.fixtures.common import date, pos
 
 
 class ChartTests(unittest.TestCase):
