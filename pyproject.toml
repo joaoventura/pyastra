@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyastra"
-version = "0.3.0"
+version = "0.3.1"
 
 # --- Metadata ---
 description = "Python library for Traditional Astrology"
