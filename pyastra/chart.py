@@ -42,6 +42,7 @@ class Chart:
         # Handle optional arguments
         hsys = kwargs.get('hsys', const.HOUSES_DEFAULT)
         ids = kwargs.pop('ids', const.LIST_OBJECTS_TRADITIONAL)
+        utc_offset = kwargs.pop('utc_offset', date.utcoffset.value)
 
         self.date = date
         self.pos = pos
@@ -50,6 +51,7 @@ class Chart:
             jd = self.date.jd,
             lat = self.pos.lat,
             lon = self.pos.lon,
+            utc_offset = utc_offset if isinstance(utc_offset, float) else utc_offset.value
             **kwargs
         )
 
