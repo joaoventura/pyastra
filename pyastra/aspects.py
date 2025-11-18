@@ -1,6 +1,6 @@
 """
-Provide useful for handling aspects between objects in pyastra. An aspect is an angular relation
-between a planet and another object.
+Useful functions for handling aspects between objects in pyastra.
+An aspect is an angular relation between a planet and another object.
 
 This module has the following base terminology:
 - Active/Passive object: The active object is the planet responsible for the aspect.
