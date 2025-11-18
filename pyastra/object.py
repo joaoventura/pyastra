@@ -111,10 +111,10 @@ class Object(GenericObject):
     """
 
     def __init__(self, *args, **kwargs):
-        self.type = const.OBJ_PLANET
         self.lon_speed = 0.0
         self.lat_speed = 0.0
         super().__init__(*args, **kwargs)
+        self.type = const.OBJ_PLANET
 
     def __str__(self):
         string = super().__str__()[:-1]
@@ -184,9 +184,9 @@ class House(GenericObject):
     _OFFSET = -5.0
 
     def __init__(self, *args, **kwargs):
-        self.type = const.OBJ_HOUSE
         self.size = 30.0
         super().__init__(*args, **kwargs)
+        self.type = const.OBJ_HOUSE
 
     def __str__(self):
         string = super().__str__()[:-1]
@@ -233,9 +233,9 @@ class FixedStar(GenericObject):
     """ This class represents a generic fixed star. """
 
     def __init__(self, *args, **kwargs):
-        self.type = const.OBJ_FIXED_STAR
         self.mag = 0.0
         super().__init__(*args, **kwargs)
+        self.type = const.OBJ_FIXED_STAR
 
     def __str__(self):
         string = super().__str__()[:-1]
