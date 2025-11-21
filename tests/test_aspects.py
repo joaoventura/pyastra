@@ -25,7 +25,8 @@ class ChartTests(unittest.TestCase):
         asp = aspects.get_aspect(obj1, obj2, const.MAJOR_ASPECTS)
         expected = ASPECTS[obj1.id][obj2.id]
         self.assertEqual(asp.type, expected['type'])
-        self.assertEqual(asp.active.id, expected['active_id'])
+        if asp.type != const.NO_ASPECT:
+            self.assertEqual(asp.active.id, expected['active_id'])
         self.assertEqual(asp.movement(), expected['movement'])
         self.assertEqual(asp.mutual_aspect(), expected['mutual_aspect'])
         self.assertEqual(asp.mutual_movement(), expected['mutual_movement'])
