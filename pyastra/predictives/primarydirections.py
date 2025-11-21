@@ -69,11 +69,20 @@ def get_arc(prom, sig, mc, pos, zerolat):
 #   Primary Directions Class   #
 # ---------------------------- #
 
-class Direction:
+class DirectionPoint:
     """
-    Represents a primary direction.
+    Represents a Promissor or Significator in a Primary Direction.
 
     """
+
+    POINT_BODY = 'None'
+    POINT_TERM = 'Term'
+    POINT_ANTISCIA = 'Antiscia'
+    POINT_CONTRA_ANTISCIA = 'Contra-antiscia'
+    POINT_DEXTER_ASPECT = 'Dexter'
+    POINT_SINISTER_ASPECT = 'Sinister'
+    TYPE_ZODIACAL = 'Zodiacal'
+    TYPE_MUNDANE = 'Mundane'
 
     ASPECTS = {
         # Major
@@ -94,33 +103,84 @@ class Direction:
         144: 'Quincunx',
     }
 
-    def __init__(self, **kwargs):
-        self.arc = kwargs.get('arc')
-        self.promissor = kwargs.get('promissor')
-        self.significator = kwargs.get('significator')
-        self.zodiac = kwargs.get('zodiac')
+    def __init__(self, point, body, aspect=const.NO_ASPECT, term_sign=None):
+        self.point = point
+        self.body = body
+        self.aspect = aspect
+        self.term_sign = term_sign
+
+    @classmethod
+    def from_string(cls, string):
+        """Builds a direction point from a promissor/significator string."""
+        parts = string.split('_')
+        point, body, aspect, term_sign = (None, parts[1], const.NO_ASPECT, None)
+        if parts[0] == 'T':
+            point = DirectionPoint.POINT_TERM
+            term_sign = parts[2]
+        elif parts[0] == 'D':
+            point = DirectionPoint.POINT_DEXTER_ASPECT
+            aspect = int(parts[2])
+        elif parts[0] == 'S':
+            point = DirectionPoint.POINT_SINISTER_ASPECT
+            aspect = int(parts[2])
+        elif parts[0] == 'N':
+            point = DirectionPoint.POINT_BODY
+            aspect = int(parts[2])
+        elif parts[0] == 'A':
+            point = DirectionPoint.POINT_ANTISCIA
+        elif parts[0] == 'C':
+            point = DirectionPoint.POINT_CONTRA_ANTISCIA
+
+        return DirectionPoint(point, body, aspect, term_sign)
+
+    def to_string(self) -> str:
+        if self.point == DirectionPoint.POINT_TERM:
+            return f'Terms of {self.body} in {self.term_sign}'
+        if self.point == DirectionPoint.POINT_DEXTER_ASPECT:
+            return f'Dexter {DirectionPoint.ASPECTS[self.aspect]} of {self.body}'
+        if self.point == DirectionPoint.POINT_SINISTER_ASPECT:
+            return f'Sinister {DirectionPoint.ASPECTS[self.aspect]} of {self.body}'
+        if self.point == DirectionPoint.POINT_BODY:
+            if self.aspect != 0:
+                return f'{DirectionPoint.ASPECTS[self.aspect]} of {self.body}'
+            else:
+                return f'{self.body}'
+        if self.point == DirectionPoint.POINT_ANTISCIA:
+            return f'Antiscia of {self.body}'
+        if self.point == DirectionPoint.POINT_CONTRA_ANTISCIA:
+            return f'Contra-Antiscia of {self.body}'
+        return 'Invalid direction'
+
+    def __str__(self):
+        return str(self.__dict__)
+
+    def __repr__(self):
+        return f'DirectionPoint {str(self.__dict__)}'
+
+
+class Direction:
+    """
+    Represents a primary direction.
+
+    """
+
+    def __init__(self, arc, promissor, significator, zodiac):
+        self.arc = arc
+        self.promissor = DirectionPoint.from_string(promissor)
+        self.significator = DirectionPoint.from_string(significator)
+        self.zodiac = zodiac
+
+    @classmethod
+    def from_direction_strings(cls, arc, promissor, significator, zodiac):
+        """Builds a Direction from direction strings."""
+        return Direction(arc, promissor, significator, zodiac)
 
     def describe(self):
         """Describes this direction as text."""
-        prom = self.promissor.split('_')
-        sig = self.significator.split('_')
         res = f"{self.arc} - "
-        if prom[0] == 'T':
-            res += f'Terms of {prom[1]} in {prom[2]}'
-        elif prom[0] == 'D':
-            asp = Direction.ASPECTS.get(int(prom[2]))
-            res += f'Dexter {asp} of {prom[1]}'
-        elif prom[0] == 'S':
-            asp = Direction.ASPECTS.get(int(prom[2]))
-            res += f'Sinister {asp} of {prom[1]}'
-        elif prom[0] == 'N':
-            asp = Direction.ASPECTS.get(int(prom[2]))
-            res += f'{asp} of {prom[1]}'
-        elif prom[0] == 'A':
-            res += f'Antiscia of {prom[1]}'
-        elif prom[0] == 'C':
-            res += f'Contra Antiscia of {prom[1]}'
-        res += f' to {sig[1]}'
+        res += self.promissor.to_string()
+        res += ' to '
+        res += self.significator.to_string()
         if self.zodiac == 'M':
             res += ' (In Mundo)'
         else:
@@ -299,7 +359,7 @@ class PrimaryDirections:
         arcs = self._arc(prom, sig)
         for (arc, zodiac) in [('arcm', 'M'), ('arcz', 'Z')]:
             if 0 < arcs[arc] < self.MAX_ARC:
-                res.append(Direction(
+                res.append(Direction.from_direction_strings(
                     arc=arcs[arc],
                     promissor=prom['id'],
                     significator=sig['id'],
