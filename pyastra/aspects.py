@@ -247,13 +247,13 @@ class Aspect:
         if self.active.id == obj_id:
             return {
                 'role': 'active',
-                'inOrb': self.active.in_orb,
+                'in_orb': self.active.in_orb,
                 'movement': self.active.movement
             }
         if self.passive.id == obj_id:
             return {
                 'role': 'passive',
-                'inOrb': self.passive.in_orb,
+                'in_orb': self.passive.in_orb,
                 'movement': self.passive.movement
             }
         return None
