@@ -8,6 +8,9 @@
 main.py
 benchmarks.py
 
+# Jupyter
+.ipynb_checkpoints
+
 # Virtual environment
 virtualenv/
 venv/
