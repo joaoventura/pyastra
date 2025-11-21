@@ -243,6 +243,24 @@ class PrimaryDirections:
                 res.append(self.T(obj_id, sign))
         return res
 
+    def _build_directions(self, prom, sig) -> list[Direction]:
+        """ Builds a list of directions from promissor and significator objects. """
+        if prom['id'] == sig['id']:
+            return []
+
+        res = []
+        arcs = self._arc(prom, sig)
+        for (arc, zodiac) in [('arcm', 'M'), ('arcz', 'Z')]:
+            if 0 < arcs[arc] < self.MAX_ARC:
+                res.append(Direction(
+                    arc=arcs[arc],
+                    promissor=prom['id'],
+                    significator=sig['id'],
+                    zodiac=zodiac,
+                ))
+
+        return res
+
     def get_list(self, asp_list):
         """ Returns a sorted list with all primary directions. """
         # Significators
@@ -262,18 +280,8 @@ class PrimaryDirections:
         res = []
         for prom in promissors:
             for sig in significators:
-                if prom['id'] == sig['id']:
-                    continue
-                arcs = self._arc(prom, sig)
-                for (x, y) in [('arcm', 'M'), ('arcz', 'Z')]:
-                    arc = arcs[x]
-                    if 0 < arc < self.MAX_ARC:
-                        res.append(Direction(
-                            arc=arcs[x],
-                            promissor=prom['id'],
-                            significator=sig['id'],
-                            zodiac=y,
-                        ))
+                directions = self._build_directions(prom, sig)
+                res.extend(directions)
 
         return sorted(res, key=lambda obj: obj.arc)
 
