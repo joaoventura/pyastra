@@ -69,6 +69,22 @@ def get_arc(prom, sig, mc, pos, zerolat):
 #   Primary Directions Class   #
 # ---------------------------- #
 
+class Direction:
+    """
+    Represents a primary direction.
+
+    """
+
+    def __init__(self, **kwargs):
+        self.arc = kwargs.get('arc')
+        self.promissor = kwargs.get('promissor')
+        self.significator = kwargs.get('significator')
+        self.zodiac = kwargs.get('zodiac')
+
+    def __str__(self):
+        return f"Direction: {str(self.__dict__)}"
+
+
 class PrimaryDirections:
     """
     This class represents the Primary Directions for a Chart.
@@ -252,14 +268,14 @@ class PrimaryDirections:
                 for (x, y) in [('arcm', 'M'), ('arcz', 'Z')]:
                     arc = arcs[x]
                     if 0 < arc < self.MAX_ARC:
-                        res.append([
-                            arcs[x],
-                            prom['id'],
-                            sig['id'],
-                            y,
-                        ])
+                        res.append(Direction(
+                            arc=arcs[x],
+                            promissor=prom['id'],
+                            significator=sig['id'],
+                            zodiac=y,
+                        ))
 
-        return sorted(res)
+        return sorted(res, key=lambda obj: obj.arc)
 
 
 # ------------------ #
@@ -277,7 +293,7 @@ class PDTable:
         """ Returns the directions within the min and max arcs. """
         res = []
         for direction in self.table:
-            if arcmin < direction[0] < arcmax:
+            if arcmin < direction.arc < arcmax:
                 res.append(direction)
         return res
 
@@ -285,7 +301,7 @@ class PDTable:
         """ Returns all directions to a significator. """
         res = []
         for direction in self.table:
-            if obj_id in direction[2]:
+            if obj_id in direction.significator:
                 res.append(direction)
         return res
 
@@ -293,6 +309,6 @@ class PDTable:
         """ Returns all directions to a promissor. """
         res = []
         for direction in self.table:
-            if obj_id in direction[1]:
+            if obj_id in direction.promissor:
                 res.append(direction)
         return res
