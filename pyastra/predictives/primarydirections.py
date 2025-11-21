@@ -75,11 +75,58 @@ class Direction:
 
     """
 
+    ASPECTS = {
+        # Major
+        0: 'Conjunction',
+        60: 'Sextile',
+        90: 'Square',
+        120: 'Trine',
+        180: 'Opposition',
+
+        # Minor
+        30: 'Semi-sextile',
+        36: 'Semi-quintile',
+        45: 'Semi-square',
+        72: 'Quintile',
+        108: 'Sesquiquintile',
+        135: 'Sequisquare',
+        155: 'Biquintile',
+        144: 'Quincunx',
+    }
+
     def __init__(self, **kwargs):
         self.arc = kwargs.get('arc')
         self.promissor = kwargs.get('promissor')
         self.significator = kwargs.get('significator')
         self.zodiac = kwargs.get('zodiac')
+
+    def describe(self):
+        """Describes this direction as text."""
+        prom = self.promissor.split('_')
+        sig = self.significator.split('_')
+        res = f"{self.arc} - "
+        if prom[0] == 'T':
+            res += f'Terms of {prom[1]} in {prom[2]}'
+        elif prom[0] == 'D':
+            asp = Direction.ASPECTS.get(int(prom[2]))
+            res += f'Dexter {asp} of {prom[1]}'
+        elif prom[0] == 'S':
+            asp = Direction.ASPECTS.get(int(prom[2]))
+            res += f'Sinister {asp} of {prom[1]}'
+        elif prom[0] == 'N':
+            asp = Direction.ASPECTS.get(int(prom[2]))
+            res += f'{asp} of {prom[1]}'
+        elif prom[0] == 'A':
+            res += f'Antiscia of {prom[1]}'
+        elif prom[0] == 'C':
+            res += f'Contra Antiscia of {prom[1]}'
+        res += f' to {sig[1]}'
+        if self.zodiac == 'M':
+            res += ' (In Mundo)'
+        else:
+            res += ' (In Zodiaco)'
+
+        return res
 
     def __str__(self):
         return f"Direction: {str(self.__dict__)}"
