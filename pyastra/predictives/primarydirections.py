@@ -81,8 +81,6 @@ class DirectionPoint:
     POINT_CONTRA_ANTISCIA = 'Contra-antiscia'
     POINT_DEXTER_ASPECT = 'Dexter'
     POINT_SINISTER_ASPECT = 'Sinister'
-    TYPE_ZODIACAL = 'Zodiacal'
-    TYPE_MUNDANE = 'Mundane'
 
     ASPECTS = {
         # Major
@@ -164,6 +162,9 @@ class Direction:
 
     """
 
+    TYPE_ZODIACAL = 'Z'
+    TYPE_MUNDANE = 'M'
+
     def __init__(self, arc, promissor, significator, zodiac):
         self.arc = arc
         self.promissor = DirectionPoint.from_string(promissor)
@@ -182,9 +183,9 @@ class Direction:
         res += ' to '
         res += self.significator.to_string()
         if self.zodiac == 'M':
-            res += ' (In Mundo)'
+            res += ' (Mundane)'
         else:
-            res += ' (In Zodiaco)'
+            res += ' (Zodiacal)'
 
         return res
 
@@ -416,7 +417,7 @@ class PDTable:
         """ Returns all directions to a significator. """
         res = []
         for direction in self.table:
-            if obj_id in direction.significator:
+            if direction.significator.body == obj_id:
                 res.append(direction)
         return res
 
@@ -424,6 +425,6 @@ class PDTable:
         """ Returns all directions to a promissor. """
         res = []
         for direction in self.table:
-            if obj_id in direction.promissor:
+            if direction.promissor.body == obj_id:
                 res.append(direction)
         return res
