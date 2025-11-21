@@ -100,7 +100,7 @@ class ChartDynamics:
             obj_b = self.chart.get_object(elem['id'])
             asp = aspects.get_aspect(obj_a, obj_b, asp_list)
             role = asp.get_role(obj_a.id)
-            if role['inOrb']:
+            if role['in_orb']:
                 movement = role['movement']
                 res[movement].append({
                     'id': obj_b.id,

@@ -1091,6 +1091,802 @@ VALUES_SIDEREAL_LAHIRI = {
 }
 
 
+ASPECTS = {
+    "Sun": {
+        "Moon": {
+            "type": 90,
+            "active_id": "Moon",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mercury": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mars": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": 120,
+            "active_id": "Sun",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "North Node": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": 60,
+            "active_id": "Sun",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        }
+    },
+    "Moon": {
+        "Sun": {
+            "type": 90,
+            "active_id": "Moon",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mercury": {
+            "type": 60,
+            "active_id": "Moon",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "Venus": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mars": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Jupiter": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": -1,
+            "active_id": "Moon",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "North Node": {
+            "type": 60,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Syzygy": {
+            "type": 90,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "Pars Fortuna": {
+            "type": -1,
+            "active_id": "Moon",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    },
+    "Mercury": {
+        "Sun": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Moon": {
+            "type": 60,
+            "active_id": "Moon",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "Venus": {
+            "type": 60,
+            "active_id": "Mercury",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mars": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": 90,
+            "active_id": "Mercury",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "North Node": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": 90,
+            "active_id": "Mercury",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        }
+    },
+    "Venus": {
+        "Sun": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Moon": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mercury": {
+            "type": 60,
+            "active_id": "Mercury",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mars": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "North Node": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    },
+    "Mars": {
+        "Sun": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Moon": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mercury": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": 120,
+            "active_id": "Mars",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": -1,
+            "active_id": "Mars",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "North Node": {
+            "type": 180,
+            "active_id": "Mars",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": 0,
+            "active_id": "Mars",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": -1,
+            "active_id": "Mars",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    },
+    "Jupiter": {
+        "Sun": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Moon": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "Mercury": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mars": {
+            "type": 120,
+            "active_id": "Mars",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": 120,
+            "active_id": "Jupiter",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "North Node": {
+            "type": 60,
+            "active_id": "Jupiter",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "South Node": {
+            "type": 120,
+            "active_id": "Jupiter",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": -1,
+            "active_id": "Jupiter",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    },
+    "Saturn": {
+        "Sun": {
+            "type": 120,
+            "active_id": "Sun",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "Moon": {
+            "type": -1,
+            "active_id": "Moon",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mercury": {
+            "type": 90,
+            "active_id": "Mercury",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mars": {
+            "type": -1,
+            "active_id": "Mars",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": 120,
+            "active_id": "Jupiter",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "North Node": {
+            "type": -1,
+            "active_id": "North Node",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": 120,
+            "active_id": "Saturn",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": 180,
+            "active_id": "Saturn",
+            "movement": "Separative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        }
+    },
+    "North Node": {
+        "Sun": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Moon": {
+            "type": 60,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "Mercury": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mars": {
+            "type": 180,
+            "active_id": "Mars",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": 60,
+            "active_id": "Jupiter",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Saturn": {
+            "type": -1,
+            "active_id": "North Node",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": -1,
+            "active_id": "North Node",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": -1,
+            "active_id": "North Node",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    },
+    "South Node": {
+        "Sun": {
+            "type": -1,
+            "active_id": "Sun",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Moon": {
+            "type": 120,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Mercury": {
+            "type": -1,
+            "active_id": "Mercury",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mars": {
+            "type": 0,
+            "active_id": "Mars",
+            "movement": "Separative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Jupiter": {
+            "type": 120,
+            "active_id": "Jupiter",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "Saturn": {
+            "type": 120,
+            "active_id": "Saturn",
+            "movement": "Applicative",
+            "mutual_aspect": True,
+            "mutual_movement": False
+        },
+        "North Node": {
+            "type": -1,
+            "active_id": "North Node",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": -1,
+            "active_id": "Pars Fortuna",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    },
+    "Syzygy": {
+        "Sun": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Moon": {
+            "type": 90,
+            "active_id": "Moon",
+            "movement": "Separative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "Mercury": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mars": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "North Node": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Pars Fortuna": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    },
+    "Pars Fortuna": {
+        "Sun": {
+            "type": 60,
+            "active_id": "Sun",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "Moon": {
+            "type": -1,
+            "active_id": "Moon",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mercury": {
+            "type": 90,
+            "active_id": "Mercury",
+            "movement": "Applicative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "Venus": {
+            "type": -1,
+            "active_id": "Venus",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Mars": {
+            "type": -1,
+            "active_id": "Mars",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Jupiter": {
+            "type": -1,
+            "active_id": "Jupiter",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Saturn": {
+            "type": 180,
+            "active_id": "Saturn",
+            "movement": "Separative",
+            "mutual_aspect": False,
+            "mutual_movement": False
+        },
+        "North Node": {
+            "type": -1,
+            "active_id": "North Node",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "South Node": {
+            "type": -1,
+            "active_id": "South Node",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        },
+        "Syzygy": {
+            "type": -1,
+            "active_id": "Syzygy",
+            "movement": "None",
+            "mutual_aspect": False,
+            "mutual_movement": True
+        }
+    }
+}
+
+
 if __name__ == '__main__':
     # Check for correctness of ayanamsa diff from tropical to sidereal zodiac
     from pyastra import angle
