@@ -9,6 +9,8 @@ Default assumptions:
 
 """
 
+from dataclasses import dataclass
+
 from pyastra import angle
 from pyastra import utils
 from pyastra import const
@@ -196,6 +198,22 @@ class Direction:
         return self.__str__()
 
 
+@dataclass(slots=True)
+class PointCoords:
+    """
+    The calculated astronomical coordinates for a point.
+    We store both Mundane (with latitude) and Zodiacal (lat=0) coordinates
+    to allow efficient calculation of both direction types.
+    """
+    obj_id: str
+    lat: float
+    lon: float
+    ra_m: float
+    decl_m: float
+    ra_z: float
+    decl_z: float
+
+
 class PrimaryDirections:
     """
     This class represents the Primary Directions for a Chart.
@@ -246,7 +264,7 @@ class PrimaryDirections:
 
     # === Object creation methods === #
 
-    def G(self, obj_id, lat, lon):
+    def G(self, obj_id, lat, lon) -> PointCoords:
         """ Creates a generic entry for an object. """
 
         # Equatorial coordinates
@@ -255,49 +273,41 @@ class PrimaryDirections:
         if lat != 0:
             eqZ = utils.eq_coords(lon, 0)
 
-        return {
-            'id': obj_id,
-            'lat': lat,
-            'lon': lon,
-            'ra': eqM[0],
-            'decl': eqM[1],
-            'raZ': eqZ[0],
-            'declZ': eqZ[1],
-        }
+        return PointCoords(obj_id, lat, lon, eqM[0], eqM[1], eqZ[0], eqZ[1])
 
-    def T(self, obj_id, sign):
+    def T(self, obj_id, sign) -> PointCoords:
         """ Returns the term of an object in a sign. """
         lon = self.terms[sign][obj_id]
         obj_id = f'T_{obj_id}_{sign}'
         return self.G(obj_id, 0, lon)
 
-    def A(self, obj_id):
+    def A(self, obj_id) -> PointCoords:
         """ Returns the Antiscia of an object. """
         obj = self.chart.get_object(obj_id).antiscia()
         obj_id = f'A_{obj_id}'
         return self.G(obj_id, obj.lat, obj.lon)
 
-    def C(self, obj_id):
+    def C(self, obj_id) -> PointCoords:
         """ Returns the CAntiscia of an object. """
         obj = self.chart.get_object(obj_id).cantiscia()
         obj_id = f'C_{obj_id}'
         return self.G(obj_id, obj.lat, obj.lon)
 
-    def D(self, obj_id, asp):
+    def D(self, obj_id, asp) -> PointCoords:
         """ Returns the dexter aspect of an object. """
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon - asp)
         obj_id = f'D_{obj_id}_{asp}'
         return self.G(obj_id, obj.lat, obj.lon)
 
-    def S(self, obj_id, asp):
+    def S(self, obj_id, asp) -> PointCoords:
         """ Returns the sinister aspect of an object. """
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon + asp)
         obj_id = f'S_{obj_id}_{asp}'
         return self.G(obj_id, obj.lat, obj.lon)
 
-    def N(self, obj_id, asp=0):
+    def N(self, obj_id, asp=0) -> PointCoords:
         """ Returns the conjunction or opposition aspect of an object. """
         obj = self.chart.get(obj_id).copy()
         obj.relocate(obj.lon + asp)
@@ -306,10 +316,10 @@ class PrimaryDirections:
 
     # === Arcs === #
 
-    def _arc(self, prom, sig):
+    def _arc(self, prom: PointCoords, sig: PointCoords):
         """ Computes the in-zodiaco and in-mundo arcs between a promissor and a significator. """
-        arcm = arc(prom['ra'], prom['decl'], sig['ra'], sig['decl'], self.mcRA, self.lat)
-        arcz = arc(prom['raZ'], prom['declZ'], sig['raZ'], sig['declZ'], self.mcRA, self.lat)
+        arcm = arc(prom.ra_m, prom.decl_m, sig.ra_m, sig.decl_m, self.mcRA, self.lat)
+        arcz = arc(prom.ra_z, prom.decl_z, sig.ra_z, sig.decl_z, self.mcRA, self.lat)
         return {
             'arcm': arcm,
             'arcz': arcz
@@ -323,8 +333,8 @@ class PrimaryDirections:
         """
         res = self._arc(prom, sig)
         res.update({
-            'prom': prom['id'],
-            'sig': sig['id']
+            'prom': prom.obj_id,
+            'sig': sig.obj_id
         })
         return res
 
@@ -356,7 +366,7 @@ class PrimaryDirections:
 
     def _build_directions(self, prom, sig) -> list[Direction]:
         """ Builds a list of directions from promissor and significator objects. """
-        if prom['id'] == sig['id']:
+        if prom.obj_id == sig.obj_id:
             return []
 
         res = []
@@ -365,8 +375,8 @@ class PrimaryDirections:
             if 0 < arcs[arc] < self.MAX_ARC:
                 res.append(Direction.from_direction_strings(
                     arc=arcs[arc],
-                    promissor=prom['id'],
-                    significator=sig['id'],
+                    promissor=prom.obj_id,
+                    significator=sig.obj_id,
                     zodiac=zodiac,
                 ))
 
