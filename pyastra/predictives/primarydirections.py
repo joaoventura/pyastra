@@ -90,7 +90,7 @@ class DirectionPoint:
         if lat != 0:
             self.ra_z, self.decl_z = utils.eq_coords(lon, 0)
 
-    def to_string(self) -> str:
+    def __str__(self):
         """ Returns the direction in human-readable format. """
         if self.point_type == const.PD_POINT_TYPE_TERM:
             return f'Terms of {self.obj_id} in {self.term_sign}'
@@ -106,9 +106,6 @@ class DirectionPoint:
         if self.point_type == const.PD_POINT_TYPE_CONTRA_ANTISCIA:
             return f'Contra-Antiscia of {self.obj_id}'
         return 'Invalid direction'
-
-    def __str__(self):
-        return self.to_string()
 
     def __repr__(self):
         return f'DirectionPoint {str(self.__dict__)}'
@@ -298,10 +295,10 @@ class PrimaryDirections:
 
         res = []
         arcs = self.compute_arc(prom, sig)
-        for (arc, dtype) in [('arcm', const.PD_TYPE_MUNDANE), ('arcz', const.PD_TYPE_ZODIACAL)]:
-            if 0 < arcs[arc] < self.MAX_ARC:
+        for (arc_type, dtype) in [('arcm', const.PD_TYPE_MUNDANE), ('arcz', const.PD_TYPE_ZODIACAL)]:
+            if 0 < arcs[arc_type] < self.MAX_ARC:
                 res.append(Direction(
-                    arc=arcs[arc],
+                    arc=arcs[arc_type],
                     promissor=prom,
                     significator=sig,
                     direction_type=dtype,
@@ -340,7 +337,7 @@ class PDTable:
 
     def all(self):
         """Returns all directions."""
-        return [direction for direction in self.table]
+        return list(direction for direction in self.table)
 
     def filter_by(self, **filters):
         """ Returns directions by filter. """
