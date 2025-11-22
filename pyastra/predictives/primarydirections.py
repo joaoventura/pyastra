@@ -109,30 +109,6 @@ class DirectionPoint:
         self.aspect = aspect
         self.term_sign = term_sign
 
-    @classmethod
-    def from_string(cls, string):
-        """Builds a direction point from a promissor/significator string."""
-        parts = string.split('_')
-        point, body, aspect, term_sign = (None, parts[1], const.NO_ASPECT, None)
-        if parts[0] == 'T':
-            point = DirectionPoint.POINT_TERM
-            term_sign = parts[2]
-        elif parts[0] == 'D':
-            point = DirectionPoint.POINT_DEXTER_ASPECT
-            aspect = int(parts[2])
-        elif parts[0] == 'S':
-            point = DirectionPoint.POINT_SINISTER_ASPECT
-            aspect = int(parts[2])
-        elif parts[0] == 'N':
-            point = DirectionPoint.POINT_BODY
-            aspect = int(parts[2])
-        elif parts[0] == 'A':
-            point = DirectionPoint.POINT_ANTISCIA
-        elif parts[0] == 'C':
-            point = DirectionPoint.POINT_CONTRA_ANTISCIA
-
-        return DirectionPoint(point, body, aspect, term_sign)
-
     def to_string(self) -> str:
         if self.point == DirectionPoint.POINT_TERM:
             return f'Terms of {self.body} in {self.term_sign}'
@@ -169,14 +145,9 @@ class Direction:
 
     def __init__(self, arc, promissor, significator, zodiac):
         self.arc = arc
-        self.promissor = DirectionPoint.from_string(promissor)
-        self.significator = DirectionPoint.from_string(significator)
+        self.promissor = promissor
+        self.significator = significator
         self.zodiac = zodiac
-
-    @classmethod
-    def from_direction_strings(cls, arc, promissor, significator, zodiac):
-        """Builds a Direction from direction strings."""
-        return Direction(arc, promissor, significator, zodiac)
 
     def describe(self):
         """Describes this direction as text."""
@@ -188,7 +159,6 @@ class Direction:
             res += ' (Mundane)'
         else:
             res += ' (Zodiacal)'
-
         return res
 
     def __str__(self):
@@ -212,6 +182,7 @@ class PointCoords:
     decl_m: float
     ra_z: float
     decl_z: float
+    point: DirectionPoint = None
 
 
 class PrimaryDirections:
@@ -264,7 +235,7 @@ class PrimaryDirections:
 
     # === Object creation methods === #
 
-    def G(self, obj_id, lat, lon) -> PointCoords:
+    def G(self, obj_id, lat, lon, point=None) -> PointCoords:
         """ Creates a generic entry for an object. """
 
         # Equatorial coordinates
@@ -273,46 +244,68 @@ class PrimaryDirections:
         if lat != 0:
             eqZ = utils.eq_coords(lon, 0)
 
-        return PointCoords(obj_id, lat, lon, eqM[0], eqM[1], eqZ[0], eqZ[1])
+        return PointCoords(obj_id, lat, lon, eqM[0], eqM[1], eqZ[0], eqZ[1], point)
 
     def T(self, obj_id, sign) -> PointCoords:
         """ Returns the term of an object in a sign. """
+        point = DirectionPoint(
+            point=DirectionPoint.POINT_TERM,
+            body=obj_id,
+            term_sign=sign
+        )
         lon = self.terms[sign][obj_id]
-        obj_id = f'T_{obj_id}_{sign}'
-        return self.G(obj_id, 0, lon)
+        return self.G(obj_id, 0, lon, point)
 
     def A(self, obj_id) -> PointCoords:
         """ Returns the Antiscia of an object. """
+        point = DirectionPoint(
+            point=DirectionPoint.POINT_ANTISCIA,
+            body=obj_id,
+        )
         obj = self.chart.get_object(obj_id).antiscia()
-        obj_id = f'A_{obj_id}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return self.G(obj_id, obj.lat, obj.lon, point)
 
     def C(self, obj_id) -> PointCoords:
         """ Returns the CAntiscia of an object. """
+        point = DirectionPoint(
+            point=DirectionPoint.POINT_CONTRA_ANTISCIA,
+            body=obj_id,
+        )
         obj = self.chart.get_object(obj_id).cantiscia()
-        obj_id = f'C_{obj_id}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return self.G(obj_id, obj.lat, obj.lon, point)
 
     def D(self, obj_id, asp) -> PointCoords:
         """ Returns the dexter aspect of an object. """
+        point = DirectionPoint(
+            point=DirectionPoint.POINT_DEXTER_ASPECT,
+            body=obj_id,
+            aspect=asp
+        )
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon - asp)
-        obj_id = f'D_{obj_id}_{asp}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return self.G(obj_id, obj.lat, obj.lon, point)
 
     def S(self, obj_id, asp) -> PointCoords:
         """ Returns the sinister aspect of an object. """
+        point = DirectionPoint(
+            point=DirectionPoint.POINT_SINISTER_ASPECT,
+            body=obj_id,
+            aspect=asp
+        )
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon + asp)
-        obj_id = f'S_{obj_id}_{asp}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return self.G(obj_id, obj.lat, obj.lon, point)
 
     def N(self, obj_id, asp=0) -> PointCoords:
         """ Returns the conjunction or opposition aspect of an object. """
+        point = DirectionPoint(
+            point=DirectionPoint.POINT_BODY,
+            body=obj_id,
+            aspect=asp
+        )
         obj = self.chart.get(obj_id).copy()
         obj.relocate(obj.lon + asp)
-        obj_id = f'N_{obj_id}_{asp}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return self.G(obj_id, obj.lat, obj.lon, point)
 
     # === Arcs === #
 
@@ -373,10 +366,10 @@ class PrimaryDirections:
         arcs = self._arc(prom, sig)
         for (arc, zodiac) in [('arcm', 'M'), ('arcz', 'Z')]:
             if 0 < arcs[arc] < self.MAX_ARC:
-                res.append(Direction.from_direction_strings(
+                res.append(Direction(
                     arc=arcs[arc],
-                    promissor=prom.obj_id,
-                    significator=sig.obj_id,
+                    promissor=prom.point,
+                    significator=sig.point,
                     zodiac=zodiac,
                 ))
 
