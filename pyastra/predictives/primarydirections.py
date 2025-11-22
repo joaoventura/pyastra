@@ -263,7 +263,7 @@ class PrimaryDirections:
 
     # === Arcs === #
 
-    def get_arc(self, prom: DirectionPoint, sig: DirectionPoint):
+    def compute_arc(self, prom: DirectionPoint, sig: DirectionPoint):
         """ Computes the in-zodiaco and in-mundo arcs between a promissor and a significator. """
         return {
             'arcm': arc(prom.ra_m, prom.decl_m, sig.ra_m, sig.decl_m, self.mcRA, self.lat),
@@ -272,40 +272,30 @@ class PrimaryDirections:
 
     # === Lists === #
 
-    def _elements(self, obj_id, func, asp_list) -> list[DirectionPoint]:
-        """ Returns the DirectionPoints considering the asp_list and the function. """
-        res = []
-        for asp in asp_list:
-            if asp in [0, 180]:
-                # Generate func for conjunctions and oppositions
-                if func == self.N:
-                    res.append(func(obj_id, asp))
-                else:
-                    res.append(func(obj_id))
-            else:
-                # Generate Dexter and Sinister for others
-                res.append(self.D(obj_id, asp))
-                res.append(self.S(obj_id, asp))
-        return res
-
     def _iter_significators(self):
         """ Generates all significators. """
         significator_ids = self.SIG_OBJECTS + self.SIG_HOUSES + self.SIG_ANGLES
         for obj_id in significator_ids:
-            for elem in self._elements(obj_id, self.N, [0]):
-                yield elem
+            yield self.N(obj_id, asp=0)
 
     def _iter_promissors(self, asp_list):
         """ Generates all promissors. """
         for obj_id in self.SIG_OBJECTS:
-            # Body and aspects of objects
-            for elem in self._elements(obj_id, self.N, asp_list):
-                yield elem
+
+            # Aspects of objects
+            for asp in asp_list:
+                if asp in [0, 180]:
+                    # Conjunction and opposition
+                    yield self.N(obj_id, asp)
+                else:
+                    # Dexter and sinister aspects
+                    yield self.D(obj_id, asp)
+                    yield self.S(obj_id, asp)
+
             # Antiscias and Contra-antiscias
-            for elem in self._elements(obj_id, self.A, [0]):
-                yield elem
-            for elem in self._elements(obj_id, self.C, [0]):
-                yield elem
+            yield self.A(obj_id)
+            yield self.C(obj_id)
+
         # Terms
         for sign, terms in self.terms.items():
             for obj_id, _ in terms.items():
@@ -317,7 +307,7 @@ class PrimaryDirections:
             return []
 
         res = []
-        arcs = self.get_arc(prom, sig)
+        arcs = self.compute_arc(prom, sig)
         for (arc, zodiac) in [('arcm', 'M'), ('arcz', 'Z')]:
             if 0 < arcs[arc] < self.MAX_ARC:
                 res.append(Direction(

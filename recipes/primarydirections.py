@@ -36,7 +36,7 @@ from pyastra.predictives.primarydirections import PrimaryDirections
 pd = PrimaryDirections(chart)
 
 # Get arcs
-arc = pd.get_arc(pd.N(const.MARS), pd.N(const.MERCURY))
+arc = pd.compute_arc(pd.N(const.MARS), pd.N(const.MERCURY))
 print(arc['arcm'])  # 56.74266 (arc in-mundo)
 print(arc['arcz'])  # 56.17348 (arc in-zodiaco)
 
