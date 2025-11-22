@@ -271,20 +271,20 @@ class PrimaryDirections:
 
     # === Lists === #
 
-    def _elements(self, ids, func, asp_list) -> list[DirectionPoint]:
+    def _elements(self, obj_id, func, asp_list) -> list[DirectionPoint]:
         """ Returns the DirectionPoints considering the asp_list and the function. """
         res = []
         for asp in asp_list:
             if asp in [0, 180]:
                 # Generate func for conjunctions and oppositions
                 if func == self.N:
-                    res.extend([func(obj_id, asp) for obj_id in ids])
+                    res.append(func(obj_id, asp))
                 else:
-                    res.extend([func(ID) for ID in ids])
+                    res.append(func(obj_id))
             else:
                 # Generate Dexter and Sinister for others
-                res.extend([self.D(obj_id, asp) for obj_id in ids])
-                res.extend([self.S(obj_id, asp) for obj_id in ids])
+                res.append(self.D(obj_id, asp))
+                res.append(self.S(obj_id, asp))
         return res
 
     def _build_directions(self, prom, sig) -> list[Direction]:
@@ -309,30 +309,31 @@ class PrimaryDirections:
         """ Generates all significators. """
         significator_ids = self.SIG_OBJECTS + self.SIG_HOUSES + self.SIG_ANGLES
         for obj_id in significator_ids:
-            for elem in self._elements([obj_id], self.N, [0]):
+            for elem in self._elements(obj_id, self.N, [0]):
                 yield elem
 
     def _iter_promissors(self, asp_list):
         """ Generates all promissors. """
         for obj_id in self.SIG_OBJECTS:
             # Body and aspects of objects
-            for elem in self._elements([obj_id], self.N, asp_list):
+            for elem in self._elements(obj_id, self.N, asp_list):
                 yield elem
             # Antiscias and Contra-antiscias
-            for elem in self._elements([obj_id], self.A, [0]):
+            for elem in self._elements(obj_id, self.A, [0]):
                 yield elem
-            for elem in self._elements([obj_id], self.C, [0]):
+            for elem in self._elements(obj_id, self.C, [0]):
                 yield elem
         # Terms
         for sign, terms in self.terms.items():
             for obj_id, _ in terms.items():
                 yield self.T(obj_id, sign)
 
-
-    def get_list(self, asp_list):
-        """ Returns a sorted list with all primary directions. """
-
-        # Compute all directions
+    def get_list(self, asp_list) -> list[Direction]:
+        """
+        Computes primary directions between all promissors and significators
+        and returns a sorted list of Directions.
+        
+        """
         res = []
         for prom in self._iter_promissors(asp_list):
             for sig in self._iter_significators():
