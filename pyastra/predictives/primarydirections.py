@@ -76,13 +76,6 @@ class DirectionPoint:
 
     """
 
-    POINT_TYPE_BODY = 'Body'
-    POINT_TYPE_TERM = 'Term'
-    POINT_TYPE_ANTISCIA = 'Antiscia'
-    POINT_TYPE_CONTRA_ANTISCIA = 'Contra-antiscia'
-    POINT_TYPE_DEXTER_ASPECT = 'Dexter'
-    POINT_TYPE_SINISTER_ASPECT = 'Sinister'
-
     def __init__(self, point_type, obj_id, aspect=const.NO_ASPECT, term_sign=None, lat=0.0, lon=0.0):
         self.point_type = point_type
         self.obj_id = obj_id
@@ -99,18 +92,18 @@ class DirectionPoint:
 
     def to_string(self) -> str:
         """ Returns the direction in human-readable format. """
-        if self.point_type == DirectionPoint.POINT_TYPE_TERM:
+        if self.point_type == const.PD_POINT_TYPE_TERM:
             return f'Terms of {self.obj_id} in {self.term_sign}'
-        if self.point_type in [DirectionPoint.POINT_TYPE_DEXTER_ASPECT,
-                               DirectionPoint.POINT_TYPE_SINISTER_ASPECT]:
+        if self.point_type in [const.PD_POINT_TYPE_DEXTER_ASPECT,
+                               const.PD_POINT_TYPE_SINISTER_ASPECT]:
             return f'{self.point_type} {const.ASPECT_NAMES[self.aspect]} of {self.obj_id}'
-        if self.point_type == DirectionPoint.POINT_TYPE_BODY:
+        if self.point_type == const.PD_POINT_TYPE_BODY:
             if self.aspect != 0:
                 return f'{const.ASPECT_NAMES[self.aspect]} of {self.obj_id}'
             return f'{self.obj_id}'
-        if self.point_type == DirectionPoint.POINT_TYPE_ANTISCIA:
+        if self.point_type == const.PD_POINT_TYPE_ANTISCIA:
             return f'Antiscia of {self.obj_id}'
-        if self.point_type == DirectionPoint.POINT_TYPE_CONTRA_ANTISCIA:
+        if self.point_type == const.PD_POINT_TYPE_CONTRA_ANTISCIA:
             return f'Contra-Antiscia of {self.obj_id}'
         return 'Invalid direction'
 
@@ -129,9 +122,6 @@ class Direction:
 
     """
 
-    TYPE_ZODIACAL = 'Z'
-    TYPE_MUNDANE = 'M'
-
     def __init__(self, arc, promissor, significator, direction_type):
         self.arc: float = arc
         self.promissor: DirectionPoint = promissor
@@ -139,7 +129,7 @@ class Direction:
         self.direction_type: str = direction_type
 
     def __str__(self):
-        type_str = "Mundane" if self.direction_type == Direction.TYPE_MUNDANE else "Zodiacal"
+        type_str = "Mundane" if self.direction_type == const.PD_TYPE_MUNDANE else "Zodiacal"
         return f"{self.arc:.4f} - {self.promissor} to {self.significator} ({type_str})"
 
     def __repr__(self):
@@ -199,7 +189,7 @@ class PrimaryDirections:
     def T(self, obj_id, sign) -> DirectionPoint:
         """ Returns the term of an object in a sign. """
         return DirectionPoint(
-            point_type=DirectionPoint.POINT_TYPE_TERM,
+            point_type=const.PD_POINT_TYPE_TERM,
             obj_id=obj_id,
             term_sign=sign,
             lon = self.terms[sign][obj_id]
@@ -209,7 +199,7 @@ class PrimaryDirections:
         """ Returns the Antiscia of an object. """
         obj = self.chart.get_object(obj_id).antiscia()
         return DirectionPoint(
-            point_type=DirectionPoint.POINT_TYPE_ANTISCIA,
+            point_type=const.PD_POINT_TYPE_ANTISCIA,
             obj_id=obj_id,
             lat=obj.lat,
             lon=obj.lon
@@ -219,7 +209,7 @@ class PrimaryDirections:
         """ Returns the CAntiscia of an object. """
         obj = self.chart.get_object(obj_id).cantiscia()
         return DirectionPoint(
-            point_type=DirectionPoint.POINT_TYPE_CONTRA_ANTISCIA,
+            point_type=const.PD_POINT_TYPE_CONTRA_ANTISCIA,
             obj_id=obj_id,
             lat=obj.lat,
             lon=obj.lon
@@ -230,7 +220,7 @@ class PrimaryDirections:
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon - asp)
         return DirectionPoint(
-            point_type=DirectionPoint.POINT_TYPE_DEXTER_ASPECT,
+            point_type=const.PD_POINT_TYPE_DEXTER_ASPECT,
             obj_id=obj_id,
             aspect=asp,
             lat=obj.lat,
@@ -242,7 +232,7 @@ class PrimaryDirections:
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon + asp)
         return DirectionPoint(
-            point_type=DirectionPoint.POINT_TYPE_SINISTER_ASPECT,
+            point_type=const.PD_POINT_TYPE_SINISTER_ASPECT,
             obj_id=obj_id,
             aspect=asp,
             lat=obj.lat,
@@ -254,7 +244,7 @@ class PrimaryDirections:
         obj = self.chart.get(obj_id).copy()
         obj.relocate(obj.lon + asp)
         return DirectionPoint(
-            point_type=DirectionPoint.POINT_TYPE_BODY,
+            point_type=const.PD_POINT_TYPE_BODY,
             obj_id=obj_id,
             aspect=asp,
             lat=obj.lat,
@@ -308,13 +298,13 @@ class PrimaryDirections:
 
         res = []
         arcs = self.compute_arc(prom, sig)
-        for (arc, zodiac) in [('arcm', 'M'), ('arcz', 'Z')]:
+        for (arc, dtype) in [('arcm', const.PD_TYPE_MUNDANE), ('arcz', const.PD_TYPE_ZODIACAL)]:
             if 0 < arcs[arc] < self.MAX_ARC:
                 res.append(Direction(
                     arc=arcs[arc],
                     promissor=prom,
                     significator=sig,
-                    direction_type=zodiac,
+                    direction_type=dtype,
                 ))
 
         return res
@@ -334,6 +324,11 @@ class PrimaryDirections:
                 res.extend(directions)
 
         return sorted(res, key=lambda obj: obj.arc)
+
+    @staticmethod
+    def get_table(chart, asp_list=const.MAJOR_ASPECTS):
+        """ Returns an instance of the Primary Directions table. """
+        return PDTable(chart, asp_list)
 
 
 class PDTable:

@@ -2,6 +2,7 @@
 Definitions of names of signs, objects, angles, houses and fixed-stars used in the library.
 
 """
+from os import PRIO_DARWIN_BG
 
 # === Base constants === */
 
@@ -259,6 +260,21 @@ ASPECT_NAMES = {
     BIQUINTILE: 'Biquintile',
     QUINCUNX: 'Quincunx',
 }
+
+
+# === Primary Directions === */
+
+# Direction Point Type
+PD_POINT_TYPE_BODY = 'Body'
+PD_POINT_TYPE_TERM = 'Term'
+PD_POINT_TYPE_ANTISCIA = 'Antiscia'
+PD_POINT_TYPE_CONTRA_ANTISCIA = 'Contra-antiscia'
+PD_POINT_TYPE_DEXTER_ASPECT = 'Dexter'
+PD_POINT_TYPE_SINISTER_ASPECT = 'Sinister'
+
+# Direction Type
+PD_TYPE_ZODIACAL = 'Zodiacal'
+PD_TYPE_MUNDANE = 'Mundane'
 
 
 # === Zodiac Types === */
