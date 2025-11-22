@@ -3,7 +3,6 @@ Definitions of names of signs, objects, angles, houses and fixed-stars used in t
 
 """
 
-
 # === Base constants === */
 
 # Four primitive qualities
