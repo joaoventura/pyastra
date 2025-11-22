@@ -59,7 +59,7 @@ def get_arc(prom, sig, mc, pos, zodiacal=True):
     
     Zero_Lat true => Zodiacal directions, false => Mundane directions
     """
-    zero_lat = zodiacal == True
+    zero_lat = zodiacal is True
     p_ra, p_decl = prom.eq_coords(zero_lat)
     s_ra, s_decl = sig.eq_coords(zero_lat)
     mc_ra, _ = mc.eq_coords()
@@ -326,8 +326,10 @@ class PrimaryDirections:
 
         """
         res = []
+
+        significators = list(self._iter_significators())
         for prom in self._iter_promissors(asp_list):
-            for sig in self._iter_significators():
+            for sig in significators:
                 directions = self._build_directions(prom, sig)
                 res.extend(directions)
 
