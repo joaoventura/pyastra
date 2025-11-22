@@ -9,8 +9,6 @@ Default assumptions:
 
 """
 
-from dataclasses import dataclass
-
 from pyastra import angle
 from pyastra import utils
 from pyastra import const
@@ -103,11 +101,20 @@ class DirectionPoint:
         144: 'Quincunx',
     }
 
-    def __init__(self, point, body, aspect=const.NO_ASPECT, term_sign=None):
+    def __init__(self, point, body, aspect=const.NO_ASPECT, term_sign=None, lat=0.0, lon=0.0):
         self.point = point
         self.body = body
+        self.obj_id = body
         self.aspect = aspect
         self.term_sign = term_sign
+        self.lat = lat
+        self.lon = lon
+
+        # Equatorial coordinates
+        self.ra_m, self.decl_m = utils.eq_coords(lon, lat)
+        self.ra_z, self.decl_z = (self.ra_m, self.decl_m)
+        if lat != 0:
+            self.ra_z, self.decl_z = utils.eq_coords(lon, 0)
 
     def to_string(self) -> str:
         if self.point == DirectionPoint.POINT_TERM:
@@ -168,23 +175,6 @@ class Direction:
         return self.__str__()
 
 
-@dataclass(slots=True)
-class PointCoords:
-    """
-    The calculated astronomical coordinates for a point.
-    We store both Mundane (with latitude) and Zodiacal (lat=0) coordinates
-    to allow efficient calculation of both direction types.
-    """
-    obj_id: str
-    lat: float
-    lon: float
-    ra_m: float
-    decl_m: float
-    ra_z: float
-    decl_z: float
-    point: DirectionPoint = None
-
-
 class PrimaryDirections:
     """
     This class represents the Primary Directions for a Chart.
@@ -235,81 +225,74 @@ class PrimaryDirections:
 
     # === Object creation methods === #
 
-    def G(self, obj_id, lat, lon, point=None) -> PointCoords:
-        """ Creates a generic entry for an object. """
-
-        # Equatorial coordinates
-        eqM = utils.eq_coords(lon, lat)
-        eqZ = eqM
-        if lat != 0:
-            eqZ = utils.eq_coords(lon, 0)
-
-        return PointCoords(obj_id, lat, lon, eqM[0], eqM[1], eqZ[0], eqZ[1], point)
-
-    def T(self, obj_id, sign) -> PointCoords:
+    def T(self, obj_id, sign) -> DirectionPoint:
         """ Returns the term of an object in a sign. """
-        point = DirectionPoint(
+        return DirectionPoint(
             point=DirectionPoint.POINT_TERM,
             body=obj_id,
-            term_sign=sign
+            term_sign=sign,
+            lon = self.terms[sign][obj_id]
         )
-        lon = self.terms[sign][obj_id]
-        return self.G(obj_id, 0, lon, point)
 
-    def A(self, obj_id) -> PointCoords:
+    def A(self, obj_id) -> DirectionPoint:
         """ Returns the Antiscia of an object. """
-        point = DirectionPoint(
+        obj = self.chart.get_object(obj_id).antiscia()
+        return DirectionPoint(
             point=DirectionPoint.POINT_ANTISCIA,
             body=obj_id,
+            lat=obj.lat,
+            lon=obj.lon
         )
-        obj = self.chart.get_object(obj_id).antiscia()
-        return self.G(obj_id, obj.lat, obj.lon, point)
 
-    def C(self, obj_id) -> PointCoords:
+    def C(self, obj_id) -> DirectionPoint:
         """ Returns the CAntiscia of an object. """
-        point = DirectionPoint(
+        obj = self.chart.get_object(obj_id).cantiscia()
+        return DirectionPoint(
             point=DirectionPoint.POINT_CONTRA_ANTISCIA,
             body=obj_id,
+            lat=obj.lat,
+            lon=obj.lon
         )
-        obj = self.chart.get_object(obj_id).cantiscia()
-        return self.G(obj_id, obj.lat, obj.lon, point)
 
-    def D(self, obj_id, asp) -> PointCoords:
+    def D(self, obj_id, asp) -> DirectionPoint:
         """ Returns the dexter aspect of an object. """
-        point = DirectionPoint(
-            point=DirectionPoint.POINT_DEXTER_ASPECT,
-            body=obj_id,
-            aspect=asp
-        )
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon - asp)
-        return self.G(obj_id, obj.lat, obj.lon, point)
-
-    def S(self, obj_id, asp) -> PointCoords:
-        """ Returns the sinister aspect of an object. """
-        point = DirectionPoint(
-            point=DirectionPoint.POINT_SINISTER_ASPECT,
+        return DirectionPoint(
+            point=DirectionPoint.POINT_DEXTER_ASPECT,
             body=obj_id,
-            aspect=asp
+            aspect=asp,
+            lat=obj.lat,
+            lon=obj.lon
         )
+
+    def S(self, obj_id, asp) -> DirectionPoint:
+        """ Returns the sinister aspect of an object. """
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon + asp)
-        return self.G(obj_id, obj.lat, obj.lon, point)
-
-    def N(self, obj_id, asp=0) -> PointCoords:
-        """ Returns the conjunction or opposition aspect of an object. """
-        point = DirectionPoint(
-            point=DirectionPoint.POINT_BODY,
+        return DirectionPoint(
+            point=DirectionPoint.POINT_SINISTER_ASPECT,
             body=obj_id,
-            aspect=asp
+            aspect=asp,
+            lat=obj.lat,
+            lon=obj.lon
         )
+
+    def N(self, obj_id, asp=0) -> DirectionPoint:
+        """ Returns the conjunction or opposition aspect of an object. """
         obj = self.chart.get(obj_id).copy()
         obj.relocate(obj.lon + asp)
-        return self.G(obj_id, obj.lat, obj.lon, point)
+        return DirectionPoint(
+            point=DirectionPoint.POINT_BODY,
+            body=obj_id,
+            aspect=asp,
+            lat=obj.lat,
+            lon=obj.lon
+        )
 
     # === Arcs === #
 
-    def _arc(self, prom: PointCoords, sig: PointCoords):
+    def _arc(self, prom: DirectionPoint, sig: DirectionPoint):
         """ Computes the in-zodiaco and in-mundo arcs between a promissor and a significator. """
         arcm = arc(prom.ra_m, prom.decl_m, sig.ra_m, sig.decl_m, self.mcRA, self.lat)
         arcz = arc(prom.ra_z, prom.decl_z, sig.ra_z, sig.decl_z, self.mcRA, self.lat)
@@ -368,8 +351,8 @@ class PrimaryDirections:
             if 0 < arcs[arc] < self.MAX_ARC:
                 res.append(Direction(
                     arc=arcs[arc],
-                    promissor=prom.point,
-                    significator=sig.point,
+                    promissor=prom,
+                    significator=sig,
                     zodiac=zodiac,
                 ))
 
