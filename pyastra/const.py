@@ -2,7 +2,7 @@
 Definitions of names of signs, objects, angles, houses and fixed-stars used in the library.
 
 """
-from os import PRIO_DARWIN_BG
+
 
 # === Base constants === */
 
