@@ -40,9 +40,11 @@ arc = pd.compute_arc(pd.N(const.MARS), pd.N(const.MERCURY))
 print(arc['arcm'])  # 56.74266 (arc in-mundo)
 print(arc['arcz'])  # 56.17348 (arc in-zodiaco)
 
-# Create Primary Directions table class
-from pyastra.predictives.primarydirections import PDTable
-pd = PDTable(chart, const.MAJOR_ASPECTS)
-pd.filter_by(promissor=const.MARS)  # List all directions by promissor
-pd.filter_by(significator=const.MERCURY)  # List all directions by significator
-pd.filter_by(direction_type='Z', arc_min=20, arc_max=30)  # List all zodiacal directions in range
+# Use the Primary Directions table class
+table = PrimaryDirections.get_table(chart)
+
+for direction in table.filter_by(
+        direction_type=const.PD_TYPE_ZODIACAL,
+        promissor=const.SATURN,
+        arc_min=40, arc_max=45):
+    print(direction)
