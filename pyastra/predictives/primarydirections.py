@@ -82,25 +82,6 @@ class DirectionPoint:
     POINT_DEXTER_ASPECT = 'Dexter'
     POINT_SINISTER_ASPECT = 'Sinister'
 
-    ASPECTS = {
-        # Major
-        0: 'Conjunction',
-        60: 'Sextile',
-        90: 'Square',
-        120: 'Trine',
-        180: 'Opposition',
-
-        # Minor
-        30: 'Semi-sextile',
-        36: 'Semi-quintile',
-        45: 'Semi-square',
-        72: 'Quintile',
-        108: 'Sesquiquintile',
-        135: 'Sequisquare',
-        155: 'Biquintile',
-        144: 'Quincunx',
-    }
-
     def __init__(self, point, body, aspect=const.NO_ASPECT, term_sign=None, lat=0.0, lon=0.0):
         self.point = point
         self.body = body
@@ -120,12 +101,12 @@ class DirectionPoint:
         if self.point == DirectionPoint.POINT_TERM:
             return f'Terms of {self.body} in {self.term_sign}'
         if self.point == DirectionPoint.POINT_DEXTER_ASPECT:
-            return f'Dexter {DirectionPoint.ASPECTS[self.aspect]} of {self.body}'
+            return f'Dexter {const.ASPECT_NAMES[self.aspect]} of {self.body}'
         if self.point == DirectionPoint.POINT_SINISTER_ASPECT:
-            return f'Sinister {DirectionPoint.ASPECTS[self.aspect]} of {self.body}'
+            return f'Sinister {const.ASPECT_NAMES[self.aspect]} of {self.body}'
         if self.point == DirectionPoint.POINT_BODY:
             if self.aspect != 0:
-                return f'{DirectionPoint.ASPECTS[self.aspect]} of {self.body}'
+                return f'{const.ASPECT_NAMES[self.aspect]} of {self.body}'
             else:
                 return f'{self.body}'
         if self.point == DirectionPoint.POINT_ANTISCIA:

@@ -243,6 +243,23 @@ MAJOR_ASPECTS = [0, 60, 90, 120, 180]
 MINOR_ASPECTS = [30, 36, 45, 72, 108, 135, 144, 150]
 ALL_ASPECTS = MAJOR_ASPECTS + MINOR_ASPECTS
 
+# Aspect names
+ASPECT_NAMES = {
+    CONJUNCTION: 'Conjunction',
+    SEXTILE: 'Sextile',
+    SQUARE: 'Square',
+    TRINE: 'Trine',
+    OPPOSITION: 'Opposition',
+    SEMISEXTILE: 'Semi-sextile',
+    SEMIQUINTILE: 'Semi-quintile',
+    SEMISQUARE: 'Semi-square',
+    QUINTILE: 'Quintile',
+    SESQUIQUINTILE: 'Sesquiquintile',
+    SESQUISQUARE: 'Sequisquare',
+    BIQUINTILE: 'Biquintile',
+    QUINCUNX: 'Quincunx',
+}
+
 
 # === Zodiac Types === */
 ZODIAC_TROPICAL = "Tropical Zodiac"
