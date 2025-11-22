@@ -52,13 +52,14 @@ def arc(p_ra, p_decl, s_ra, s_decl, mc_ra, lat):
     return (p_prop_dist - s_prop_dist) * (p_arc / 2.0)
 
 
-def get_arc(prom, sig, mc, pos, zero_lat):
+def get_arc(prom, sig, mc, pos, zodiacal=True):
     """
     Returns the arc of direction between a promissor and a significator chart object.
     Arguments are also the MC, the geoposition and zero_lat to assume zero ecliptical latitudes.
     
     Zero_Lat true => Zodiacal directions, false => Mundane directions
     """
+    zero_lat = zodiacal == True
     p_ra, p_decl = prom.eq_coords(zero_lat)
     s_ra, s_decl = sig.eq_coords(zero_lat)
     mc_ra, _ = mc.eq_coords()

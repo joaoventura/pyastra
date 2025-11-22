@@ -23,12 +23,12 @@ mc = chart.get(const.MC)
 prom = chart.get(const.MARS)
 sig = chart.get(const.MERCURY)
 
-# Compute arc in zodiaco (zero_lat = True)
-arc = primarydirections.get_arc(prom, sig, mc, pos, zero_lat=True)
-print(arc)  # 56.17347
+# Compute arc in zodiacal directions
+arc = primarydirections.get_arc(prom, sig, mc, pos, zodiacal=True)
+print(arc)  # 56.17348
 
-# Compute arc in mundo
-arc = primarydirections.get_arc(prom, sig, mc, pos, zero_lat=False)
+# Compute arc in mundane directions
+arc = primarydirections.get_arc(prom, sig, mc, pos, zodiacal=False)
 print(arc)  # 56.74266
 
 # Create Primary Directions class
@@ -38,7 +38,7 @@ pd = PrimaryDirections(chart)
 # Get arcs
 arc = pd.get_arc(pd.N(const.MARS), pd.N(const.MERCURY))
 print(arc['arcm'])  # 56.74266 (arc in-mundo)
-print(arc['arcz'])  # 56.17347 (arc in-zodiaco)
+print(arc['arcz'])  # 56.17348 (arc in-zodiaco)
 
 # Create Primary Directions table class
 from pyastra.predictives.primarydirections import PDTable
