@@ -23,7 +23,7 @@ mc = chart.get(const.MC)
 prom = chart.get(const.MARS)
 sig = chart.get(const.MERCURY)
 
-# Compute arc in zodiaco (zerolat = True)
+# Compute arc in zodiaco (zero_lat = True)
 arc = primarydirections.get_arc(prom, sig, mc, pos, zero_lat=True)
 print(arc)  # 56.17347
 
