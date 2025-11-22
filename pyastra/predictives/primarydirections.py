@@ -57,7 +57,7 @@ def get_arc(prom, sig, mc, pos, zerolat):
     Returns the arc of direction between a promissor and a significator.
     Arguments are also the MC, the geoposition and zerolat to assume zero ecliptical latitudes.
     
-    ZeroLat true => inZodiaco, false => inMundo
+    ZeroLat true => Zodiacal directions, false => Mundane directions
     """
     p_ra, p_decl = prom.eq_coords(zerolat)
     s_ra, s_decl = sig.eq_coords(zerolat)
@@ -191,6 +191,9 @@ class Direction:
 
     def __str__(self):
         return f"Direction: {str(self.__dict__)}"
+
+    def __repr__(self):
+        return self.__str__()
 
 
 class PrimaryDirections:
@@ -405,26 +408,28 @@ class PDTable:
         pd = PrimaryDirections(chart)
         self.table = pd.get_list(asp_list)
 
-    def view(self, arcmin, arcmax):
-        """ Returns the directions within the min and max arcs. """
-        res = []
-        for direction in self.table:
-            if arcmin < direction.arc < arcmax:
-                res.append(direction)
-        return res
+    def all(self):
+        """Returns all directions."""
+        return [direction for direction in self.table]
 
-    def by_significator(self, obj_id):
-        """ Returns all directions to a significator. """
+    def filter_by(self, **filters):
+        """ Returns directions by filter. """
         res = []
         for direction in self.table:
-            if direction.significator.body == obj_id:
-                res.append(direction)
-        return res
+            if 'direction_type' in filters and direction.zodiac != filters['direction_type']:
+                continue
+            if 'promissor_type' in filters and direction.promissor.point != filters['promissor_type']:
+                continue
+            if 'promissor' in filters and direction.promissor.body != filters['promissor']:
+                continue
+            if 'significator' in filters and direction.significator.body != filters['significator']:
+                continue
+            if 'aspects' in filters and direction.promissor.aspect not in filters['aspects']:
+                continue
+            if 'arc_min' in filters and direction.arc < filters['arc_min']:
+                continue
+            if 'arc_max' in filters and direction.arc > filters['arc_max']:
+                continue
 
-    def by_promissor(self, obj_id):
-        """ Returns all directions to a promissor. """
-        res = []
-        for direction in self.table:
-            if direction.promissor.body == obj_id:
-                res.append(direction)
+            res.append(direction)
         return res
