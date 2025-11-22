@@ -54,8 +54,8 @@ def arc(p_ra, p_decl, s_ra, s_decl, mc_ra, lat):
 
 def get_arc(prom, sig, mc, pos, zero_lat):
     """
-    Returns the arc of direction between a promissor and a significator.
-    Arguments are also the MC, the geoposition and zerolat to assume zero ecliptical latitudes.
+    Returns the arc of direction between a promissor and a significator chart object.
+    Arguments are also the MC, the geoposition and zero_lat to assume zero ecliptical latitudes.
     
     Zero_Lat true => Zodiacal directions, false => Mundane directions
     """
@@ -287,24 +287,6 @@ class PrimaryDirections:
                 res.append(self.S(obj_id, asp))
         return res
 
-    def _build_directions(self, prom, sig) -> list[Direction]:
-        """ Builds a list of directions from promissor and significator objects. """
-        if prom.obj_id == sig.obj_id:
-            return []
-
-        res = []
-        arcs = self.get_arc(prom, sig)
-        for (arc, zodiac) in [('arcm', 'M'), ('arcz', 'Z')]:
-            if 0 < arcs[arc] < self.MAX_ARC:
-                res.append(Direction(
-                    arc=arcs[arc],
-                    promissor=prom,
-                    significator=sig,
-                    direction_type=zodiac,
-                ))
-
-        return res
-
     def _iter_significators(self):
         """ Generates all significators. """
         significator_ids = self.SIG_OBJECTS + self.SIG_HOUSES + self.SIG_ANGLES
@@ -328,11 +310,29 @@ class PrimaryDirections:
             for obj_id, _ in terms.items():
                 yield self.T(obj_id, sign)
 
+    def _build_directions(self, prom, sig) -> list[Direction]:
+        """ Builds a list of directions from promissor and significator objects. """
+        if prom.obj_id == sig.obj_id:
+            return []
+
+        res = []
+        arcs = self.get_arc(prom, sig)
+        for (arc, zodiac) in [('arcm', 'M'), ('arcz', 'Z')]:
+            if 0 < arcs[arc] < self.MAX_ARC:
+                res.append(Direction(
+                    arc=arcs[arc],
+                    promissor=prom,
+                    significator=sig,
+                    direction_type=zodiac,
+                ))
+
+        return res
+
     def get_list(self, asp_list) -> list[Direction]:
         """
         Computes primary directions between all promissors and significators
         and returns a sorted list of Directions.
-        
+
         """
         res = []
         for prom in self._iter_promissors(asp_list):
