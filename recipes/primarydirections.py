@@ -24,11 +24,11 @@ prom = chart.get(const.MARS)
 sig = chart.get(const.MERCURY)
 
 # Compute arc in zodiaco (zerolat = True)
-arc = primarydirections.get_arc(prom, sig, mc, pos, zerolat=True)
+arc = primarydirections.get_arc(prom, sig, mc, pos, zero_lat=True)
 print(arc)  # 56.17347
 
 # Compute arc in mundo
-arc = primarydirections.get_arc(prom, sig, mc, pos, zerolat=False)
+arc = primarydirections.get_arc(prom, sig, mc, pos, zero_lat=False)
 print(arc)  # 56.74266
 
 # Create Primary Directions class
