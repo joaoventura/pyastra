@@ -52,36 +52,100 @@ def arc(p_ra, p_decl, s_ra, s_decl, mc_ra, lat):
     return (p_prop_dist - s_prop_dist) * (p_arc / 2.0)
 
 
-def get_arc(prom, sig, mc, pos, zerolat):
+def get_arc(prom, sig, mc, pos, zodiacal=True):
     """
-    Returns the arc of direction between a promissor and a significator.
-    Arguments are also the MC, the geoposition and zerolat to assume zero ecliptical latitudes.
+    Returns the arc of direction between a promissor and a significator chart object.
+    Arguments are also the MC, the geoposition and zero_lat to assume zero ecliptical latitudes.
     
-    ZeroLat true => inZodiaco, false => inMundo
+    Zero_Lat true => Zodiacal directions, false => Mundane directions
     """
-    p_ra, p_decl = prom.eq_coords(zerolat)
-    s_ra, s_decl = sig.eq_coords(zerolat)
+    zero_lat = zodiacal is True
+    p_ra, p_decl = prom.eq_coords(zero_lat)
+    s_ra, s_decl = sig.eq_coords(zero_lat)
     mc_ra, _ = mc.eq_coords()
     return arc(p_ra, p_decl, s_ra, s_decl, mc_ra, pos.lat)
 
 
-# ---------------------------- #
-#   Primary Directions Class   #
-# ---------------------------- #
+# === Classes === #
+
+class DirectionPoint:
+    """
+    Represents a Promissor or a Significator in a Primary Direction.
+    It contains information about the point type (term, antiscia, dexter or sinister aspect, etc.)
+    as well as the point coordinates.
+
+    """
+
+    def __init__(self, point_type, obj_id, aspect=const.NO_ASPECT, term_sign=None, lat=0.0, lon=0.0):
+        self.point_type = point_type
+        self.obj_id = obj_id
+        self.aspect = aspect
+        self.term_sign = term_sign
+        self.lat = lat
+        self.lon = lon
+
+        # Compute equatorial coordinates
+        self.ra_m, self.decl_m = utils.eq_coords(lon, lat)
+        self.ra_z, self.decl_z = (self.ra_m, self.decl_m)
+        if lat != 0:
+            self.ra_z, self.decl_z = utils.eq_coords(lon, 0)
+
+    def __str__(self):
+        """ Returns the direction in human-readable format. """
+        if self.point_type == const.PD_POINT_TYPE_TERM:
+            return f'Terms of {self.obj_id} in {self.term_sign}'
+        if self.point_type in [const.PD_POINT_TYPE_DEXTER_ASPECT,
+                               const.PD_POINT_TYPE_SINISTER_ASPECT]:
+            return f'{self.point_type} {const.ASPECT_NAMES[self.aspect]} of {self.obj_id}'
+        if self.point_type == const.PD_POINT_TYPE_BODY:
+            if self.aspect != 0:
+                return f'{const.ASPECT_NAMES[self.aspect]} of {self.obj_id}'
+            return f'{self.obj_id}'
+        if self.point_type == const.PD_POINT_TYPE_ANTISCIA:
+            return f'Antiscia of {self.obj_id}'
+        if self.point_type == const.PD_POINT_TYPE_CONTRA_ANTISCIA:
+            return f'Contra-Antiscia of {self.obj_id}'
+        return 'Invalid direction'
+
+    def __repr__(self):
+        return f'DirectionPoint {str(self.__dict__)}'
+
+
+class Direction:
+    """
+    Represents a primary direction.
+    It contains information about the arc of direction, the promissor and significator as well as
+    the type of direction (zodiacal or mundane).
+
+    """
+
+    def __init__(self, arc, promissor, significator, direction_type):
+        self.arc: float = arc
+        self.promissor: DirectionPoint = promissor
+        self.significator: DirectionPoint = significator
+        self.direction_type: str = direction_type
+
+    def __str__(self):
+        type_str = "Mundane" if self.direction_type == const.PD_TYPE_MUNDANE else "Zodiacal"
+        return f"{self.arc:.4f} - {self.promissor} to {self.significator} ({type_str})"
+
+    def __repr__(self):
+        return f"Direction: {str(self.__dict__)}"
+
 
 class PrimaryDirections:
     """
-    This class represents the Primary Directions for a Chart.
+    This class computes the Primary Directions for a Chart.
     
-    Given the complexity of all possible combinations, this class encodes the objects in the
-    following functions:
+    Given the complexity of all possible combinations, this class builds the promissor and
+    significator objects in the following functions:
     
-    T() - Returns a term
-    A() - Returns the antiscia
-    C() - Returns the contra antiscia
-    D() - Returns the dexter aspect
-    S() - Returns the sinister aspect
-    N() - Returns the conjunction or opposition aspect
+    T() - Returns a term DirectionPoint
+    A() - Returns the antiscia DirectionPoint
+    C() - Returns the contra antiscia DirectionPoint
+    D() - Returns the dexter aspect DirectionPoint
+    S() - Returns the sinister aspect DirectionPoint
+    N() - Returns the conjunction or opposition aspect DirectionPoint
     
     """
 
@@ -119,152 +183,150 @@ class PrimaryDirections:
 
     # === Object creation methods === #
 
-    def G(self, obj_id, lat, lon):
-        """ Creates a generic entry for an object. """
-
-        # Equatorial coordinates
-        eqM = utils.eq_coords(lon, lat)
-        eqZ = eqM
-        if lat != 0:
-            eqZ = utils.eq_coords(lon, 0)
-
-        return {
-            'id': obj_id,
-            'lat': lat,
-            'lon': lon,
-            'ra': eqM[0],
-            'decl': eqM[1],
-            'raZ': eqZ[0],
-            'declZ': eqZ[1],
-        }
-
-    def T(self, obj_id, sign):
+    def T(self, obj_id, sign) -> DirectionPoint:
         """ Returns the term of an object in a sign. """
-        lon = self.terms[sign][obj_id]
-        obj_id = f'T_{obj_id}_{sign}'
-        return self.G(obj_id, 0, lon)
+        return DirectionPoint(
+            point_type=const.PD_POINT_TYPE_TERM,
+            obj_id=obj_id,
+            term_sign=sign,
+            lon = self.terms[sign][obj_id]
+        )
 
-    def A(self, obj_id):
+    def A(self, obj_id) -> DirectionPoint:
         """ Returns the Antiscia of an object. """
         obj = self.chart.get_object(obj_id).antiscia()
-        obj_id = f'A_{obj_id}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return DirectionPoint(
+            point_type=const.PD_POINT_TYPE_ANTISCIA,
+            obj_id=obj_id,
+            lat=obj.lat,
+            lon=obj.lon
+        )
 
-    def C(self, obj_id):
+    def C(self, obj_id) -> DirectionPoint:
         """ Returns the CAntiscia of an object. """
         obj = self.chart.get_object(obj_id).cantiscia()
-        obj_id = f'C_{obj_id}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return DirectionPoint(
+            point_type=const.PD_POINT_TYPE_CONTRA_ANTISCIA,
+            obj_id=obj_id,
+            lat=obj.lat,
+            lon=obj.lon
+        )
 
-    def D(self, obj_id, asp):
+    def D(self, obj_id, asp) -> DirectionPoint:
         """ Returns the dexter aspect of an object. """
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon - asp)
-        obj_id = f'D_{obj_id}_{asp}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return DirectionPoint(
+            point_type=const.PD_POINT_TYPE_DEXTER_ASPECT,
+            obj_id=obj_id,
+            aspect=asp,
+            lat=obj.lat,
+            lon=obj.lon
+        )
 
-    def S(self, obj_id, asp):
+    def S(self, obj_id, asp) -> DirectionPoint:
         """ Returns the sinister aspect of an object. """
         obj = self.chart.get_object(obj_id).copy()
         obj.relocate(obj.lon + asp)
-        obj_id = f'S_{obj_id}_{asp}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return DirectionPoint(
+            point_type=const.PD_POINT_TYPE_SINISTER_ASPECT,
+            obj_id=obj_id,
+            aspect=asp,
+            lat=obj.lat,
+            lon=obj.lon
+        )
 
-    def N(self, obj_id, asp=0):
+    def N(self, obj_id, asp=0) -> DirectionPoint:
         """ Returns the conjunction or opposition aspect of an object. """
         obj = self.chart.get(obj_id).copy()
         obj.relocate(obj.lon + asp)
-        obj_id = f'N_{obj_id}_{asp}'
-        return self.G(obj_id, obj.lat, obj.lon)
+        return DirectionPoint(
+            point_type=const.PD_POINT_TYPE_BODY,
+            obj_id=obj_id,
+            aspect=asp,
+            lat=obj.lat,
+            lon=obj.lon
+        )
 
     # === Arcs === #
 
-    def _arc(self, prom, sig):
+    def compute_arc(self, prom: DirectionPoint, sig: DirectionPoint):
         """ Computes the in-zodiaco and in-mundo arcs between a promissor and a significator. """
-        arcm = arc(prom['ra'], prom['decl'], sig['ra'], sig['decl'], self.mcRA, self.lat)
-        arcz = arc(prom['raZ'], prom['declZ'], sig['raZ'], sig['declZ'], self.mcRA, self.lat)
         return {
-            'arcm': arcm,
-            'arcz': arcz
+            'arcm': arc(prom.ra_m, prom.decl_m, sig.ra_m, sig.decl_m, self.mcRA, self.lat),
+            'arcz': arc(prom.ra_z, prom.decl_z, sig.ra_z, sig.decl_z, self.mcRA, self.lat)
         }
-
-    def get_arc(self, prom, sig):
-        """
-        Returns the arcs between a promissor and a significator. Should use the object creation
-        functions to build the objects.
-        
-        """
-        res = self._arc(prom, sig)
-        res.update({
-            'prom': prom['id'],
-            'sig': sig['id']
-        })
-        return res
 
     # === Lists === #
 
-    def _elements(self, ids, func, asp_list):
-        """ Returns the IDs as objects considering the asp_list and the function. """
-        res = []
-        for asp in asp_list:
-            if asp in [0, 180]:
-                # Generate func for conjunctions and oppositions
-                if func == self.N:
-                    res.extend([func(obj_id, asp) for obj_id in ids])
-                else:
-                    res.extend([func(ID) for ID in ids])
-            else:
-                # Generate Dexter and Sinister for others
-                res.extend([self.D(obj_id, asp) for obj_id in ids])
-                res.extend([self.S(obj_id, asp) for obj_id in ids])
-        return res
+    def _iter_significators(self):
+        """ Generates all significators. """
+        significator_ids = self.SIG_OBJECTS + self.SIG_HOUSES + self.SIG_ANGLES
+        for obj_id in significator_ids:
+            yield self.N(obj_id, asp=0)
 
-    def _terms(self):
-        """ Returns a list with the objects as terms. """
-        res = []
+    def _iter_promissors(self, asp_list):
+        """ Generates all promissors. """
+        for obj_id in self.SIG_OBJECTS:
+
+            # Aspects of objects
+            for asp in asp_list:
+                if asp in [0, 180]:
+                    # Conjunction and opposition
+                    yield self.N(obj_id, asp)
+                else:
+                    # Dexter and sinister aspects
+                    yield self.D(obj_id, asp)
+                    yield self.S(obj_id, asp)
+
+            # Antiscias and Contra-antiscias
+            yield self.A(obj_id)
+            yield self.C(obj_id)
+
+        # Terms
         for sign, terms in self.terms.items():
             for obj_id, _ in terms.items():
-                res.append(self.T(obj_id, sign))
+                yield self.T(obj_id, sign)
+
+    def _build_directions(self, prom, sig) -> list[Direction]:
+        """ Builds a list of directions from promissor and significator objects. """
+        if prom.obj_id == sig.obj_id:
+            return []
+
+        res = []
+        arcs = self.compute_arc(prom, sig)
+        for (arc_type, dtype) in [('arcm', const.PD_TYPE_MUNDANE), ('arcz', const.PD_TYPE_ZODIACAL)]:
+            if 0 < arcs[arc_type] < self.MAX_ARC:
+                res.append(Direction(
+                    arc=arcs[arc_type],
+                    promissor=prom,
+                    significator=sig,
+                    direction_type=dtype,
+                ))
+
         return res
 
-    def get_list(self, asp_list):
-        """ Returns a sorted list with all primary directions. """
-        # Significators
-        objects = self._elements(self.SIG_OBJECTS, self.N, [0])
-        houses = self._elements(self.SIG_HOUSES, self.N, [0])
-        angles = self._elements(self.SIG_ANGLES, self.N, [0])
-        significators = objects + houses + angles
+    def get_list(self, asp_list) -> list[Direction]:
+        """
+        Computes primary directions between all promissors and significators
+        and returns a sorted list of Directions.
 
-        # Promissors
-        objects = self._elements(self.SIG_OBJECTS, self.N, asp_list)
-        terms = self._terms()
-        antiscias = self._elements(self.SIG_OBJECTS, self.A, [0])
-        cantiscias = self._elements(self.SIG_OBJECTS, self.C, [0])
-        promissors = objects + terms + antiscias + cantiscias
-
-        # Compute all
+        """
         res = []
-        for prom in promissors:
+
+        significators = list(self._iter_significators())
+        for prom in self._iter_promissors(asp_list):
             for sig in significators:
-                if prom['id'] == sig['id']:
-                    continue
-                arcs = self._arc(prom, sig)
-                for (x, y) in [('arcm', 'M'), ('arcz', 'Z')]:
-                    arc = arcs[x]
-                    if 0 < arc < self.MAX_ARC:
-                        res.append([
-                            arcs[x],
-                            prom['id'],
-                            sig['id'],
-                            y,
-                        ])
+                directions = self._build_directions(prom, sig)
+                res.extend(directions)
 
-        return sorted(res)
+        return sorted(res, key=lambda obj: obj.arc)
 
+    @staticmethod
+    def get_table(chart, asp_list=const.MAJOR_ASPECTS):
+        """ Returns an instance of the Primary Directions table. """
+        return PDTable(chart, asp_list)
 
-# ------------------ #
-#   PD Table Class   #
-# ------------------ #
 
 class PDTable:
     """ Represents the Primary Directions table for a chart. """
@@ -273,26 +335,28 @@ class PDTable:
         pd = PrimaryDirections(chart)
         self.table = pd.get_list(asp_list)
 
-    def view(self, arcmin, arcmax):
-        """ Returns the directions within the min and max arcs. """
-        res = []
-        for direction in self.table:
-            if arcmin < direction[0] < arcmax:
-                res.append(direction)
-        return res
+    def all(self):
+        """Returns all directions."""
+        return list(direction for direction in self.table)
 
-    def by_significator(self, obj_id):
-        """ Returns all directions to a significator. """
+    def filter_by(self, **filters):
+        """ Returns directions by filter. """
         res = []
         for direction in self.table:
-            if obj_id in direction[2]:
-                res.append(direction)
-        return res
+            if 'direction_type' in filters and direction.direction_type != filters['direction_type']:
+                continue
+            if 'promissor_type' in filters and direction.promissor.point_type != filters['promissor_type']:
+                continue
+            if 'promissor' in filters and direction.promissor.obj_id != filters['promissor']:
+                continue
+            if 'significator' in filters and direction.significator.obj_id != filters['significator']:
+                continue
+            if 'aspects' in filters and direction.promissor.aspect not in filters['aspects']:
+                continue
+            if 'arc_min' in filters and direction.arc < filters['arc_min']:
+                continue
+            if 'arc_max' in filters and direction.arc > filters['arc_max']:
+                continue
+            res.append(direction)
 
-    def by_promissor(self, obj_id):
-        """ Returns all directions to a promissor. """
-        res = []
-        for direction in self.table:
-            if obj_id in direction[1]:
-                res.append(direction)
         return res

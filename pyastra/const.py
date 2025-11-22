@@ -243,6 +243,38 @@ MAJOR_ASPECTS = [0, 60, 90, 120, 180]
 MINOR_ASPECTS = [30, 36, 45, 72, 108, 135, 144, 150]
 ALL_ASPECTS = MAJOR_ASPECTS + MINOR_ASPECTS
 
+# Aspect names
+ASPECT_NAMES = {
+    CONJUNCTION: 'Conjunction',
+    SEXTILE: 'Sextile',
+    SQUARE: 'Square',
+    TRINE: 'Trine',
+    OPPOSITION: 'Opposition',
+    SEMISEXTILE: 'Semi-sextile',
+    SEMIQUINTILE: 'Semi-quintile',
+    SEMISQUARE: 'Semi-square',
+    QUINTILE: 'Quintile',
+    SESQUIQUINTILE: 'Sesquiquintile',
+    SESQUISQUARE: 'Sequisquare',
+    BIQUINTILE: 'Biquintile',
+    QUINCUNX: 'Quincunx',
+}
+
+
+# === Primary Directions === */
+
+# Direction Point Type
+PD_POINT_TYPE_BODY = 'Body'
+PD_POINT_TYPE_TERM = 'Term'
+PD_POINT_TYPE_ANTISCIA = 'Antiscia'
+PD_POINT_TYPE_CONTRA_ANTISCIA = 'Contra-antiscia'
+PD_POINT_TYPE_DEXTER_ASPECT = 'Dexter'
+PD_POINT_TYPE_SINISTER_ASPECT = 'Sinister'
+
+# Direction Type
+PD_TYPE_ZODIACAL = 'Zodiacal'
+PD_TYPE_MUNDANE = 'Mundane'
+
 
 # === Zodiac Types === */
 ZODIAC_TROPICAL = "Tropical Zodiac"
