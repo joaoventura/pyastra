@@ -150,7 +150,7 @@ def _aspect_properties(asp_dict):
 def aspect_type(obj1, obj2, asp_list):
     """ Returns the aspect type between objects considering a list of possible aspects. """
     asp_dict = _raw_aspect(obj1, obj2, asp_list)
-    return asp_dict['type'] if asp_dict else const.NO_ASPECT
+    return asp_dict['asp_type'] if asp_dict else const.NO_ASPECT
 
 
 def has_aspect(obj1, obj2, asp_list):
@@ -165,7 +165,7 @@ def is_aspecting(obj1, obj2, asp_list):
     """ Returns if obj1 aspects obj2 within orb, considering a list of possible aspects. """
     asp_dict = _raw_aspect(obj1, obj2, asp_list)
     if asp_dict:
-        return asp_dict['orb'] < obj1.orb()
+        return asp_dict['asp_orb'] < obj1.orb()
     return False
 
 
