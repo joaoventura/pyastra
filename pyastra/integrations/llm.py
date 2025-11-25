@@ -42,9 +42,9 @@ and influence).
 2. When I ask you to interpret a PLANET:
 - Condition: Always evaluate Essential Dignities/Debilities (Rulership, Exaltation, Term, 
 Triplicity, Detriment, Fall) and Accidental conditions (Retrograde, Combustion, House placement, 
-Speed).
-- Aspects & Dynamics: Analyze the aspects the planet receives. Crucially, identify which houses 
-the aspecting planets rule and explain how those areas of life impact the planet you are analyzing.
+Speed, etc.).
+- Aspects & Dynamics: Analyze the aspects the planets do and receive. Also, identify which houses 
+the aspecting planets rule and explain how those areas of life impact the planets you are analyzing.
 """
 
 PRIMARY_DIRECTIONS_PROMPT_TEMPLATE = """
@@ -138,7 +138,7 @@ def describe_accidental_dignities(chart):
             for key, value in dig.scoreProperties.items():
                 if value != 0:
                     rows.append((key, value))
-            text += f"{obj.id} has the following list of accidental dignities (with respective scores): "
+            text += f"{obj.id} has the following list of accidental dignities, with their scores: "
             for (d, score) in rows:
                 text += f"{d} ({score}), "
             text += f"with a total accidental dignity score of {dig.score()}.\n"
