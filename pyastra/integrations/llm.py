@@ -142,7 +142,7 @@ def describe_accidental_dignities(chart):
             for (d, score) in rows:
                 text += f"{d} ({score}), "
             text += f"with a total accidental dignity score of {dig.score()}.\n"
-        except Exception:
+        except ValueError:
             pass
 
     return text
