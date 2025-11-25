@@ -23,6 +23,7 @@ print(llm.describe_chart(chart))
 
 # Generate prompt for primary directions and describe the directions as text
 print(llm.PRIMARY_DIRECTIONS_PROMPT_TEMPLATE)
-print(llm.describe_primary_directions(chart, direction_type=const.PD_TYPE_ZODIACAL))
+print(llm.describe_primary_directions(
+    chart, direction_type=const.PD_TYPE_ZODIACAL, min_arc=0, max_arc=100))
 
 # Copy and paste it to an LLM and ask it questions
