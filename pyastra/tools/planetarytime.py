@@ -107,7 +107,7 @@ class HourTable:
     def __init__(self, table, date):
         self.table = table
         self.date = date
-        self.currIndex = self.index(date)
+        self.curr_index = self.index(date)
 
     def index(self, date):
         """ Returns the index of a date in the table. """
@@ -128,17 +128,17 @@ class HourTable:
 
     def curr_ruler(self):
         """ Returns the current day or night ruler considering if it's day or night. """
-        if self.currIndex < 12:
+        if self.curr_index < 12:
             return self.day_ruler()
         return self.night_ruler()
 
     def hour_ruler(self):
         """ Returns the current hour ruler. """
-        return self.table[self.currIndex][2]
+        return self.table[self.curr_index][2]
 
     def curr_info(self):
         """ Returns information about the current planetary time. """
-        return self.index_info(self.currIndex)
+        return self.index_info(self.curr_index)
 
     def index_info(self, index):
         """ Returns information about a specific planetary time. """

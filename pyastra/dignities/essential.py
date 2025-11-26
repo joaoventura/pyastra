@@ -126,11 +126,11 @@ def get_info(sign, lon):
     }
 
 
-def is_peregrine(ID, sign, lon):
+def is_peregrine(obj_id, sign, lon):
     """ Returns if an object is peregrine on a sign and longitude. """
     info = get_info(sign, lon)
-    for dign, obj_id in info.items():
-        if dign not in ['exile', 'fall'] and ID == obj_id:
+    for dign, objID in info.items():
+        if dign not in ['exile', 'fall'] and obj_id == objID:
             return False
     return True
 
@@ -154,7 +154,7 @@ def score(obj_id, sign, lon):
     """ Returns the score of an object on a sign and longitude. """
     info = get_info(sign, lon)
     dignities = [dign for (dign, objID) in info.items() if objID == obj_id]
-    return sum([SCORES[dign] for dign in dignities])
+    return sum(SCORES[dign] for dign in dignities)
 
 
 def almutem(sign, lon):

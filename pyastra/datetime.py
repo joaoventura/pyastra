@@ -139,7 +139,7 @@ class Time:
         return string if slist[0] == '-' else string[1:]
 
     def __str__(self):
-        return '<%s>' % self.to_string()
+        return f'<{self.to_string()}>'
 
 
 # ------------------ #

@@ -114,10 +114,9 @@ def to_float(value):
     """ Converts string or signed list to float. """
     if isinstance(value, str):
         return str_float(value)
-    elif isinstance(value, list):
+    if isinstance(value, list):
         return slist_float(value)
-    else:
-        return value
+    return value
 
 
 def to_list(value):

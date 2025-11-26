@@ -21,7 +21,7 @@ class GenericObject:
     
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         self.id = const.NO_PLANET
         self.type = const.OBJ_GENERIC
         self.lon = 0.0

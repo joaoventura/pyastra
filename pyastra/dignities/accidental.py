@@ -145,7 +145,7 @@ class AccidentalDignity:
         self.obj = obj
         self.chart = chart
         self.dyn = ChartDynamics(chart)
-        self.scoreProperties = None
+        self.score_properties = None
 
     # === Houses === #
 
@@ -440,6 +440,6 @@ class AccidentalDignity:
 
     def score(self):
         """ Returns the sum of the accidental dignities score. """
-        if not self.scoreProperties:
-            self.scoreProperties = self.get_score_properties()
-        return sum(self.scoreProperties.values())
+        if not self.score_properties:
+            self.score_properties = self.get_score_properties()
+        return sum(self.score_properties.values())
