@@ -74,7 +74,7 @@ def single_factor(factors, chart, factor, obj, aspect=None):
     return res
 
 
-def modifier_factor(chart, factor, factor_obj, other_obj, asp_list):
+def modifier_factor(factor, factor_obj, other_obj, asp_list):
     """ Computes a factor for a modifier. """
     asp = aspects.aspect_type(factor_obj, other_obj, asp_list)
     if asp != const.NO_ASPECT:
@@ -181,7 +181,7 @@ def get_modifiers(chart):
     # Do calculations of afflictions
     for affecting_obj, affecting_asps in affect:
         for factor, affected_obj in factors:
-            modf = modifier_factor(chart, factor, affected_obj, affecting_obj, affecting_asps)
+            modf = modifier_factor(factor, affected_obj, affecting_obj, affecting_asps)
             if modf:
                 modifiers.append(modf)
 

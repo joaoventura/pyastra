@@ -135,7 +135,7 @@ def describe_accidental_dignities(chart):
         try:
             dig.score()
             rows = []
-            for key, value in dig.scoreProperties.items():
+            for key, value in dig.score_properties.items():
                 if value != 0:
                     rows.append((key, value))
             text += f"{obj.id} has the following list of accidental dignities, with their scores: "
