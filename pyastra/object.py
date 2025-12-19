@@ -158,6 +158,32 @@ class Object(GenericObject):
         """ Returns the element of this object. """
         return props.object.element[self.id]
 
+    @property
+    def is_benefic(self) -> bool:
+        """ Returns True if the planet is a natural benefic (Jupiter, Venus). """
+        return self.id in [const.JUPITER, const.VENUS]
+
+    @property
+    def is_malefic(self) -> bool:
+        """ Returns True if the planet is a natural malefic (Saturn, Mars). """
+        return self.id in [const.SATURN, const.MARS]
+
+    @property
+    def is_in_sect(self) -> bool:
+        """
+        Determines if the planet is in its preferred sect (Day/Night).
+        Diurnal: Sun, Jupiter, Saturn | Nocturnal: Moon, Venus, Mars.
+        """
+        is_day = self.chart.is_diurnal()
+        diurnal_planets = [const.SUN, const.JUPITER, const.SATURN]
+        nocturnal_planets = [const.MOON, const.VENUS, const.MARS]
+
+        if is_day and self.id in diurnal_planets:
+            return True
+        if not is_day and self.id in nocturnal_planets:
+            return True
+        return False
+
     # === Functions === #
 
     def is_direct(self):
@@ -190,6 +216,16 @@ class Object(GenericObject):
         """ Returns the accidental dignities of this object. """
         return AccidentalDignity(self, self.chart)
 
+    def describe(self) -> str:
+        """ Provides a pedagogical summary of the planet's state. """
+        ess = self.essential_dignities()
+        acc = self.accidental_dignities()
+        status = f"{self.id} in {self.sign}.\n"
+        status += f"Sect: {'In Sect' if self.is_in_sect else 'Out of Sect'}.\n"
+        status += f"Essential Dignities Score: {ess.score}.\n"
+        status += f"Accidental Dignities Score: {acc.score()}."
+        return status
+    
 
 # ------------------ #
 #     House Cusp     #
