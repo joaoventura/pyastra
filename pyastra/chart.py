@@ -23,6 +23,9 @@ from .ephem import ephem
 from .datetime import Datetime
 from .geopos import GeoPos
 
+from pyastra.protocols import almutem, behavior
+from pyastra.protocols.temperament import Temperament
+
 
 # ------------------ #
 #    Chart Class     #
@@ -177,3 +180,17 @@ class Chart:
         context = dataclasses.replace(self.context, jd=sr_date.jd)
         ids = [obj.id for obj in self.objects]
         return Chart.from_context(context, ids)
+
+    # === Traditional protocolos === #
+
+    def almutem(self) -> dict:
+        """ Returns the almutem of the chart. """
+        return almutem.compute(self)
+
+    def behavior(self) -> list:
+        """ Returns the behavior of the chart's native. """
+        return behavior.compute(self)
+
+    def temperament(self) -> Temperament:
+        """ Returns the temperament of the chart's native. """
+        return Temperament(self)
