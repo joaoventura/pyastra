@@ -19,6 +19,11 @@ class Sign(str):
         return super().__new__(cls, name)
 
     @property
+    def name(self) -> str:
+        """ Returns the Sign name. """
+        return str(self)
+
+    @property
     def modality(self) -> str:
         """ Returns the modality (Cardinal, Fixed, Mutable). """
         return props.sign.mode[self]
