@@ -225,7 +225,7 @@ class Object(GenericObject):
         status += f"Essential Dignities Score: {ess.score}.\n"
         status += f"Accidental Dignities Score: {acc.score()}."
         return status
-    
+
 
 # ------------------ #
 #     House Cusp     #
