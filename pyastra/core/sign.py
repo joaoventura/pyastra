@@ -4,7 +4,7 @@ This module provides a rich sign object.
 """
 
 from pyastra import const
-from pyastra.definitions import props
+from pyastra import definitions
 from pyastra.dignities import essential
 
 class Sign(str):
@@ -26,57 +26,57 @@ class Sign(str):
     @property
     def modality(self) -> str:
         """ Returns the modality (Cardinal, Fixed, Mutable). """
-        return props.sign.mode[self]
+        return definitions.signs.MODALITY[self]
 
     @property
     def season(self) -> str:
         """ Returns the sun season (Spring, Summer, Autumn, Winter). """
-        return props.sign.sunseason[self]
+        return definitions.signs.SUN_SEASON[self]
 
     @property
     def gender(self) -> str:
         """ Returns the gender (Masculine, Feminine). """
-        return props.sign.gender[self]
+        return definitions.signs.GENDER[self]
 
     @property
     def faction(self) -> str:
         """ Returns the faction (Diurnal, Nocturnal). """
-        return props.sign.faction[self]
+        return definitions.signs.FACTION[self]
 
     @property
     def element(self) -> str:
         """ Returns the element (Fire, Earth, Air, Water). """
-        return props.sign.element[self]
+        return definitions.signs.ELEMENT[self]
 
     @property
     def temperament(self) -> str:
         """ Returns the temperament (Choleric, Melancholic, Sanguine, Phlegmatic). """
-        return props.sign.temperament[self]
+        return definitions.signs.TEMPERAMENT[self]
 
     @property
     def fertility(self) -> str:
         """ Returns the fertility ([Moderately] Fertile, Sterile). """
-        return props.sign.fertility[self]
+        return definitions.signs.FERTILITY[self]
 
     @property
     def number(self) -> int:
         """ Returns the number (Zodiac number). """
-        return props.sign.number[self]
+        return definitions.signs.SIGN_NUMBER[self]
 
     @property
     def is_figure_bestial(self):
         """ Returns whether the sign has a figure of a 'beast'. """
-        return self in props.sign.figureBestial
+        return self in definitions.signs.FIGURE_BESTIAL
 
     @property
     def is_figure_human(self):
         """ Returns whether the sign has a figure of a 'human'. """
-        return self in props.sign.figureHuman
+        return self in definitions.signs.FIGURE_HUMAN
 
     @property
     def is_figure_wild(self):
         """ Returns whether the sign has a figure of a 'wild' animal. """
-        return self in props.sign.figureWild
+        return self in definitions.signs.FIGURE_WILD
 
     @property
     def ruler(self) -> str:

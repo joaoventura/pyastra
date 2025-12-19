@@ -66,7 +66,7 @@ ELEMENT_QUALITIES = {
 }
 
 # Qualities of temperaments
-TEMPERATURE_QUALITIES = {
+TEMPERAMENT_QUALITIES = {
     const.CHOLERIC: [const.HOT, const.DRY],
     const.MELANCHOLIC: [const.COLD, const.DRY],
     const.SANGUINE: [const.HOT, const.HUMID],

@@ -7,7 +7,7 @@ and Fixed-Stars.
 from pyastra import const
 from pyastra import utils
 from pyastra.core import angle
-from pyastra.definitions import props
+from pyastra import definitions
 from pyastra.core.sign import Sign
 from pyastra.dignities import essential
 from pyastra.dignities.accidental import AccidentalDignity
@@ -129,11 +129,11 @@ class Object(GenericObject):
 
     def orb(self):
         """ Returns the orb of this object. """
-        return props.object.orb[self.id]
+        return definitions.planets.ORB[self.id]
 
     def mean_motion(self):
         """ Returns the mean daily motion of this object. """
-        return props.object.meanMotion[self.id]
+        return definitions.planets.MEAN_MOTION[self.id]
 
     def movement(self):
         """ Returns if this object is direct, retrograde 
@@ -148,15 +148,15 @@ class Object(GenericObject):
 
     def gender(self):
         """ Returns the gender of this object. """
-        return props.object.gender[self.id]
+        return definitions.planets.GENDER[self.id]
 
     def faction(self):
         """ Returns the faction of this object. """
-        return props.object.faction[self.id]
+        return definitions.planets.FACTION[self.id]
 
     def element(self):
         """ Returns the element of this object. """
-        return props.object.element[self.id]
+        return definitions.planets.ELEMENT[self.id]
 
     @property
     def is_benefic(self) -> bool:
@@ -255,7 +255,7 @@ class House(GenericObject):
     @property
     def condition(self):
         """ Returns the condition of this house (Angular, Succedent, Cadent). """
-        return props.house.condition[self.id]
+        return definitions.houses.CONDITION[self.id]
 
     @property
     def is_benefic(self) -> bool:
@@ -270,12 +270,12 @@ class House(GenericObject):
     @property
     def gender(self):
         """ Returns the gender of this house. """
-        return props.house.gender[self.id]
+        return definitions.houses.GENDER[self.id]
 
     @property
     def meaning(self):
         """ Returns the meaning of this house. """
-        return props.house.meaning[self.id]
+        return definitions.houses.MEANING[self.id]
 
     @property
     def ruler(self):
@@ -291,7 +291,7 @@ class House(GenericObject):
 
     def is_above_horizon(self):
         """ Returns true if this house is above horizon. """
-        return self.id in props.house.aboveHorizon
+        return self.id in definitions.houses.ABOVE_HORIZON
 
     def in_house(self, lon):
         """ Returns if a longitude belongs to this house. """

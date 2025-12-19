@@ -7,8 +7,8 @@ Chart.
 from copy import copy
 
 from pyastra import const
+from pyastra import definitions
 from pyastra.core import aspects, angle
-from pyastra.definitions import props
 from pyastra.dignities import essential
 from pyastra.tools.chartdynamics import ChartDynamics
 
@@ -83,7 +83,7 @@ def haiz(obj, chart):
             obj_faction = const.NOCTURNAL
 
     # Object gender match sign gender?
-    sign_gender = props.sign.gender[obj.sign]
+    sign_gender = definitions.signs.GENDER[obj.sign]
     gender_conformity = obj_gender == sign_gender
 
     # Match faction
@@ -96,11 +96,11 @@ def haiz(obj, chart):
     else:
         # Get list of houses in the chart's diurnal faction
         if diurnal_chart:
-            diurnal_faction = props.house.aboveHorizon
-            nocturnal_faction = props.house.belowHorizon
+            diurnal_faction = definitions.houses.ABOVE_HORIZON
+            nocturnal_faction = definitions.houses.BELOW_HORIZON
         else:
-            diurnal_faction = props.house.belowHorizon
-            nocturnal_faction = props.house.aboveHorizon
+            diurnal_faction = definitions.houses.BELOW_HORIZON
+            nocturnal_faction = definitions.houses.ABOVE_HORIZON
 
         # Get the object's house and match factions
         obj_house = chart.houses.get_object_house(obj)
@@ -200,11 +200,11 @@ class AccidentalDignity:
     def in_house_joy(self):
         """ Returns if the object is in its house of joy. """
         house = self.house()
-        return props.object.houseJoy[self.obj.id] == house.id
+        return definitions.planets.HOUSE_OF_JOY[self.obj.id] == house.id
 
     def in_sign_joy(self):
         """ Returns if the object is in its sign of joy. """
-        return props.object.signJoy[self.obj.id] == self.obj.sign
+        return definitions.planets.SIGN_OF_JOY[self.obj.id] == self.obj.sign
 
     # === Mutual Receptions === #
 
