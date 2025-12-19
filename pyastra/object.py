@@ -9,6 +9,8 @@ from . import angle
 from . import utils
 from . import props
 from pyastra.sign import Sign
+from pyastra.dignities.accidental import AccidentalDignity
+from pyastra.dignities.essential import EssentialInfo
 
 
 # ------------------ #
@@ -172,6 +174,16 @@ class Object(GenericObject):
     def is_fast(self):
         """ Returns if this object is in fast motion. """
         return abs(self.lon_speed) >= self.mean_motion()
+
+    # === Dignities === #
+
+    def essential_dignities(self) -> EssentialInfo:
+        """ Returns the essential dignities of this object. """
+        return EssentialInfo(self)
+
+    def accidental_dignities(self) -> AccidentalDignity:
+        """ Returns the accidental dignities of this object. """
+        return AccidentalDignity(self, self.chart)
 
 
 # ------------------ #
