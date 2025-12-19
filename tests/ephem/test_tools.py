@@ -2,7 +2,7 @@ import unittest
 
 from pyastra import const
 from pyastra.context import ChartContext
-from pyastra.datetime import Datetime
+from pyastra.core.datetime import Datetime
 from pyastra.ephem import tools
 from pyastra.ephem import ephem
 from tests.fixtures.common import date, pos, VALUES_TROPICAL, VALUES_SIDEREAL_FAGAN_BRADLEY

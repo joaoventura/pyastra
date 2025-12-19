@@ -4,10 +4,9 @@ This recipe shows sample code for computing the almutem protocol.
 
 """
 
-from pyastra import const
-from pyastra.chart import Chart
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
+from pyastra.core.chart import Chart
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
 from pyastra.protocols import almutem
 
 

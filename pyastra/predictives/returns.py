@@ -7,7 +7,7 @@ import dataclasses
 
 from pyastra import const
 from pyastra.ephem import ephem
-from pyastra.chart import Chart
+from pyastra.core.chart import Chart
 
 
 def _compute_chart(chart, date):

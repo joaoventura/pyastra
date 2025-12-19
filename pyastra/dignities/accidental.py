@@ -6,10 +6,8 @@ Chart.
 
 from copy import copy
 
-from pyastra import angle
 from pyastra import const
-from pyastra import props
-from pyastra import aspects
+from pyastra.core import aspects, props, angle
 from pyastra.dignities import essential
 from pyastra.tools.chartdynamics import ChartDynamics
 

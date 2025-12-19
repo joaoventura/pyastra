@@ -10,15 +10,15 @@ from __future__ import annotations
 import dataclasses
 from typing import TYPE_CHECKING
 
-from pyastra import angle
+from ..core import angle
 from pyastra import const
 from pyastra.context import ChartContext
-from pyastra.object import Object, House, GenericObject, FixedStar
-from pyastra.lists import HouseList, GenericList
+from pyastra.core.object import Object, House, GenericObject, FixedStar
+from pyastra.core.lists import HouseList, GenericList
 from . import swe, tools
 
 if TYPE_CHECKING:
-    from pyastra.chart import Chart
+    from pyastra.core.chart import Chart
 
 
 def create_object(obj_id: str, context: ChartContext, chart: Chart = None) -> Object:
@@ -59,7 +59,7 @@ def create_houses_and_angles(context: ChartContext, chart: Chart = None) -> tupl
         House(
             id = const.LIST_HOUSES[i],
             lon = cusps[i],
-            size = angle.distance(cusps[i], cusps[i+1]),
+            size = angle.distance(cusps[i], cusps[i + 1]),
             chart = chart
         ) for i in range(12)
     ]

@@ -10,7 +10,7 @@ mimic different namespaces in a single python module.
     
 """
 
-from . import const
+from pyastra import const
 
 
 # ------------------- #

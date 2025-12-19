@@ -3,9 +3,8 @@ Data for use in tests
 
 """
 
-from pyastra import const
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
 
 date = Datetime('2015/03/13', '17:00', '+00:00')
 pos = GeoPos('38n32', '8w54')
@@ -1889,12 +1888,13 @@ ASPECTS = {
 
 if __name__ == '__main__':
     # Check for correctness of ayanamsa diff from tropical to sidereal zodiac
-    from pyastra import angle
+    from pyastra.core import angle
+
     values = []
     for k, v in VALUES_TROPICAL.items():
         v1 = VALUES_SIDEREAL_FAGAN_BRADLEY[k]
-        print(k, angle.norm(v['lon']-v1['lon']))
-        values.append(angle.norm(v['lon']-v1['lon']))
+        print(k, angle.norm(v['lon'] - v1['lon']))
+        values.append(angle.norm(v['lon'] - v1['lon']))
 
     print(values)
     avg = sum(values)/len(values)

@@ -4,11 +4,10 @@ and Fixed-Stars.
 
 """
 
-from . import const
-from . import angle
-from . import utils
-from . import props
-from pyastra.sign import Sign
+from pyastra import const
+from pyastra import utils
+from pyastra.core import props, angle
+from pyastra.core.sign import Sign
 from pyastra.dignities import essential
 from pyastra.dignities.accidental import AccidentalDignity
 from pyastra.dignities.essential import EssentialInfo

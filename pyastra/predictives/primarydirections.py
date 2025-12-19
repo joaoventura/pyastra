@@ -9,7 +9,7 @@ Default assumptions:
 
 """
 
-from pyastra import angle
+from pyastra.core import angle
 from pyastra import utils
 from pyastra import const
 from pyastra.dignities import tables

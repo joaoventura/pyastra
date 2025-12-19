@@ -2,7 +2,7 @@ import unittest
 from dataclasses import asdict
 
 from pyastra import const
-from pyastra.chart import Chart
+from pyastra.core.chart import Chart
 
 from tests.fixtures.common import date, pos
 

@@ -13,8 +13,8 @@ distances. To plot the graphics you must have matplotlib installed.
 """
 
 from pyastra import const
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
 from pyastra.ephem import ephem
 
 

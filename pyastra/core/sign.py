@@ -4,7 +4,7 @@ This module provides a rich sign object.
 """
 
 from pyastra import const
-from pyastra import props
+from pyastra.core import props
 from pyastra.dignities import essential
 
 class Sign(str):

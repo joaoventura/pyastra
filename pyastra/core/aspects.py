@@ -16,8 +16,8 @@ Minor aspects only when within a max allowed orb.
 
 """
 
-from . import angle
-from . import const
+from pyastra.core import angle
+from pyastra import const
 
 # Orb for minor and exact aspects
 MAX_MINOR_ASP_ORB = 3

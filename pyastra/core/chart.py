@@ -14,14 +14,14 @@ There are also methods to access fixed stars.
 import copy
 import dataclasses
 
-from . import angle
-from . import const
-from . import utils
+from pyastra.core import angle
+from pyastra import const
+from pyastra import utils
 
-from .context import ChartContext
-from .ephem import ephem
-from .datetime import Datetime
-from .geopos import GeoPos
+from pyastra.context import ChartContext
+from pyastra.ephem import ephem
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
 
 from pyastra.protocols import almutem, behavior
 from pyastra.protocols.temperament import Temperament

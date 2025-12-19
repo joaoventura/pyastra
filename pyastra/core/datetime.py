@@ -7,7 +7,7 @@ functions for internal conversions.
 
 """
 
-from . import angle
+from pyastra.core import angle
 
 # Calendar types
 GREGORIAN = 0
