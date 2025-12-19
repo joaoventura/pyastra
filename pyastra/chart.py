@@ -25,6 +25,8 @@ from .geopos import GeoPos
 
 from pyastra.protocols import almutem, behavior
 from pyastra.protocols.temperament import Temperament
+from pyastra.predictives import profections
+from pyastra.predictives.primarydirections import PrimaryDirections
 
 
 # ------------------ #
@@ -169,7 +171,7 @@ class Chart:
             return const.MOON_THIRD_QUARTER
         return const.MOON_LAST_QUARTER
 
-    # === Solar returns === #
+    # === Predictives === #
 
     def solar_return(self, year):
         """ Returns this chart's solar return for a given year. """
@@ -180,6 +182,14 @@ class Chart:
         context = dataclasses.replace(self.context, jd=sr_date.jd)
         ids = [obj.id for obj in self.objects]
         return Chart.from_context(context, ids)
+
+    def profection(self, date, fixed_objects=False):
+        """ Returns the profection of the chart for a given date. """
+        return profections.compute(self, date, fixed_objects)
+
+    def primary_directions(self):
+        """ Returns the primary directions of the chart. """
+        return PrimaryDirections.get_table(self)
 
     # === Traditional protocolos === #
 
