@@ -8,6 +8,7 @@ from . import const
 from . import angle
 from . import utils
 from . import props
+from pyastra.sign import Sign
 
 
 # ------------------ #
@@ -52,9 +53,9 @@ class GenericObject:
     # === Properties === #
 
     @property
-    def sign(self) -> str:
+    def sign(self) -> Sign:
         """ Object sign (from longitude). """
-        return const.LIST_SIGNS[int(self.lon / 30)]
+        return Sign(const.LIST_SIGNS[int(self.lon / 30)])
 
     @property
     def signlon(self) -> float:
