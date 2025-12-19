@@ -15,7 +15,8 @@ from pyastra import const
 from pyastra.context import ChartContext
 from pyastra.core.datetime import Datetime
 from pyastra.core.geopos import GeoPos
-from pyastra.core.object import Object, FixedStar
+from pyastra.core.objects.object import Object
+from ..core.objects.fixedstar import FixedStar
 from pyastra.core.lists import GenericList, ObjectList, HouseList, FixedStarList
 from . import builder, swe, tools
 

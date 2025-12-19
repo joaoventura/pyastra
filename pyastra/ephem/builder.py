@@ -13,7 +13,10 @@ from typing import TYPE_CHECKING
 from ..core import angle
 from pyastra import const
 from pyastra.context import ChartContext
-from pyastra.core.object import Object, House, GenericObject, FixedStar
+from pyastra.core.objects.object import Object
+from ..core.objects.generic import GenericObject
+from ..core.objects.house import House
+from ..core.objects.fixedstar import FixedStar
 from pyastra.core.lists import HouseList, GenericList
 from . import swe, tools
 
