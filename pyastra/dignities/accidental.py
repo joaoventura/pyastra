@@ -7,7 +7,8 @@ Chart.
 from copy import copy
 
 from pyastra import const
-from pyastra.core import aspects, props, angle
+from pyastra.core import aspects, angle
+from pyastra.definitions import props
 from pyastra.dignities import essential
 from pyastra.tools.chartdynamics import ChartDynamics
 

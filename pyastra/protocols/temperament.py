@@ -7,7 +7,8 @@ and other things which affects the Asc, the Moon and the Sun Season.
 """
 
 from pyastra import const
-from pyastra.core import aspects, props
+from pyastra.core import aspects
+from pyastra.definitions import props
 from pyastra.dignities import essential
 
 # Temperament factors

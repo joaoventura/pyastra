@@ -6,7 +6,8 @@ and Fixed-Stars.
 
 from pyastra import const
 from pyastra import utils
-from pyastra.core import props, angle
+from pyastra.core import angle
+from pyastra.definitions import props
 from pyastra.core.sign import Sign
 from pyastra.dignities import essential
 from pyastra.dignities.accidental import AccidentalDignity
