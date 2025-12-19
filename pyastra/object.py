@@ -175,6 +175,10 @@ class Object(GenericObject):
         """ Returns if this object is in fast motion. """
         return abs(self.lon_speed) >= self.mean_motion()
 
+    def house(self) -> House:
+        """ Returns the house of this object. """
+        return self.chart.houses.get_object_house(self)
+
     # === Dignities === #
 
     def essential_dignities(self) -> EssentialInfo:
@@ -275,3 +279,7 @@ class FixedStar(GenericObject):
         """
         dist = angle.closest_distance(self.lon, obj.lon)
         return abs(dist) < self.orb()
+
+    def house(self) -> House:
+        """ Returns the house of this star. """
+        return self.chart.houses.get_object_house(self)
