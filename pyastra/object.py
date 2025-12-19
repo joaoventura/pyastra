@@ -9,6 +9,7 @@ from . import angle
 from . import utils
 from . import props
 from pyastra.sign import Sign
+from pyastra.dignities import essential
 from pyastra.dignities.accidental import AccidentalDignity
 from pyastra.dignities.essential import EssentialInfo
 
@@ -215,16 +216,40 @@ class House(GenericObject):
         """ Returns the number of this house [1..12]. """
         return int(self.id[5:])
 
+    @property
     def condition(self):
-        """ Returns the condition of this house. 
-        The house can be angular, succedent or cadent.
-    
-        """
+        """ Returns the condition of this house (Angular, Succedent, Cadent). """
         return props.house.condition[self.id]
 
+    @property
+    def is_benefic(self) -> bool:
+        """ True if considered a benefic house (1, 5, 11). """
+        return self.id in [const.HOUSE1, const.HOUSE5, const.HOUSE11]
+
+    @property
+    def is_malefic(self) -> bool:
+        """ True if considered a difficult/malefic house (6, 8, 12). """
+        return self.id in [const.HOUSE6, const.HOUSE8, const.HOUSE12]
+
+    @property
     def gender(self):
         """ Returns the gender of this house. """
         return props.house.gender[self.id]
+
+    @property
+    def meaning(self):
+        """ Returns the meaning of this house. """
+        return props.house.meaning[self.id]
+
+    @property
+    def ruler(self):
+        """ Returns the house ruler. """
+        return essential.ruler(self.sign)
+
+    @property
+    def almutem(self):
+        """ Returns the almutem of this house. """
+        return essential.almutem(self.sign, self.signlon)
 
     # === Functions === #
 
