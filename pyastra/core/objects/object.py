@@ -5,8 +5,9 @@ Objects are astrology objects such as planets, lunar nodes, arabic parts, and ot
 """
 
 from pyastra import const
-from pyastra.core import angle
 from pyastra import definitions
+from pyastra.core import angle
+from pyastra.core.aspects import Aspect
 from pyastra.core.objects.generic import GenericObject
 from pyastra.core.objects.house import House
 from pyastra.dignities.accidental import AccidentalDignity
@@ -131,3 +132,9 @@ class Object(GenericObject):
         status += f"Essential Dignities Score: {ess.score}.\n"
         status += f"Accidental Dignities Score: {acc.score()}."
         return status
+
+    # Aspects
+
+    def get_aspect(self, other: Object, asp_list: list = const.MAJOR_ASPECTS) -> Aspect:
+        """ Returns the aspect between this object and another. """
+        return Aspect.from_objects(self, other, asp_list)

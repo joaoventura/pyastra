@@ -35,6 +35,8 @@ movable possessions).
 - The Sign: Interpret the nature of the Sign on the cusp of the house.
 - The Ruler (Lord of the House): Analyze the ruling planet of that sign (its position, condition, 
 influence, essential and accidental dignities).
+- The location of the House Ruler: Analyze the location of the house ruler, the house where it is 
+located, its strengths and weaknesses, and how it expresses the meaning of the house it rules.
 - Planets in the House: Analyze any planets physically located in the house.
 - Aspects: Analyze the aspects made to the Ruler of the house and to the planets within the house.
 
