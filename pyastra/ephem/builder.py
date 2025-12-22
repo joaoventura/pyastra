@@ -10,14 +10,11 @@ from __future__ import annotations
 import dataclasses
 from typing import TYPE_CHECKING
 
-from ..core import angle
 from pyastra import const
-from pyastra.context import ChartContext
-from pyastra.core.objects.object import Object
-from ..core.objects.generic import GenericObject
-from ..core.objects.house import House
-from ..core.objects.fixedstar import FixedStar
+from pyastra.core import angle
+from pyastra.core.objects import GenericObject, House, FixedStar, Object
 from pyastra.core.lists import HouseList, GenericList
+from pyastra.context import ChartContext
 from . import swe, tools
 
 if TYPE_CHECKING:

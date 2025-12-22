@@ -1,3 +1,8 @@
+"""
+This module implements the House class.
+
+"""
+
 from pyastra import const, definitions
 from pyastra.core import angle
 from pyastra.core.objects.generic import GenericObject

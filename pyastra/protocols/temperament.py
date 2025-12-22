@@ -68,7 +68,7 @@ def single_factor(factors, chart, factor, obj, aspect=None):
             res['element'] = obj.element()
 
     # If there's element, insert into list
-    if 'element' in res.keys():
+    if 'element' in res:
         factors.append(res)
 
     return res

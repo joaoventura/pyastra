@@ -1,3 +1,9 @@
+"""
+This module implements the Object class.
+Objects are astrology objects such as planets, lunar nodes, arabic parts, and others.
+
+"""
+
 from pyastra import const
 from pyastra.core import angle
 from pyastra import definitions

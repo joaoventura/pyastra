@@ -1,3 +1,9 @@
+"""
+This module implements the GenericObject class.
+Generic objects are all astrological objects that have a position in the chart.
+
+"""
+
 from pyastra import const, utils
 from pyastra.core import angle
 from pyastra.core.sign import Sign

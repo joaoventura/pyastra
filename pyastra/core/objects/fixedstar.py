@@ -1,3 +1,8 @@
+"""
+This module implements the Fixed Star class.
+
+"""
+
 from pyastra import const
 from pyastra.core import angle
 from pyastra.core.objects.generic import GenericObject

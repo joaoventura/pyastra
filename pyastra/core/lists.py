@@ -96,5 +96,3 @@ class HouseList(GenericList):
 
 class FixedStarList(GenericList):
     """ Implements a list of fixed stars. """
-
-    pass
