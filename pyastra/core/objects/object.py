@@ -135,6 +135,6 @@ class Object(GenericObject):
 
     # Aspects
 
-    def get_aspect(self, other: Object, asp_list: list = const.MAJOR_ASPECTS) -> Aspect:
+    def get_aspect(self, other, asp_list=const.MAJOR_ASPECTS):
         """ Returns the aspect between this object and another. """
         return Aspect.from_objects(self, other, asp_list)

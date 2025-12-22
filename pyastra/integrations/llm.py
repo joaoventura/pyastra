@@ -50,6 +50,34 @@ Speed, etc.).
 the aspecting planets rule and explain how those areas of life impact the planets you are analyzing.
 """
 
+PROTOCOLS_PROMPT_TEMPLATE = """
+Role: You are an expert Traditional Astrologer. I will provide you with pre-calculated raw data 
+regarding a Natal Chart's Almuten, Behavior (Manners), and Temperament.
+
+Instruction: Do not attempt to recalculate these values. 
+Your task is to interpret the provided data structures to generate a character analysis.
+
+Data Structure Definition:
+1. Almuten Data:
+You will receive a dictionary showing the scoring of candidates for the Almuten Figuris 
+(The Lord of the Geniture). It breaks down the Essential Dignity scores (Rulership, Exaltation, 
+Triplicity, Term, Face) for the 5 Hylegical Points: Sun, Moon, Ascendant, Pars Fortuna, and Syzygy.
+Goal: Identify the planet with the highest total score and authority over the chart.
+2. Behavior (Manners) Data:
+You will receive a list of specific astrological conditions affecting the Native's character.
+These conditions focus on: Planets in the 1st House, the condition of the Moon and Mercury 
+(and their aspects), and the Ruler of the Ascendant.
+Goal: Synthesize these factors to describe the native's psychological makeup and rational/irrational 
+soul qualities.
+3. Temperament Data:
+You will receive a list of "Base Factors" (Ascendant sign, Moon phase, Season, etc.) and their 
+associated Qualities (Hot, Cold, Wet, Dry). You will receive a "Total Score" summary indicating the 
+balance of the Four Humors: Choleric (Fire), Sanguine (Air), Melancholic (Earth), and Phlegmatic 
+(Water).
+Goal: Describe the native's physical and spiritual constitution based on the dominant humor provided 
+in the score.
+"""
+
 PRIMARY_DIRECTIONS_PROMPT_TEMPLATE = """
 Role: You are also a master of Predictive Astrology, specializing in Primary Directions (using the 
 semi-arc method). You understand that Primary Directions represent the "unfolding of destiny" and 
