@@ -29,6 +29,38 @@ OCCIDENTAL = 'Occidental'
 HAIZ = 'Haiz'
 CHAIZ = 'Contra-Haiz'
 
+# Score table description
+SCORE_TABLE_DESCRIPTION = {
+    'peregrine': 'If planet is peregine',
+    'mr_ruler': 'Mutual reception by rulership',
+    'mr_exalt': 'Mutual reception by exaltation',
+    'house': 'Cardinal, succedent or cadent',
+    'joy_sign': 'In sign of joy',
+    'joy_house': 'In house of joy',
+    'cazimi': 'Relation to sun',
+    'combust': 'Relation to sun',
+    'under_sun': 'Relation to sun',
+    'no_under_sun': 'Relation to sun',
+    'light': 'Augmenting or diminishing light',
+    'orientality': 'Score by being oriental or not',
+    'north_node': 'Conjunction to north node',
+    'south_node': 'Conjunction to south node',
+    'direction': 'Retrograde or direct',
+    'speed': 'Fast or slow',
+    'benefic_asp0': 'Conjunction to a benefic',
+    'benefic_asp120': 'Trine to a benefic',
+    'benefic_asp60': 'Sextile to a benefic',
+    'malefic_asp0': 'Conjunction to a malefic',
+    'malefic_asp180': 'Opposition to a malefic',
+    'malefic_asp90': 'Square to a malefic',
+    'auxilied': 'Auxilied by benefics (seperating and applying to benefics)',
+    'surround': 'Surrounded by malefics (seperating and applying to malefics)',
+    'feral': 'Does not have aspects',
+    'void': 'Void of course (does no applying aspects)',
+    'haiz': 'In haiz',
+    'viacombusta': 'In via combusta',
+}
+
 
 # === Base functions === #
 

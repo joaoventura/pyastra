@@ -25,11 +25,11 @@ def create_object(obj_id: str, context: ChartContext, chart: Chart = None) -> Ob
     """Returns an object for a specific date and location."""
     if obj_id == const.SOUTH_NODE:
         obj_lon, _, _, _ = swe.swe_object(const.NORTH_NODE, context=context)
-        return Object(id=obj_id, lon=angle.norm(obj_lon + 180))
+        return Object(id=obj_id, lon=angle.norm(obj_lon + 180), chart=chart)
 
     if obj_id == const.PARS_FORTUNA:
         obj_lon = tools.pars_fortuna_lon(context=context)
-        return Object(id=obj_id, lon=obj_lon)
+        return Object(id=obj_id, lon=obj_lon, chart=chart)
 
     if obj_id == const.SYZYGY:
         syzygy_jd = tools.syzygy_jd(context.jd)

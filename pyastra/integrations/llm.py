@@ -4,10 +4,12 @@ LLM (Large-Language Models) prompts.
 
 """
 
+import json
+
 from pyastra import const
 from pyastra.core import aspects, angle
-from pyastra.dignities import essential, accidental
-from pyastra.predictives.primarydirections import PrimaryDirections
+
+from . import schemas
 
 
 NATAL_CHART_PROMPT_TEMPLATE = """
@@ -35,6 +37,8 @@ movable possessions).
 - The Sign: Interpret the nature of the Sign on the cusp of the house.
 - The Ruler (Lord of the House): Analyze the ruling planet of that sign (its position, condition, 
 influence, essential and accidental dignities).
+- The location of the House Ruler: Analyze the location of the house ruler, the house where it is 
+located, its strengths and weaknesses, and how it expresses the meaning of the house it rules.
 - Planets in the House: Analyze any planets physically located in the house.
 - Aspects: Analyze the aspects made to the Ruler of the house and to the planets within the house.
 
@@ -103,7 +107,7 @@ def describe_houses(chart):
         text += f"{house.id} is at {angle.to_string(house.signlon)} of {house.sign} "
 
         # House ruler
-        ruler_id = essential.ruler(house.sign)
+        ruler_id = house.ruler
         ruler = chart.get(ruler_id)
         text += f"and is ruled by {ruler.id}.\n"
 
@@ -114,7 +118,7 @@ def describe_essential_dignities(chart):
     """ Return the essential dignities of the chart objects as text. """
     text = ""
     for obj in chart.objects:
-        info = essential.EssentialInfo(obj)
+        info = obj.essential_dignities()
         dignities = info.get_dignities()
         if dignities:
             text += f"{obj.id} has the following essential dignities: "
@@ -130,7 +134,7 @@ def describe_accidental_dignities(chart):
     """ Returns the accidental dignities of the chart objects as text. """
     text = ""
     for obj in chart.objects:
-        dig = accidental.AccidentalDignity(obj, chart)
+        dig = obj.accidental_dignities()
         try:
             dig.score()
             rows = []
@@ -180,9 +184,14 @@ def describe_chart(chart):
     return text
 
 
+def describe_chart_as_json(chart):
+    """ Returns the chart in json format. """
+    return json.dumps(schemas.chart_complete_schema(chart), indent=2)
+
+
 def describe_primary_directions(chart, **filters):
     """ Returns the list of primary directions as text. """
-    table = PrimaryDirections.get_table(chart)
+    table = chart.primary_directions()
 
     text = "The primary directions are a predictive technique used in traditional astrology.\n"
     text += "The following list includes the arc of direction, direction and direction type "
@@ -190,3 +199,24 @@ def describe_primary_directions(chart, **filters):
     for direction in table.filter_by(**filters):
         text += str(direction) + "\n"
     return text
+
+
+def describe_temperament(chart):
+    """ Returns the temperament as text. """
+    temperament = chart.temperament()
+    text = "Base factors: " + str(temperament.get_factors()) + "\n"
+    text += "Temperament Modifiers: " + str(temperament.get_modifiers()) + "\n"
+    text += "Total score: " + str(temperament.get_score())
+    return text
+
+
+def describe_almutem(chart):
+    """ Returns the almutem as text. """
+    almutem = chart.almutem()
+    return str(almutem) + "\n"
+
+
+def describe_behavior(chart):
+    """ Returns the behavior as text. """
+    behavior = chart.behavior()
+    return str(behavior) + "\n"

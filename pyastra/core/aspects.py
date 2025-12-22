@@ -169,7 +169,7 @@ def is_aspecting(obj1, obj2, asp_list):
     return False
 
 
-def get_aspect(obj1, obj2, asp_list):
+def get_aspect(obj1, obj2, asp_list) -> Aspect:
     """ Builds an Aspect from two objects considering a list of possible aspects. """
     return Aspect.from_objects(obj1, obj2, asp_list)
 
