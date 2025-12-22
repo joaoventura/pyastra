@@ -192,3 +192,24 @@ def describe_primary_directions(chart, **filters):
     for direction in table.filter_by(**filters):
         text += str(direction) + "\n"
     return text
+
+
+def describe_temperament(chart):
+    """ Returns the temperament as text. """
+    temperament = chart.temperament()
+    text = "Base factors: " + str(temperament.get_factors()) + "\n"
+    text += "Temperament Modifiers: " + str(temperament.get_modifiers()) + "\n"
+    text += "Total score: " + str(temperament.get_score())
+    return text
+
+
+def describe_almutem(chart):
+    """ Returns the almutem as text. """
+    almutem = chart.almutem()
+    return str(almutem) + "\n"
+
+
+def describe_behavior(chart):
+    """ Returns the behavior as text. """
+    behavior = chart.behavior()
+    return str(behavior) + "\n"
