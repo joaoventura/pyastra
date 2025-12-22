@@ -4,10 +4,12 @@ LLM (Large-Language Models) prompts.
 
 """
 
+import json
+
 from pyastra import const
 from pyastra.core import aspects, angle
-from pyastra.dignities import essential, accidental
-from pyastra.predictives.primarydirections import PrimaryDirections
+
+from . import schemas
 
 
 NATAL_CHART_PROMPT_TEMPLATE = """
@@ -105,7 +107,7 @@ def describe_houses(chart):
         text += f"{house.id} is at {angle.to_string(house.signlon)} of {house.sign} "
 
         # House ruler
-        ruler_id = essential.ruler(house.sign)
+        ruler_id = house.ruler
         ruler = chart.get(ruler_id)
         text += f"and is ruled by {ruler.id}.\n"
 
@@ -116,7 +118,7 @@ def describe_essential_dignities(chart):
     """ Return the essential dignities of the chart objects as text. """
     text = ""
     for obj in chart.objects:
-        info = essential.EssentialInfo(obj)
+        info = obj.essential_dignities()
         dignities = info.get_dignities()
         if dignities:
             text += f"{obj.id} has the following essential dignities: "
@@ -132,7 +134,7 @@ def describe_accidental_dignities(chart):
     """ Returns the accidental dignities of the chart objects as text. """
     text = ""
     for obj in chart.objects:
-        dig = accidental.AccidentalDignity(obj, chart)
+        dig = obj.accidental_dignities()
         try:
             dig.score()
             rows = []
@@ -182,9 +184,14 @@ def describe_chart(chart):
     return text
 
 
+def describe_chart_as_json(chart):
+    """ Returns the chart in json format. """
+    return json.dumps(schemas.chart_complete_schema(chart), indent=2)
+
+
 def describe_primary_directions(chart, **filters):
     """ Returns the list of primary directions as text. """
-    table = PrimaryDirections.get_table(chart)
+    table = chart.primary_directions()
 
     text = "The primary directions are a predictive technique used in traditional astrology.\n"
     text += "The following list includes the arc of direction, direction and direction type "
