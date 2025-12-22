@@ -16,6 +16,6 @@ pos = GeoPos('38n32', '8w54')
 chart = Chart(date, pos)
 
 # Print almutem scores
-alm = almutem.compute(chart)
+alm = chart.almutem()
 for k, v in alm['Score'].items():
     print(k, v)  # Mercury scores 40

@@ -7,7 +7,6 @@ This recipe shows sample code for computing the temperament protocol.
 from pyastra.core.chart import Chart
 from pyastra.core.datetime import Datetime
 from pyastra.core.geopos import GeoPos
-from pyastra.protocols import behavior
 
 
 # Build a chart for a date and location
@@ -16,6 +15,6 @@ pos = GeoPos('38n32', '8w54')
 chart = Chart(date, pos)
 
 # Behavior
-factors = behavior.compute(chart)
+factors = chart.behavior()
 for factor in factors:
     print(factor)

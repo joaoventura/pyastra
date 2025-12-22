@@ -18,7 +18,7 @@ chart = Chart(date, pos)
 
 # Get the profection Chart for a date
 today = Datetime('2015/04/06', '10:40', '+01:00')
-pChart = profections.compute(chart, today)
+pChart = chart.profection(today)
 
 # Print the Asc
 asc = pChart.get(const.ASC)
