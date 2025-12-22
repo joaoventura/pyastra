@@ -4,7 +4,7 @@ This module provides generic utility functions.
 """
 
 import math
-from . import angle
+from .core import angle
 
 
 # === Diurnal and nocturnal arcs === #

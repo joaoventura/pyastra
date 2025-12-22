@@ -10,7 +10,7 @@ To plot the graphics you must have matplotlib installed.
 
 """
 
-from pyastra.datetime import Datetime
+from pyastra.core.datetime import Datetime
 from pyastra.ephem import ephem
 
 

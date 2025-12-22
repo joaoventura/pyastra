@@ -5,9 +5,9 @@ This recipe shows sample code for handling accidental dignities.
 """
 
 from pyastra import const
-from pyastra.chart import Chart
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
+from pyastra.core.chart import Chart
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
 
 from pyastra.dignities import accidental
 from pyastra.dignities.accidental import AccidentalDignity

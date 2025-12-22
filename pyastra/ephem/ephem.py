@@ -13,14 +13,14 @@ from typing import TYPE_CHECKING
 
 from pyastra import const
 from pyastra.context import ChartContext
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
-from pyastra.object import Object, FixedStar
-from pyastra.lists import GenericList, ObjectList, HouseList, FixedStarList
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
+from pyastra.core.objects import Object, FixedStar
+from pyastra.core.lists import GenericList, ObjectList, HouseList, FixedStarList
 from . import builder, swe, tools
 
 if TYPE_CHECKING:
-    from pyastra.chart import Chart
+    from pyastra.core.chart import Chart
 
 
 # === Objects === #

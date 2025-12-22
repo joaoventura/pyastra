@@ -4,7 +4,7 @@ Each latitude/longitude is an angle represented by a <float> value.
 
 """
 
-from . import angle
+from pyastra.core import angle
 
 # Modes
 LAT = 0

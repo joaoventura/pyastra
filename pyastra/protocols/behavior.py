@@ -4,7 +4,7 @@ This module implements the Behavior Traditional Protocol.
 """
 
 from pyastra import const
-from pyastra import aspects
+from pyastra.core import aspects
 from pyastra.dignities import essential
 
 

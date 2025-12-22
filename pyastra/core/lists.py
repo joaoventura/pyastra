@@ -4,7 +4,7 @@ It is basically a wrapper around a native dict with useful augmentations.
 
 """
 
-from . import aspects
+from pyastra.core import aspects
 
 
 # ---------------- #
@@ -96,5 +96,3 @@ class HouseList(GenericList):
 
 class FixedStarList(GenericList):
     """ Implements a list of fixed stars. """
-
-    pass

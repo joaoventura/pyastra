@@ -5,7 +5,7 @@ astrology Chart.
 """
 
 from pyastra import const
-from pyastra import aspects
+from pyastra.core import aspects
 from pyastra.dignities import essential
 
 

@@ -14,14 +14,19 @@ There are also methods to access fixed stars.
 import copy
 import dataclasses
 
-from . import angle
-from . import const
-from . import utils
+from pyastra.core import angle
+from pyastra import const
+from pyastra import utils
 
-from .context import ChartContext
-from .ephem import ephem
-from .datetime import Datetime
-from .geopos import GeoPos
+from pyastra.context import ChartContext
+from pyastra.ephem import ephem
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
+
+from pyastra.protocols import almutem, behavior
+from pyastra.protocols.temperament import Temperament
+from pyastra.predictives import profections
+from pyastra.predictives.primarydirections import PrimaryDirections
 
 
 # ------------------ #
@@ -166,7 +171,7 @@ class Chart:
             return const.MOON_THIRD_QUARTER
         return const.MOON_LAST_QUARTER
 
-    # === Solar returns === #
+    # === Predictives === #
 
     def solar_return(self, year):
         """ Returns this chart's solar return for a given year. """
@@ -177,3 +182,25 @@ class Chart:
         context = dataclasses.replace(self.context, jd=sr_date.jd)
         ids = [obj.id for obj in self.objects]
         return Chart.from_context(context, ids)
+
+    def profection(self, date, fixed_objects=False):
+        """ Returns the profection of the chart for a given date. """
+        return profections.compute(self, date, fixed_objects)
+
+    def primary_directions(self):
+        """ Returns the primary directions of the chart. """
+        return PrimaryDirections.get_table(self)
+
+    # === Traditional protocolos === #
+
+    def almutem(self) -> dict:
+        """ Returns the almutem of the chart. """
+        return almutem.compute(self)
+
+    def behavior(self) -> list:
+        """ Returns the behavior of the chart's native. """
+        return behavior.compute(self)
+
+    def temperament(self) -> Temperament:
+        """ Returns the temperament of the chart's native. """
+        return Temperament(self)

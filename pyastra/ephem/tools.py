@@ -4,9 +4,8 @@ Functions specific for the ephem subpackage.
 """
 import dataclasses
 
-from pyastra import angle
-from pyastra import const
-from pyastra import utils
+from pyastra import const, utils
+from pyastra.core import angle
 from pyastra.context import ChartContext
 
 from . import swe

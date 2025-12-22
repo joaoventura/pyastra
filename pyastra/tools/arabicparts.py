@@ -4,7 +4,7 @@ This module provides useful functions for computing Arabic Parts.
 """
 
 from pyastra import const
-from pyastra.object import GenericObject
+from pyastra.core.objects.generic import GenericObject
 from pyastra.dignities import essential
 
 # Define arabic parts

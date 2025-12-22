@@ -7,8 +7,8 @@ and other things which affects the Asc, the Moon and the Sun Season.
 """
 
 from pyastra import const
-from pyastra import aspects
-from pyastra import props
+from pyastra import definitions
+from pyastra.core import aspects
 from pyastra.dignities import essential
 
 # Temperament factors
@@ -44,31 +44,31 @@ def single_factor(factors, chart, factor, obj, aspect=None):
 
     # For signs (obj as string) return sign element
     if isinstance(obj, str):
-        res['element'] = props.sign.element[obj]
+        res['element'] = definitions.signs.ELEMENT[obj]
 
     # For Sun return sign and sunseason element
     elif obj_id == const.SUN:
-        sunseason = props.sign.sunseason[obj.sign]
+        sunseason = definitions.signs.SUN_SEASON[obj.sign]
         res['sign'] = obj.sign
         res['sunseason'] = sunseason
-        res['element'] = props.base.sunseasonElement[sunseason]
+        res['element'] = definitions.base.SUNSEASON_ELEMENTS[sunseason]
 
     # For Moon return phase and phase element
     elif obj_id == const.MOON:
         phase = chart.get_moon_phase()
         res['phase'] = phase
-        res['element'] = props.base.moonphaseElement[phase]
+        res['element'] = definitions.base.MOONPHASE_ELEMENTS[phase]
 
     # For regular planets return element or sign/sign element if there's an aspect involved
     elif obj_id in const.LIST_SEVEN_PLANETS:
         if aspect:
             res['sign'] = obj.sign
-            res['element'] = props.sign.element[obj.sign]
+            res['element'] = definitions.signs.ELEMENT[obj.sign]
         else:
             res['element'] = obj.element()
 
     # If there's element, insert into list
-    if 'element' in res.keys():
+    if 'element' in res:
         factors.append(res)
 
     return res
@@ -208,11 +208,11 @@ def scores(factors):
         element = factor['element']
 
         # Score temperament
-        temperament = props.base.elementTemperament[element]
+        temperament = definitions.base.ELEMENT_TO_TEMPERAMENT[element]
         temperaments[temperament] += 1
 
         # Score qualities
-        tqualities = props.base.temperamentQuality[temperament]
+        tqualities = definitions.base.TEMPERAMENT_QUALITIES[temperament]
         qualities[tqualities[0]] += 1
         qualities[tqualities[1]] += 1
 

@@ -4,9 +4,8 @@ LLM (Large-Language Models) prompts.
 
 """
 
-from pyastra import angle
 from pyastra import const
-from pyastra import aspects
+from pyastra.core import aspects, angle
 from pyastra.dignities import essential, accidental
 from pyastra.predictives.primarydirections import PrimaryDirections
 

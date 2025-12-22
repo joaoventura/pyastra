@@ -5,9 +5,9 @@ This recipe shows sample code for handling profections.
 """
 
 from pyastra import const
-from pyastra.chart import Chart
-from pyastra.datetime import Datetime
-from pyastra.geopos import GeoPos
+from pyastra.core.chart import Chart
+from pyastra.core.datetime import Datetime
+from pyastra.core.geopos import GeoPos
 from pyastra.predictives import profections
 
 
@@ -18,7 +18,7 @@ chart = Chart(date, pos)
 
 # Get the profection Chart for a date
 today = Datetime('2015/04/06', '10:40', '+01:00')
-pChart = profections.compute(chart, today)
+pChart = chart.profection(today)
 
 # Print the Asc
 asc = pChart.get(const.ASC)

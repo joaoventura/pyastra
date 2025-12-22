@@ -8,7 +8,7 @@ and hour rulers, including the start and ending datetimes of each hour ruler.
 
 from pyastra import const
 from pyastra.ephem import ephem
-from pyastra.datetime import Datetime
+from pyastra.core.datetime import Datetime
 
 # Planetary rulers starting at Sunday
 DAY_RULERS = [
