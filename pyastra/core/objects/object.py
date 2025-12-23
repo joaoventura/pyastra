@@ -133,7 +133,7 @@ class Object(GenericObject):
         status += f"Accidental Dignities Score: {acc.score()}."
         return status
 
-    # Aspects
+    # === Aspects === #
 
     def get_aspect(self, other, asp_list=const.MAJOR_ASPECTS):
         """ Returns the aspect between this object and another. """
