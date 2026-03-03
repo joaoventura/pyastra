@@ -23,3 +23,10 @@ Thank you for understanding.
 It can be installed with `pip install git+https://github.com/joaoventura/pyastra.git`.
 
 **Notes**: Python >= 3.10.
+
+
+## Examples
+
+Some examples of PyAstra in Google Colab
+
+- [Chart creation](https://colab.research.google.com/github/joaoventura/pyastra/blob/main/tutorials/chart.ipynb)
