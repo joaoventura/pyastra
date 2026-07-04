@@ -117,14 +117,55 @@ if debilitated, more difficult.
 
 """
 
+def describe_planet(obj, chart, asp_list=const.MAJOR_ASPECTS):
+    """ Returns the chart planet as text. """
+    schema = schemas.planet_complete_schema(obj, chart, asp_list)
+    text = f"**{schema['Planet']}**: {angle.to_string(obj.signlon)} of {obj.sign} in {obj.house().id}. "
+    text += f"{schema['Position']['Movement']}. "
+
+    if 'Essential Dignities' in schema:
+        ed = schema['Essential Dignities']
+        text += f"Essential Dignities Score: {ed['Total Score']} ("
+        text += ", ".join(ed['Factors'])
+        text += "). "
+
+    if 'Accidental Dignities' in schema:
+        ad = schema['Accidental Dignities']
+        text += f"Accidental Dignities Score: {ad['Total Score']} ("
+        text += ", ".join(f"{factor['Type']}: {factor['Score']}" for factor in ad['Factors'])
+        text += "). "
+
+    aspects = []
+    for asp in schema['Aspects']:
+        aspects.append(f"{asp['Type']} to {asp['Passive']} "
+                       f"({angle.to_string(asp['Orb'])} {asp['Movement']})")
+    if aspects:
+        text += f"Aspects: " + ", ".join(aspects) + "."
+    else:
+        text += f"Aspects: None."
+
+    return text
+
 
 def describe_planets(chart):
     """ Returns the chart objects as text. """
     text = ""
     for obj in chart.objects:
-        house = chart.houses.get_object_house(obj)
-        text += f"{obj.id} is at {angle.to_string(obj.signlon)} of {obj.sign} in {house.id}.\n"
+        text += describe_planet(obj, chart) + "\n"
+    return text
 
+
+def describe_house(house, chart):
+    """ Returns the chart house as text. """
+    schema = schemas.house_schema(house, chart)
+    text = f"**{house.id}**: {angle.to_string(house.signlon)} of {house.sign} ({schema['House Condition']}). "
+    ruler = schema['Ruler']
+    text += f"{ruler['Planet']} in {ruler['Sign']} at House{ruler['House']}. "
+    tenants = schema['Tenants']
+    if tenants:
+        text += f"Tenants: " + ", ".join(f"{tenant['Planet']}" for tenant in tenants) + "."
+    else:
+        text += f"Tenants: None."
     return text
 
 
@@ -132,13 +173,7 @@ def describe_houses(chart):
     """ Returns the chart houses as text. """
     text = ""
     for house in chart.houses:
-        text += f"{house.id} is at {angle.to_string(house.signlon)} of {house.sign} "
-
-        # House ruler
-        ruler_id = house.ruler
-        ruler = chart.get(ruler_id)
-        text += f"and is ruled by {ruler.id}.\n"
-
+        text += describe_house(house, chart) + "\n"
     return text
 
 
@@ -203,12 +238,9 @@ def describe_aspects(chart, asp_list=const.MAJOR_ASPECTS):
 
 def describe_chart(chart):
     """ Returns the chart in textual representation. """
-
-    text = describe_planets(chart)
+    text = f"Chart Date: {chart.date}\n"
+    text += describe_planets(chart)
     text += describe_houses(chart)
-    text += describe_essential_dignities(chart)
-    text += describe_accidental_dignities(chart)
-    text += describe_aspects(chart, const.MAJOR_ASPECTS)
     return text
 
 
