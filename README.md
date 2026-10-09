@@ -17,7 +17,7 @@ heavy development and rewrite.
 
 ```
 
-This project is currently for personal research only, therefore Pull Requests will be closed without review. 
+This project is currently under active development, therefore Pull Requests will not be accepted for now. 
 Thank you for understanding.
 
 It can be installed with `pip install git+https://github.com/joaoventura/pyastra.git`.
